@@ -12,7 +12,8 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    
+    networks:
+      - default
 
   web:
     build: .
@@ -22,3 +23,10 @@ services:
       - 8080:8080
     environment:
       - PORT=8080
+      - DATABASE=API
+      - USERNAMEDB=postgres
+      - PASSWORDDB=postgres
+      - HOSTDB=web-db
+      - PORTDB=5432
+    depends_on:
+      - web-db

@@ -2,6 +2,7 @@ import express, {Application} from 'express';
 import cors from 'cors';
 
 import userRoutes from '../routes/usuarios';
+import db from '../db/connection';
 
 
 class Server {
@@ -17,11 +18,23 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || '8080';
 
+        // Conexión a la base de datos.
+        this.dbConnection();
+
         // Métodos iniciales.
         this.middlewares();
 
         // Define las rutas del api.
         this.routes();
+    }
+
+    async dbConnection() {
+        try{
+            await db.authenticate();
+            console.log('Base de datos conectada !!');
+        } catch (error) {
+            throw new Error(`Error al conectar con la base de datos: ${error}`);
+        }
     }
 
     middlewares() {
@@ -41,7 +54,7 @@ class Server {
 
     listen() {
         this.app.listen(this.port, () => {
-            console.log(`El servidor está corriendo  http://localhost:${this.port}`);
+            console.log(`El servidor está corriendo http://localhost:${this.port}`);
         });
     }
 }
