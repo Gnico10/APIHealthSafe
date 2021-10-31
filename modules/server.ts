@@ -51,6 +51,11 @@ class Server {
 
     routes() {
         this.app.use(this.apiPaths.usuarios, userRoutes);
+
+        // Ruta por defecto.
+        this.app.get('*', (req, res) => {
+            res.send('Ruta Inválida.');
+        });
     }
 
     listen() {

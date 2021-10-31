@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import Usuario from '../modules/usuario';
+import bcryptjs  from 'bcryptjs';
 
 export const getUsuarios = async (req: Request, res: Response) => {
     const usuarios = await Usuario.findAll();
@@ -20,7 +21,7 @@ export const getUsuario = async (req: Request, res: Response) => {
 }
 
 export const postUsuario = async (req: Request, res: Response) => {
-    const { dni, contrasena } = req.body;
+    let { dni, contrasena } = req.body;
 
     try {
         // Validaciones
@@ -33,6 +34,9 @@ export const postUsuario = async (req: Request, res: Response) => {
                 msg: `El usuario con el DNI = ${dni} ya existe`
             });
         }
+
+        const salt = await bcryptjs.genSalt();
+        contrasena = bcryptjs.hashSync(contrasena, salt);
 
         // Creación de instancia en la base de datos.
         const usuario = await Usuario.create({dni, contrasena});

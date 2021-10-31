@@ -7,7 +7,7 @@ const Usuario = db.define('Usuario', {
         primaryKey: true
     },
     contrasena: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.STRING,
         allowNull: false
     },
     imgperfil: DataTypes.BLOB
