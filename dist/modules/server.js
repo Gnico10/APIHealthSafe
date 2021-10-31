@@ -35,6 +35,7 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield connection_1.default.authenticate();
+                yield connection_1.default.sync({ alter: true });
                 console.log('Base de datos conectada !!');
             }
             catch (error) {

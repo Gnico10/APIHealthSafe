@@ -1,4 +1,4 @@
-import express, {Application} from 'express';
+import express, {Application, Request, Response} from 'express';
 import cors from 'cors';
 
 import userRoutes from '../routes/usuarios';
@@ -31,6 +31,7 @@ class Server {
     async dbConnection() {
         try{
             await db.authenticate();
+            await db.sync({alter: true});
             console.log('Base de datos conectada !!');
         } catch (error) {
             throw new Error(`Error al conectar con la base de datos: ${error}`);
