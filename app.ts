@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import Server from './modules/server';
+import Server from './models/server';
 
 dotenv.config(); // Para leer todas las variables de entorno.
 

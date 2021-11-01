@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import Usuario from '../modules/usuario';
+import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
 
 export const getUsuarios = async (req: Request, res: Response) => {
@@ -21,7 +21,7 @@ export const getUsuario = async (req: Request, res: Response) => {
 }
 
 export const postUsuario = async (req: Request, res: Response) => {
-    let { dni, contrasena } = req.body;
+    const { dni, contrasena, imgperfil, ispaciente } = req.body;
 
     try {
         // Validaciones
@@ -35,11 +35,12 @@ export const postUsuario = async (req: Request, res: Response) => {
             });
         }
 
-        const salt = await bcryptjs.genSalt();
-        contrasena = bcryptjs.hashSync(contrasena, salt);
-
         // Creación de instancia en la base de datos.
-        const usuario = await Usuario.create({dni, contrasena});
+        const usuario : any = await Usuario.create({dni, contrasena, imgperfil, ispaciente});
+
+        const salt = await bcryptjs.genSalt();
+        usuario.contrasena = bcryptjs.hashSync(contrasena, salt);
+
         await usuario.save;
 
         res.json({
@@ -61,12 +62,12 @@ export const putUsuario = async (req: Request, res: Response) => {
     try {
         const usuario = await Usuario.findByPk(id);
         if (!usuario) {
-            res.status(404).json({
+            return res.status(404).json({
                 msg: `No existe un usuario con el DNI = ${id}`
             });
         }
 
-        await usuario?.update({dni, contrasena});
+        await usuario.update({dni, contrasena});
 
         res.json({
             msg:'Usuario actrualizado con éxito.',
@@ -87,12 +88,12 @@ export const deleteUsuario = async (req: Request, res: Response) => {
     try {
         const usuario = await Usuario.findByPk(id);
         if (!usuario) {
-            res.status(404).json({
+            return res.status(404).json({
                 msg: `No existe un usuario con el DNI = ${id}`
             });
         }
 
-        await usuario?.destroy();
+        await usuario.destroy();
 
         res.json({
             msg: 'El ususario fué eliminado con éxito.',

@@ -10,7 +10,11 @@ const Usuario = db.define('Usuario', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    imgperfil: DataTypes.BLOB
+    imgperfil: DataTypes.BLOB,
+    ispaciente: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    }
 },
 {
     tableName: 'usuarios'
