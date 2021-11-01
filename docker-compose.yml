@@ -28,5 +28,6 @@ services:
       - PASSWORDDB=postgres
       - HOSTDB=web-db
       - PORTDB=5432
+      - SECRETORPRIVATEKEY=6%J5HDD-x{.[@~#MrZ&xr7*A`yUj48
     depends_on:
       - web-db

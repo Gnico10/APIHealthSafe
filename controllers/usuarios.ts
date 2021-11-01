@@ -36,12 +36,12 @@ export const postUsuario = async (req: Request, res: Response) => {
         }
 
         // Creación de instancia en la base de datos.
-        const usuario : any = await Usuario.create({dni, contrasena, imgperfil, ispaciente});
+        const usuario : any = await Usuario.build({dni, contrasena, imgperfil, ispaciente});
 
         const salt = await bcryptjs.genSalt();
         usuario.contrasena = bcryptjs.hashSync(contrasena, salt);
 
-        await usuario.save;
+        await usuario.save();
 
         res.json({
             msg:'Usuario dado de alta',

@@ -1,6 +1,7 @@
 import express, {Application, Request, Response} from 'express';
 import cors from 'cors';
 
+import authRoutes from '../routes/auth';
 import userRoutes from '../routes/usuarios';
 import db from '../db/connection';
 
@@ -10,6 +11,7 @@ class Server {
     private app : Application;
     private port : string;
     private apiPaths = {
+        auth: '/api/auth',
         usuarios: '/api/usuarios',
         default: '*'
     }
@@ -50,6 +52,7 @@ class Server {
     }
 
     routes() {
+        this.app.use(this.apiPaths.auth, authRoutes);
         this.app.use(this.apiPaths.usuarios, userRoutes);
 
         // Ruta por defecto.
