@@ -1,9 +1,15 @@
-import express, {Application, Request, Response} from 'express';
+import express, { Application } from 'express';
 import cors from 'cors';
+import sequelize from './db/connection';
 
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
-import db from './db/connection';
+
+import usuario from './models/usuario';
+import paciente from './models/paciente';
+import profesional from './models/profesional';
+import especialidad from './models/especialidad';
+import profesionales_especialidades from './models/prefesional_especialidad';
 
 
 class Server {
@@ -32,8 +38,15 @@ class Server {
 
     async dbConnection() {
         try{
-            await db.authenticate();
-            await db.sync({alter: true});
+            await sequelize.authenticate();
+
+            // await sequelize.sync({alter: true});
+            await usuario.sync({alter: true});
+            await paciente.sync({alter: true});
+            await profesional.sync({alter: true});
+            await especialidad.sync({alter: true});
+            await profesionales_especialidades.sync({alter: true});
+
             console.log('Base de datos conectada !!');
         } catch (error) {
             throw new Error(`Error al conectar con la base de datos: ${error}`);
