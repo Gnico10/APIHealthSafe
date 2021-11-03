@@ -2,7 +2,7 @@
 Aplicación BackEnd que despliega la API necesaria para servir los datos del sistema HealthSafe.
 
 ## Notas:
-* La aplizaicón fué dockerizada para realizar su despliegue de una manera sencilla.
+* La aplicación fué dockerizada para realizar su despliegue de una manera sencilla.
 
 * Para trabajar en el localmente se necesita desplegar un servidor de Postgres con anterioridad y tener NodeJS instalado localmente.
   * Instalar las dependencias de Node con ```npm install```
