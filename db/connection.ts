@@ -6,11 +6,11 @@ const passworddb : string = process.env.PASSWORDDB || 'postgres';
 const hostdb : string = process.env.HOSTDB || 'localhost';
 const portdb : string = process.env.PORTDB  || '5432';
 
-const db = new Sequelize(database, usernamedb, passworddb, {
+const sequelize = new Sequelize(database, usernamedb, passworddb, {
     host: hostdb,
     dialect: 'postgres',
     // logging: false
     port: (portdb as unknown as number)
 });
 
-export default db;
+export default sequelize;

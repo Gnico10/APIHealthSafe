@@ -30,13 +30,13 @@ export const postUsuario = async (req: Request, res: Response) => {
         });
 
         if (existeUsuario) {
-            res.status(400).json({
+            return res.status(400).json({
                 msg: `El usuario con el DNI = ${dni} ya existe`
             });
         }
 
         // Creación de instancia en la base de datos.
-        const usuario : any = await Usuario.build({dni, contrasena, imgperfil, ispaciente});
+        const usuario = Usuario.build({ dni, contrasena, imgperfil, ispaciente });
 
         const salt = await bcryptjs.genSalt();
         usuario.contrasena = bcryptjs.hashSync(contrasena, salt);
@@ -106,9 +106,4 @@ export const deleteUsuario = async (req: Request, res: Response) => {
             msg: 'Error Interno. No se pudo Actualizar el usuario.'
         });
     }
-
-    res.json({
-        msg:'deleteUsuario',
-        id
-    });
 }

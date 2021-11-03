@@ -1,24 +1,34 @@
-import {DataTypes} from 'sequelize';
-import db from '../db/connection';
+import { DataTypes } from 'sequelize';
+import sequelize from '../db/connection';
+import IUsuario from '../interfaces/iUsuario';
+import paciente from './paciente';
 
-const Usuario = db.define('Usuario', {
-    dni: {
-        type: DataTypes.INTEGER,
-        primaryKey: true
+
+const usuario = sequelize.define<IUsuario>('Usuario',
+    {
+        dni: {
+            type: DataTypes.INTEGER,
+            primaryKey: true
+        },
+        contrasena: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        imgperfil: DataTypes.BLOB,
+        ispaciente: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        }
     },
-    contrasena: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    imgperfil: DataTypes.BLOB,
-    ispaciente: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+    {
+        tableName: 'usuarios'
     }
-},
-{
-    tableName: 'usuarios'
-}
 );
 
-export default Usuario;
+// usuario.hasOne(paciente, {
+//     foreignKey: 'dni',
+//     onDelete: 'RESTRICT',
+//     onUpdate: 'CASCADE',
+// });
+
+export default usuario;
