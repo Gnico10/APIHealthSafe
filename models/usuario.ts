@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
+import { reduceEachTrailingCommentRange } from 'typescript';
 import sequelize from '../db/connection';
 import IUsuario from '../interfaces/iUsuario';
-import paciente from './paciente';
 
 
 const usuario = sequelize.define<IUsuario>('Usuario',

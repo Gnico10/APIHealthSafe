@@ -3,11 +3,13 @@ import sequelize from "../db/connection";
 import profesional from "./profesional";
 import especialidad from "./especialidad";
 import IProfesionales_Especialidades from '../interfaces/iProfesionales_Especialidades';
+import IProfesionales_Consultorios from '../interfaces/iProfesionales_Consultorios';
+import consultorio from './consultorio';
 
 // tslint:disable-next-line: variable-name
-const profesionales_especialidades = sequelize.define<IProfesionales_Especialidades>('ProfesionalEspecialidad',
+const profesionales_consultorios = sequelize.define<IProfesionales_Consultorios>('ProfesionalConsultorio',
     {
-        idprofesionalesespecialidades: {
+        idprofesionalesconsultorios: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -22,29 +24,30 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
             onUpdate: 'CASCADE',
             onDelete: 'RESTRICT',
         },
-        idespecialidad: {
+        idconsultorio: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: especialidad,
-                key: 'idespecialidad',
+                model: consultorio,
+                key: 'idconsultorio',
             },
             onUpdate: 'CASCADE',
             onDelete: 'RESTRICT',
         },
     },
     {
-        tableName: 'profesionales_especialidades'
+        tableName: 'profesionales_consultorios'
     }
 );
 
-profesional.belongsToMany(especialidad,{
-    through: 'profesionales_especialidades',
+profesional.belongsToMany(consultorio,{
+    through: 'profesionales_consultorios',
     foreignKey: 'idprofesional',
-    otherKey: 'idespecialidad',
-    as:'especialidades'
+    otherKey: 'idconsultorio',
+    as:'consultorios'
 });
-especialidad.belongsToMany(profesional,{
+
+consultorio.belongsToMany(profesional,{
     through: 'profesionales_especialidades',
     foreignKey: 'idespecialidad',
     otherKey: 'idprofesional',
@@ -52,4 +55,4 @@ especialidad.belongsToMany(profesional,{
 });
 
 
-export default profesionales_especialidades;
+export default profesionales_consultorios;

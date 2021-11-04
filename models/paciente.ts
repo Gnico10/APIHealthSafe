@@ -28,10 +28,13 @@ const paciente = sequelize.define<IPaciente>('Paciente',
         },
         dni:{
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: usuario,
                 key: 'dni',
-            }
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'RESTRICT',
         }
     },
     {
@@ -41,8 +44,7 @@ const paciente = sequelize.define<IPaciente>('Paciente',
 
 paciente.belongsTo(usuario,{
     foreignKey: 'dni',
-    onDelete: 'RESTRICT',
-    onUpdate: 'CASCADE'
+    as: 'usuario',
 });
 
 

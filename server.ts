@@ -10,6 +10,11 @@ import paciente from './models/paciente';
 import profesional from './models/profesional';
 import especialidad from './models/especialidad';
 import profesionales_especialidades from './models/prefesional_especialidad';
+import calificacion from './models/calificacion';
+import localidad from './models/localidad';
+import direccion from './models/direccion';
+import consultorio from './models/consultorio';
+import profesionales_consultorios from './models/profesionales_consultorios';
 
 
 class Server {
@@ -46,6 +51,11 @@ class Server {
             await profesional.sync({alter: true});
             await especialidad.sync({alter: true});
             await profesionales_especialidades.sync({alter: true});
+            await calificacion.sync({alter: true});
+            await localidad.sync({alter: true});
+            await direccion.sync({alter: true});
+            await consultorio.sync({alter: true});
+            await profesionales_consultorios.sync({alter: true});
 
             console.log('Base de datos conectada !!');
         } catch (error) {

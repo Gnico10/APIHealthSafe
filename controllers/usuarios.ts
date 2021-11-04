@@ -57,7 +57,7 @@ export const postUsuario = async (req: Request, res: Response) => {
 
 export const putUsuario = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { dni, contrasena } = req.body;
+    const { contrasena } = req.body;
 
     try {
         const usuario = await Usuario.findByPk(id);
@@ -67,10 +67,10 @@ export const putUsuario = async (req: Request, res: Response) => {
             });
         }
 
-        await usuario.update({dni, contrasena});
+        await usuario.update({contrasena});
 
         res.json({
-            msg:'Usuario actrualizado con éxito.',
+            msg:'Usuario actualizado con éxito.',
             usuario
         });
 

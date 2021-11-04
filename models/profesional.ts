@@ -36,10 +36,13 @@ const profesional = sequelize.define<IProfesional>('Profesional',
         },
         dni:{
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: usuario,
                 key: 'dni',
-            }
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'RESTRICT',
         }
     },
     {
@@ -49,8 +52,7 @@ const profesional = sequelize.define<IProfesional>('Profesional',
 
 profesional.belongsTo(usuario,{
     foreignKey: 'dni',
-    onDelete: 'RESTRICT',
-    onUpdate: 'CASCADE'
+    as: 'usuario',
 });
 
 

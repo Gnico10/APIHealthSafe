@@ -5,6 +5,6 @@ interface IProfesionales_Consultorios extends Model{
     idprofesionalesconsultorios? : number,
     idprofesiona? : number,
     idconsultorio? : number
-}
+};
 
 export default IProfesionales_Consultorios;

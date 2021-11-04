@@ -9,7 +9,7 @@ const especialidad = sequelize.define<IEspecialidad>('Especialidad',
         idespecialidad: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         descripcion: {
             type: DataTypes.STRING(50),
