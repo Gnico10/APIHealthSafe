@@ -22,8 +22,7 @@ Será notificado por consola la dirección en la cual fué servida la aplicació
 ## Despliegue Local, para desarrollo
 
 * Para trabajar localmente se necesita desplegar un servidor de Postgres con anterioridad y tener NodeJS instalado localmente.
-  * Instalar las dependencias de Node con ```npm install``` 
-  * Correr comando ```npx tsc``` para transpilar la aplicación en TypeScript.
+  * Instalar las dependencias de Node con ```npm install```
   * Crear archivo de entorno ```.env``` con los siguientes datos.
   
       ~~~
@@ -45,7 +44,7 @@ Será notificado por consola la dirección en la cual fué servida la aplicació
        * PORTDB: Puerto en el cual corre la base datos.
        * SECRETORPRIVATEKEY: Utilizada para firmar token de acceso.
        
-  * Desplegar la aplicación con el comando ```node .\dist\app.js```.
+  * Desplegar la aplicación con el comando ```npm start```.
  
 
  
