@@ -9,12 +9,14 @@ import usuario from './models/usuario';
 import paciente from './models/paciente';
 import profesional from './models/profesional';
 import especialidad from './models/especialidad';
-import profesionales_especialidades from './models/prefesional_especialidad';
-import calificacion from './models/calificacion';
 import localidad from './models/localidad';
 import direccion from './models/direccion';
 import consultorio from './models/consultorio';
 import profesionales_consultorios from './models/profesionales_consultorios';
+import obrasocial from './models/obrasocial';
+import profesionales_obrassociales from './models/profesionales_obrassociales';
+import calificacion from './models/calificacion';
+import profesionales_especialidades from './models/prefesionales_especialidades';
 
 
 class Server {
@@ -47,6 +49,7 @@ class Server {
 
             // await sequelize.sync({alter: true});
             await usuario.sync({alter: true});
+            await obrasocial.sync({alter: true});
             await paciente.sync({alter: true});
             await profesional.sync({alter: true});
             await especialidad.sync({alter: true});
@@ -56,6 +59,7 @@ class Server {
             await direccion.sync({alter: true});
             await consultorio.sync({alter: true});
             await profesionales_consultorios.sync({alter: true});
+            await profesionales_obrassociales.sync({alter: true});
 
             console.log();
             console.log('\x1b[31m','╭──────────────  Health Safe API  ──────────────╮');

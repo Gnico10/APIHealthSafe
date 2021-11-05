@@ -7,7 +7,7 @@ import IProfesionales_Consultorios from '../interfaces/iProfesionales_Consultori
 import consultorio from './consultorio';
 
 // tslint:disable-next-line: variable-name
-const profesionales_consultorios = sequelize.define<IProfesionales_Consultorios>('ProfesionalConsultorio',
+const profesionales_consultorios = sequelize.define<IProfesionales_Consultorios>('Profesionales_Consultorios',
     {
         idprofesionalesconsultorios: {
             type: DataTypes.INTEGER,

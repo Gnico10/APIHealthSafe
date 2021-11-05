@@ -2,6 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 import IPaciente from '../interfaces/iPaciente';
 import usuario from "./usuario";
+import obrasocial from './obrasocial';
 
 const paciente = sequelize.define<IPaciente>('Paciente',
     {
@@ -35,6 +36,16 @@ const paciente = sequelize.define<IPaciente>('Paciente',
             },
             onUpdate: 'CASCADE',
             onDelete: 'RESTRICT',
+        },
+        idobrasocial:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: obrasocial,
+                key: 'idobrasocial',
+            },
+            onUpdate: 'CASCADE',
+            onDelete: 'RESTRICT',
         }
     },
     {
@@ -46,6 +57,13 @@ paciente.belongsTo(usuario,{
     foreignKey: 'dni',
     as: 'usuario',
 });
+
+paciente.belongsTo(obrasocial,{
+    foreignKey: 'idobrasocial',
+    as: 'obrasocial',
+});
+
+
 
 
 export default paciente;

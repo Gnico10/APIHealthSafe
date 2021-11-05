@@ -6,7 +6,8 @@ interface IPaciente extends Model{
     apellido? : string,
     email? : string,
     fechanacimiento? : Date,
-    dni? : number
+    dni? : number,
+    idobrasocial? : number,
 };
 
 export default IPaciente;
