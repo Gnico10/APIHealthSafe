@@ -28,7 +28,7 @@ const direccion = sequelize.define<IDireccion>('Direccion',
         },
     },
     {
-        tableName: 'Localidades'
+        tableName: 'direcciones'
     }
 );
 

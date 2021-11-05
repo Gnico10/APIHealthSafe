@@ -15,7 +15,7 @@ const localidad = sequelize.define<ILocalidad>('Localidad',
         },
     },
     {
-        tableName: 'Localidades'
+        tableName: 'localidades'
     }
 );
 
