@@ -1,13 +1,29 @@
 # HealthSafeAPI
-Aplicación BackEnd que despliega la API necesaria para servir los datos del sistema HealthSafe.
+
+Aplicación BackEndque despliega la API necesaria para servir los datos del sistema HealthSafe.
 
 ## Notas:
+
 * La aplicación fué dockerizada para realizar su despliegue de una manera sencilla.
+
+## Despliegue con Docker
+
+Los archivos de Docker tienen la configuración necesaria para desplegar la aplicación en un contenedor con dos servicios (PostgreSQL y NodeJS).
+
+Previamente debe ser descargado Docker desde [Docker Desktop]( https://www.docker.com/get-started )
+
+* Ejecutar ```docker compose up --build```. 
+
+Puede tardar un poco en transpilarse, esperar hasta que indique que la base de datos fué conectada.
+
+Será notificado por consola la dirección en la cual fué servida la aplicación.
+* Actualmente en http://localhost:8080
+
+## Despliegue Local, para desarrollo
 
 * Para trabajar localmente se necesita desplegar un servidor de Postgres con anterioridad y tener NodeJS instalado localmente.
   * Instalar las dependencias de Node con ```npm install``` 
-  * Descargar TypeScript ```npm i -g typescript``` 
-  * Correr comando ```tsc``` para compilar la aplicación en TypeScript.
+  * Correr comando ```npx tsc``` para transpilar la aplicación en TypeScript.
   * Crear archivo de entorno ```.env``` con los siguientes datos.
   
       ~~~
@@ -31,15 +47,5 @@ Aplicación BackEnd que despliega la API necesaria para servir los datos del sis
        
   * Desplegar la aplicación con el comando ```node .\dist\app.js```.
  
-## Despliegue con Docker.
-Los archivos de Docker tienen la configuración necesaria para desplegar la aplicación en un contenedor con dos servicios (PostgreSQL y NodeJS).
 
-Previamente debe ser descargado Docker desde [Docker Desktop]( https://www.docker.com/get-started )
-
-* Para correr el servidor de Docker se debe transpilar previamente la aplicación con TypeScript utilizando los comandos ```npm install``` y ```tsc```. 
-** (Esto es así hasta que se corriga la transpilación automática desde el contenedor.)
-
-* Ejecutar ```docker compose build | docker compose up```. 
-
-Será notificado por consola la dirección en la cual fué servida la aplicación.
  
