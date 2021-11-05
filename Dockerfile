@@ -1,17 +1,16 @@
 FROM node:14
 
+# Crear directorio de app.
 RUN mkdir -p /src
 WORKDIR /src
-COPY ./package*.json ./
-COPY ./tsconfig*.json ./ 
 
 # Instalar dependencias de node.
+COPY ./package*.json ./
 RUN npm install 
 
-# Transpilar codigo de TypeScript
-# RUN node_modules/.bin/tsc 
-
+# Copiar resto de archivos
 COPY ./ ./
 
+# Lanzar aplicación
 EXPOSE 8080
-CMD node ./dist/app.js
+CMD [ "npm", "start" ]

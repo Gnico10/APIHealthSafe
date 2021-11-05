@@ -52,12 +52,15 @@ class Server {
             await especialidad.sync({alter: true});
             await profesionales_especialidades.sync({alter: true});
             await calificacion.sync({alter: true});
-            await localidad.sync({alter: true});
-            await direccion.sync({alter: true});
-            await consultorio.sync({alter: true});
-            await profesionales_consultorios.sync({alter: true});
+            // await localidad.sync({alter: true});
+            // await direccion.sync({alter: true});
+            // await consultorio.sync({alter: true});
+            // await profesionales_consultorios.sync({alter: true});
 
-            console.log('Base de datos conectada !!');
+            console.log('\x1b[31m', '───────────────────── Health Safe API ─────────────────────');
+            console.log('\x1b[32m', '    Base de datos conectada !!');
+            console.log('\x1b[32m', `    El servidor está corriendo en: http://localhost:${this.port}`);
+            console.log('\x1b[31m', '───────────────────────────────────────────────────────────');
         } catch (error) {
             throw new Error(`Error al conectar con la base de datos: ${error}`);
         }
@@ -85,9 +88,7 @@ class Server {
     }
 
     listen() {
-        this.app.listen(this.port, () => {
-            console.log(`El servidor está corriendo http://localhost:${this.port}`);
-        });
+        this.app.listen(this.port);
     }
 }
 
