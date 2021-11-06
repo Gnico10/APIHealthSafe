@@ -44,6 +44,7 @@ profesional.belongsToMany(especialidad,{
     otherKey: 'idespecialidad',
     as:'especialidades'
 });
+
 especialidad.belongsToMany(profesional,{
     through: 'profesionales_especialidades',
     foreignKey: 'idespecialidad',

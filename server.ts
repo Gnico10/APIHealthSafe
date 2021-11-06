@@ -17,6 +17,12 @@ import obrasocial from './models/obrasocial';
 import profesionales_obrassociales from './models/profesionales_obrassociales';
 import calificacion from './models/calificacion';
 import profesionales_especialidades from './models/prefesionales_especialidades';
+import estadoturno from './models/estadoturno';
+import modalidad from './models/modalidad';
+import dia from './models/dias';
+import agenda from './models/agenda';
+import horario from './models/horario';
+import horarios_modalidades from './models/horarios_modalidades';
 
 
 class Server {
@@ -60,6 +66,12 @@ class Server {
             await consultorio.sync({alter: true});
             await profesionales_consultorios.sync({alter: true});
             await profesionales_obrassociales.sync({alter: true});
+            await estadoturno.sync({alter: true});
+            await modalidad.sync({alter: true});
+            await dia.sync({alter: true});
+            await agenda.sync({alter: true});
+            await horario.sync({alter: true});
+            await horarios_modalidades.sync({alter: true});
 
             console.log();
             console.log('\x1b[31m','╭──────────────  Health Safe API  ──────────────╮');

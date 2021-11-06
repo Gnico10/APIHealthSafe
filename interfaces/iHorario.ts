@@ -2,7 +2,7 @@ import { Model } from 'sequelize/types';
 
 interface IHorario extends Model{
     idhorario? : number,
-    horarioinicia? : Date,
+    horainicio? : Date,
     horafin? : Date,
     idagenda? : number,
 };

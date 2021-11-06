@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
-import IIndicacion from '../interfaces/iIndicacion';
 import IEstadoturno from '../interfaces/iEstadoturno';
 
 const estadoturno = sequelize.define<IEstadoturno>('Estadoturno',
@@ -14,6 +13,9 @@ const estadoturno = sequelize.define<IEstadoturno>('Estadoturno',
             type: DataTypes.TEXT,
             allowNull: false,
         }
+    },
+    {
+        tableName: 'estadosturno'
     }
 );
 
