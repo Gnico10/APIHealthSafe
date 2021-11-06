@@ -2,7 +2,7 @@ import { Model } from 'sequelize/types';
 
 interface ICitamedicaemergencia extends Model{
     idcitamedicaemergencia? : number,
-    fecha? : Date,
+    fechahora? : Date,
     idpaciente? : number,
     idprofesional? : number,
 };

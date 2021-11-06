@@ -77,6 +77,7 @@ class Server {
         } catch (error) {
             console.log('\x1b[31m','Error al conectar con la base de datos:');
             console.log('\x1b[31m','- Asegurarse de tener levantado el servicio PostgreSQL.');
+            console.log('\x1b[0m');
             throw new Error((error as string));
         }
     }
