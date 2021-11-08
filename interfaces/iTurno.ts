@@ -2,13 +2,15 @@ import { Model } from 'sequelize/types';
 
 interface ITurno extends Model{
     idturno? : number,
-    idfecha? : Date,
-    idfechasolicita? : Date,
-    idlinkpago? : string,
-    idestado? : number,
+    fecha? : Date,
+    fechasolicita? : Date,
+    idpago? : string,
+    idestadoturno? : number,
     idagenda? : number,
     idpaciente? : number,
     idprofesional? : number,
+    idmodalidad? : number,
+    idobrasocial? : number,
 };
 
 export default ITurno;

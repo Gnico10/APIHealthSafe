@@ -1,6 +1,8 @@
-import sequelize from "../db/connection";
-import IPedidoEmergencia from '../interfaces/iPedidosEmergencia';
 import { DataTypes } from 'sequelize';
+import sequelize from "../db/connection";
+
+import IPedidoEmergencia from '../interfaces/iPedidosEmergencia';
+
 import especialidad from './especialidad';
 import paciente from './paciente';
 

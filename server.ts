@@ -23,6 +23,17 @@ import dia from './models/dias';
 import agenda from './models/agenda';
 import horario from './models/horario';
 import horarios_modalidades from './models/horarios_modalidades';
+import turno from './models/turno';
+import citamedica from './models/citamedica';
+import citamedicaemergencia from './models/citamedicaemergencia';
+import episodio from './models/episodio';
+import mensajeria from './models/mensajeria';
+import mensaje from './models/mensaje';
+import pago from './models/pago';
+import pedidoemergencia from './models/pedidoemergencia';
+import prescripcion from './models/precripcion';
+import indicacion from './models/indicacion';
+import historiaclinica from './models/historiaclinica';
 
 
 class Server {
@@ -58,6 +69,7 @@ class Server {
             await obrasocial.sync({alter: true});
             await paciente.sync({alter: true});
             await profesional.sync({alter: true});
+            await profesionales_obrassociales.sync({alter: true});
             await especialidad.sync({alter: true});
             await profesionales_especialidades.sync({alter: true});
             await calificacion.sync({alter: true});
@@ -65,13 +77,23 @@ class Server {
             await direccion.sync({alter: true});
             await consultorio.sync({alter: true});
             await profesionales_consultorios.sync({alter: true});
-            await profesionales_obrassociales.sync({alter: true});
             await estadoturno.sync({alter: true});
             await modalidad.sync({alter: true});
             await dia.sync({alter: true});
             await agenda.sync({alter: true});
             await horario.sync({alter: true});
             await horarios_modalidades.sync({alter: true});
+            await pago.sync({alter: true});
+            await turno.sync({alter: true});
+            await citamedica.sync({alter: true});
+            await pedidoemergencia.sync({alter: true});
+            await citamedicaemergencia.sync({alter: true});
+            await prescripcion.sync({alter: true});
+            await indicacion.sync({alter: true});
+            await historiaclinica.sync({alter: true});
+            await episodio.sync({alter: true});
+            await mensajeria.sync({alter: true});
+            await mensaje.sync({alter: true});
 
             console.log();
             console.log('\x1b[31m','╭──────────────  Health Safe API  ──────────────╮');

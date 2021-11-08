@@ -1,6 +1,8 @@
-import { DataTypes } from "sequelize/types";
+import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IHistoriaClinica from '../interfaces/iHistoriaclinica';
+
 import paciente from './paciente';
 
 const historiaclinica = sequelize.define<IHistoriaClinica>('Historiaclinica',

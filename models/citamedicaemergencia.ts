@@ -1,24 +1,24 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
-import ICalificacion from '../interfaces/iCalificacion';
+import ICitamedicaemergencia from "../interfaces/iCitamedicaemergencia";
 
 import paciente from "./paciente";
 import profesional from './profesional';
 
-const calificacion = sequelize.define<ICalificacion>('Calificacion',
+const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedicaemergencia',
     {
-        idcalificacion: {
+        idcitamedicaemergencia: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        numcalificacion: {
-            type: DataTypes.INTEGER,
+        fechahora: {
+            type: DataTypes.DATE,
             allowNull: false,
+            defaultValue: DataTypes.NOW,
         },
-        comentario: DataTypes.TEXT,
-        idpaciente: {
+        idpaciente:{
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -28,7 +28,7 @@ const calificacion = sequelize.define<ICalificacion>('Calificacion',
             onUpdate: 'CASCADE',
             onDelete: 'RESTRICT',
         },
-        idprofesional: {
+        idprofesional:{
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -40,18 +40,18 @@ const calificacion = sequelize.define<ICalificacion>('Calificacion',
         }
     },
     {
-        tableName: 'comentarios'
+        tableName: 'citamedicaemergencia'
     }
 );
 
-calificacion.belongsTo(paciente,{
+citamedicaemergencia.belongsTo(paciente,{
     foreignKey: 'idpaciente',
     as: 'paciente',
 });
 
-calificacion.belongsTo(profesional,{
+citamedicaemergencia.belongsTo(profesional,{
     foreignKey: 'idprofesional',
     as: 'profesional',
 });
 
-export default calificacion;
+export default citamedicaemergencia;

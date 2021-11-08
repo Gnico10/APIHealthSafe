@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IPrescripcion from '../interfaces/iPrescripcion';
+
 import IPago from '../interfaces/iPago';
 
 const pago = sequelize.define<IPago>('Pago',

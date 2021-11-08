@@ -1,9 +1,13 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IHorarios_Modalidades from '../interfaces/iHorarios_Modalidades';
+
 import modalidad from './modalidad';
 import horario from './horario';
 
+
+// tslint:disable-next-line: variable-name
 const horarios_modalidades = sequelize.define<IHorarios_Modalidades>('Horarios_Modalidades',
     {
         idhorariosmodalidades: {

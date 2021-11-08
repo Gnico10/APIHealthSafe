@@ -1,8 +1,10 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
+import IProfesionales_Especialidades from '../interfaces/iProfesionales_Especialidades';
+
 import profesional from "./profesional";
 import especialidad from "./especialidad";
-import IProfesionales_Especialidades from '../interfaces/iProfesionales_Especialidades';
 
 // tslint:disable-next-line: variable-name
 const profesionales_especialidades = sequelize.define<IProfesionales_Especialidades>('Profesionales_Especialidades',

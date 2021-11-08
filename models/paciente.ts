@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IPaciente from '../interfaces/iPaciente';
+
 import usuario from "./usuario";
 import obrasocial from './obrasocial';
 

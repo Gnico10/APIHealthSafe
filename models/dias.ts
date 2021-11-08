@@ -1,6 +1,7 @@
-import sequelize from '../db/connection';
-import IDias from '../interfaces/iDia';
 import { DataTypes } from 'sequelize';
+import sequelize from '../db/connection';
+
+import IDias from '../interfaces/iDia';
 
 const dia = sequelize.define<IDias>('dias',
     {

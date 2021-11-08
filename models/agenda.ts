@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
+
 import IAgenda from '../interfaces/iAgenda';
+
 import profesional from './profesional';
 
 const agenda = sequelize.define<IAgenda>('Agenda',

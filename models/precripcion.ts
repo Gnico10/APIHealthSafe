@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IPrescripcion from '../interfaces/iPrescripcion';
 
 const prescripcion = sequelize.define<IPrescripcion>('Prescripcion',

@@ -1,6 +1,8 @@
-import sequelize from '../db/connection';
 import { DataTypes } from 'sequelize';
+import sequelize from '../db/connection';
+
 import IDireccion from '../interfaces/iDireccion';
+
 import localidad from './localidad';
 
 const direccion = sequelize.define<IDireccion>('Direccion',

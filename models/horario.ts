@@ -1,6 +1,8 @@
-import sequelize from '../db/connection';
-import IHorario from '../interfaces/iHorario';
 import { DataTypes } from 'sequelize';
+import sequelize from '../db/connection';
+
+import IHorario from '../interfaces/iHorario';
+
 import agenda from './agenda';
 
 const horario = sequelize.define<IHorario>('horarios',

@@ -3,7 +3,7 @@ import { Model } from 'sequelize/types';
 interface IEpisodio extends Model{
     idepisodio? : number,
     descripcion? : string,
-    fecha? : Date,
+    fechahora? : Date,
     idhistoriaclinica? : number,
     idprescripcion? : number,
     idindicacion? : number,

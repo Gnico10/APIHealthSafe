@@ -1,6 +1,7 @@
 
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IEspecialidad from '../interfaces/iEspecialidad';
 
 

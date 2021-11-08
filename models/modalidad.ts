@@ -1,6 +1,7 @@
-import sequelize from '../db/connection';
-import IModalidad from '../interfaces/iModalidad';
 import { DataTypes } from 'sequelize';
+import sequelize from '../db/connection';
+
+import IModalidad from '../interfaces/iModalidad';
 
 const modalidad = sequelize.define<IModalidad>('Modalidad',
     {

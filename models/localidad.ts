@@ -1,6 +1,7 @@
-import sequelize from '../db/connection';
-import ILocalidad from '../interfaces/iLocalidad';
 import { DataTypes } from 'sequelize';
+import sequelize from '../db/connection';
+
+import ILocalidad from '../interfaces/iLocalidad';
 
 const localidad = sequelize.define<ILocalidad>('Localidad',
     {

@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
+
 import IProfesionales_Obrassociales from '../interfaces/iProfesionales_Obrassociales';
+
 import obrasocial from './obrasocial';
 import profesional from './profesional';
 

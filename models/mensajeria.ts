@@ -1,22 +1,19 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 import sequelize from "../db/connection";
-import ICitamedicaemergencia from "../interfaces/iCitamedicaemergencia";
-import paciente from "./paciente";
-import profesional from './profesional';
 
-const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedicaemergencia',
+import IMensajeria from "../interfaces/iMensajeria";
+
+import paciente from "./paciente";
+import profesional from "./profesional";
+
+const mensajeria = sequelize.define<IMensajeria>('Mensajeria',
     {
-        idcitamedicaemergencia: {
+        idmensajeria: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
-        fechahora: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
-        },
-        idpaciente:{
+        idpaciente: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -26,7 +23,7 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
             onUpdate: 'CASCADE',
             onDelete: 'RESTRICT',
         },
-        idprofesional:{
+        idprofesional: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -35,19 +32,21 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
             },
             onUpdate: 'CASCADE',
             onDelete: 'RESTRICT',
-        }
+        },
     },
     {
-        tableName: 'citamedicaemergencia'
+        tableName: 'mensajerias'
     }
 );
 
-citamedicaemergencia.belongsTo(paciente,{
+mensajeria.belongsTo(paciente,{
     foreignKey: 'idpaciente',
-    as: 'paciente',
+    as: 'paciente'
 });
 
-citamedicaemergencia.belongsTo(profesional,{
+mensajeria.belongsTo(profesional,{
     foreignKey: 'idprofesional',
-    as: 'profesional',
+    as: 'profesional'
 });
+
+export default mensajeria;

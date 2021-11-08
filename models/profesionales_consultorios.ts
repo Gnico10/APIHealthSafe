@@ -1,9 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
-import profesional from "./profesional";
-import especialidad from "./especialidad";
-import IProfesionales_Especialidades from '../interfaces/iProfesionales_Especialidades';
+
 import IProfesionales_Consultorios from '../interfaces/iProfesionales_Consultorios';
+
+import profesional from "./profesional";
 import consultorio from './consultorio';
 
 // tslint:disable-next-line: variable-name

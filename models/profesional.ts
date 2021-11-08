@@ -1,7 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
-import usuario from "./usuario";
+
 import IProfesional from '../interfaces/iProfesional';
+
+import usuario from "./usuario";
 
 const profesional = sequelize.define<IProfesional>('Profesional',
     {
