@@ -1,40 +1,13 @@
 import express, { Application } from 'express';
 import cors from 'cors';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
+
 import sequelize from './db/connection';
+import sincronizarDB from './db/sincronizarDB';
 
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
-
-import usuario from './models/usuario';
-import paciente from './models/paciente';
-import profesional from './models/profesional';
-import especialidad from './models/especialidad';
-import localidad from './models/localidad';
-import direccion from './models/direccion';
-import consultorio from './models/consultorio';
-import profesionales_consultorios from './models/profesionales_consultorios';
-import obrasocial from './models/obrasocial';
-import profesionales_obrassociales from './models/profesionales_obrassociales';
-import calificacion from './models/calificacion';
-import profesionales_especialidades from './models/prefesionales_especialidades';
-import estadoturno from './models/estadoturno';
-import modalidad from './models/modalidad';
-import dia from './models/dias';
-import agenda from './models/agenda';
-import horario from './models/horario';
-import horarios_modalidades from './models/horarios_modalidades';
-import turno from './models/turno';
-import citamedica from './models/citamedica';
-import citamedicaemergencia from './models/citamedicaemergencia';
-import episodio from './models/episodio';
-import mensajeria from './models/mensajeria';
-import mensaje from './models/mensaje';
-import pago from './models/pago';
-import pedidoemergencia from './models/pedidoemergencia';
-import prescripcion from './models/precripcion';
-import indicacion from './models/indicacion';
-import historiaclinica from './models/historiaclinica';
-
 
 class Server {
 
@@ -46,9 +19,38 @@ class Server {
         default: '*'
     }
 
+    private swaggerSpec: swaggerJsDoc.Options;
+
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '8080';
+
+        // Configuración de Swagger
+        this.swaggerSpec = {
+            definition: {
+                openapi: '3.0.0',
+                info: {
+                    title: 'Health Safe API',
+                    version: '1.0.0',
+                    description: 'API para el proyecto Health Safe',
+                    license: {
+                        name: 'Apache 2.0',
+                        url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+                    },
+                },
+                servers: [
+                    {
+                        url: `http://localhost:${this.port}/api`,
+                        description: 'Servidor local'
+                    },
+                    {
+                        url: '< Not Declared >',
+                        description: 'Servidor externo para pruebas'
+                    }
+                ],
+            },
+            apis: ['../routes/*.ts'],
+        }
 
         // Conexión a la base de datos.
         this.dbConnection();
@@ -62,38 +64,11 @@ class Server {
 
     async dbConnection() {
         try{
+            // Se conecta a la base de datos.
             await sequelize.authenticate();
 
-            // await sequelize.sync({alter: true});
-            await usuario.sync({alter: true});
-            await obrasocial.sync({alter: true});
-            await paciente.sync({alter: true});
-            await profesional.sync({alter: true});
-            await profesionales_obrassociales.sync({alter: true});
-            await especialidad.sync({alter: true});
-            await profesionales_especialidades.sync({alter: true});
-            await calificacion.sync({alter: true});
-            await localidad.sync({alter: true});
-            await direccion.sync({alter: true});
-            await consultorio.sync({alter: true});
-            await profesionales_consultorios.sync({alter: true});
-            await estadoturno.sync({alter: true});
-            await modalidad.sync({alter: true});
-            await dia.sync({alter: true});
-            await agenda.sync({alter: true});
-            await horario.sync({alter: true});
-            await horarios_modalidades.sync({alter: true});
-            await pago.sync({alter: true});
-            await turno.sync({alter: true});
-            await citamedica.sync({alter: true});
-            await pedidoemergencia.sync({alter: true});
-            await citamedicaemergencia.sync({alter: true});
-            await prescripcion.sync({alter: true});
-            await indicacion.sync({alter: true});
-            await historiaclinica.sync({alter: true});
-            await episodio.sync({alter: true});
-            await mensajeria.sync({alter: true});
-            await mensaje.sync({alter: true});
+            // Sincroniza el modelo con las tablas de la base de datos.
+            await sincronizarDB();
 
             console.log();
             console.log('\x1b[31m','╭──────────────  Health Safe API  ──────────────╮');
@@ -125,6 +100,9 @@ class Server {
 
         // Carpeta publica
         this.app.use(express.static('public'));
+
+        // Documentación Swagger;
+        this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(this.swaggerSpec)));
     }
 
     routes() {
@@ -133,7 +111,7 @@ class Server {
 
         // Ruta por defecto.
         this.app.get('*', (req, res) => {
-            res.send('Ruta Inválida.');
+            res.redirect('/api-doc'); // Redirecciona a la documentación.
         });
     }
 
