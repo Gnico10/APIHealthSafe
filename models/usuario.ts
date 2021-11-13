@@ -13,11 +13,7 @@ const usuario = sequelize.define<IUsuario>('Usuario',
             type: DataTypes.STRING,
             allowNull: false,
         },
-        imgperfil: DataTypes.BLOB,
-        ispaciente: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        }
+        imgperfil: DataTypes.BLOB
     },
     {
         tableName: 'usuarios'

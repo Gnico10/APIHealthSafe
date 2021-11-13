@@ -1,3 +1,4 @@
+import path from 'path';
 import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
@@ -40,17 +41,13 @@ class Server {
                 },
                 servers: [
                     {
-                        url: `http://localhost:${this.port}/api`,
-                        description: 'Servidor local'
-                    },
-                    {
-                        url: '< Not Declared >',
-                        description: 'Servidor externo para pruebas'
+                        url: `http://localhost:${this.port}`,
+                        description: 'Servidor de pruebas'
                     }
                 ],
             },
-            apis: ['../routes/*.ts'],
-        }
+            apis: [path.join(__dirname, './routes/*.js')]
+        };
 
         // Conexión a la base de datos.
         this.dbConnection();

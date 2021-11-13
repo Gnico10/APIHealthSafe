@@ -21,7 +21,7 @@ export const getUsuario = async (req: Request, res: Response) => {
 }
 
 export const postUsuario = async (req: Request, res: Response) => {
-    const { dni, contrasena, imgperfil, ispaciente } = req.body;
+    const { dni, contrasena, imgperfil } = req.body;
 
     try {
         // Validaciones
@@ -36,7 +36,7 @@ export const postUsuario = async (req: Request, res: Response) => {
         }
 
         // Creación de instancia en la base de datos.
-        const usuario = Usuario.build({ dni, contrasena, imgperfil, ispaciente });
+        const usuario = Usuario.build({ dni, contrasena, imgperfil });
 
         const salt = await bcryptjs.genSalt();
         usuario.contrasena = bcryptjs.hashSync(contrasena, salt);
