@@ -17,6 +17,7 @@ class Server {
     private apiPaths = {
         auth: '/api/auth',
         usuarios: '/api/usuarios',
+        turnos: '/api/turnos',
         default: '*'
     }
 
