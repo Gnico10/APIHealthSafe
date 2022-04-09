@@ -10,6 +10,7 @@ import sincronizarDB from './db/sincronizarDB';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
 import profesionalRoutes from './routes/profesionales';
+import pacienteRoutes from './routes/pacientes';
 import turnoRoutes from  './routes/turnos';
 
 class Server {
@@ -22,6 +23,7 @@ class Server {
         usuarios: '/api/usuarios',
         turnos: '/api/turnos',
         profesional: '/api/profesionales',
+        pacientes: '/api/pacientes',
         // Más rutas
         default: '*'
     }
@@ -112,6 +114,7 @@ class Server {
         this.app.use(this.apiPaths.auth, authRoutes);
         this.app.use(this.apiPaths.usuarios, userRoutes);
         this.app.use(this.apiPaths.profesional, profesionalRoutes);
+        this.app.use(this.apiPaths.pacientes, pacienteRoutes);
         this.app.use(this.apiPaths.turnos, turnoRoutes)
 
         // Ruta por defecto.
