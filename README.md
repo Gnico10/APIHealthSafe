@@ -1,4 +1,4 @@
-# HealthSafeAPI
+# APIHealthSafe
 
 Aplicación BackEndque despliega la API necesaria para servir los datos del sistema HealthSafe.
 
@@ -12,6 +12,7 @@ Los archivos de Docker tienen la configuración necesaria para desplegar la apli
 
 Previamente debe ser descargado Docker desde [Docker Desktop]( https://www.docker.com/get-started )
 
+* Abrir una terminal y posicionarse dentro de la carpeta del proyecto.
 * Ejecutar ```docker compose up --build```. 
 
 Puede tardar un poco en transpilarse, esperar hasta que indique que la base de datos fué conectada.
@@ -22,6 +23,7 @@ Será notificado por consola la dirección en la cual fué servida la aplicació
 ## Despliegue Local, para desarrollo
 
 * Para trabajar localmente se necesita desplegar un servidor de Postgres con anterioridad y tener NodeJS instalado localmente.
+  * Abrir una terminal y posicionarse dentro de la carpeta del proyecto.
   * Instalar las dependencias de Node con ```npm install```
   * Crear archivo de entorno ```.env``` con los siguientes datos.
   
