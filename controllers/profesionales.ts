@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import { Op } from 'sequelize/types';
 import Profesional from '../models/profesional';
 
 export const getProfesionales = async (req: Request, res: Response) => {
@@ -14,7 +15,7 @@ export const getProfesional = async (req: Request, res: Response) => {
         res.json(profesional);
     } else { 
         res.status(404).json({
-            msg: `No existe un Profesional con DNI = ${id}`
+            msg: `No existe un Profesional con ID = ${id}`
         });
     }
 }
@@ -31,6 +32,7 @@ export const postProfesional = async (req: Request, res: Response) => {
     
     try {
         // Validaciones
+        // Validar que el ID no exista
         const existeProfesional = await Profesional.findOne({
             where: {dni}
         });
@@ -40,6 +42,23 @@ export const postProfesional = async (req: Request, res: Response) => {
                 msg: `El Profesional con el DNI = ${dni} ya existe`
             });
         }
+
+        // Validar que no se repita la matricula
+        const existeMatricula = await Profesional.findOne({
+            where: {
+                [Op.or]: [
+                    {matriculanacional},
+                    {matriculaprovincial}
+                ]
+            }
+        });
+
+        if (existeMatricula) {
+            return res.status(400).json({
+                msg: `La matricula nacional ${matriculanacional} o la matricula provincial ${matriculaprovincial} ya existe`
+            });
+        }
+
 
         // Creación de instancia en la base de datos.
         const profesional = Profesional.build({ idprofesional,
