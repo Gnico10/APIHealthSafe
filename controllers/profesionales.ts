@@ -12,9 +12,9 @@ export const getProfesional = async (req: Request, res: Response) => {
 
     if (profesional){
         res.json(profesional);
-    } else {
+    } else { 
         res.status(404).json({
-            msg: `No existe un Profesional con dni = ${id}`
+            msg: `No existe un Profesional con DNI = ${id}`
         });
     }
 }
@@ -73,17 +73,17 @@ export const putProfesional = async (req: Request, res: Response) => {
             apellido,
             email,
             fechanacimiento,
-            dni } = req.body;
+            dni } = req.body; 
 
     try {
         const profesional = await Profesional.findByPk(idprofesional);
-        if (!Profesional) {
+        if (!profesional) {
             return res.status(404).json({
                 msg: `No existe un Profesional con el ID = ${idprofesional}`
             });
         }
 
-        await profesional?.update({matriculanacional,
+        await profesional.update({matriculanacional,
                                     matriculaprovincial,
                                     nombre,
                                     apellido,
@@ -93,7 +93,7 @@ export const putProfesional = async (req: Request, res: Response) => {
 
         res.json({
             msg:'Profesional actualizado con éxito.',
-            Profesional
+            profesional
         });
 
     } catch (error) {
@@ -109,17 +109,17 @@ export const deleteProfesional = async (req: Request, res: Response) => {
 
     try {
         const profesional = await Profesional.findByPk(idprofesional);
-        if (!Profesional) {
+        if (!profesional) {
             return res.status(404).json({
                 msg: `No existe un Profesional con el ID = ${idprofesional}`
             });
         }
 
-        await Profesional.destroy();
+        await profesional.destroy();
 
         res.json({
             msg: 'El Profesional fué eliminado con éxito.',
-            Profesional
+            profesional
         });
 
     } catch (error) {
