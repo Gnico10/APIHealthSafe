@@ -22,29 +22,28 @@ Será notificado por consola la dirección en la cual fué servida la aplicació
 
 ## Despliegue Local, para desarrollo
 
-* Para trabajar localmente se necesita desplegar un servidor de Postgres con anterioridad y tener NodeJS instalado localmente.
-  * Abrir una terminal y posicionarse dentro de la carpeta del proyecto.
-  * Instalar las dependencias de Node con ```npm install```
-  * Crear archivo de entorno ```.env``` con los siguientes datos.
-  
-      ~~~
-      PORT=8000 
+Para trabajar localmente se necesita desplegar un servidor de Postgres con anterioridad y tener NodeJS instalado localmente.
+ * Abrir una terminal y posicionarse dentro de la carpeta del proyecto.
+ * Instalar las dependencias de Node con ```npm install```
+ * Crear archivo de entorno ```.env``` con los siguientes datos.
+  ~~~
+   PORT=8000 
       
-      DATABASE=API
-      USERNAMEDB=postgres
-      PASSWORDDB=postgres
-      HOSTDB=localhost
-      PORTDB=5432
-      SECRETORPRIVATEKEY=6%J5HDD-x{.[@~#MrZ&xr7*A`yUj48
-      ~~~
-      
-       * PORT: Puerto en el cual se desplegará la aplicación.
-       * DATABASE: Nombre de la base de datos en PostgreSQL.
-       * USERNAMEDB: Usuario del servidor de la base de datos.
-       * PASSWORDDB: Contraseña del servidor de la base de datos.
-       * HOSTDB: Dirección del Host que corre la base de datos.
-       * PORTDB: Puerto en el cual corre la base datos.
-       * SECRETORPRIVATEKEY: Utilizada para firmar token de acceso.
+   DATABASE=API
+   USERNAMEDB=postgres
+   PASSWORDDB=postgres
+   HOSTDB=localhost
+   PORTDB=5432
+   SECRETORPRIVATEKEY=6%J5HDD-x{.[@~#MrZ&xr7*A`yUj48
+   ~~~
+   
+    * PORT: Puerto en el cual se desplegará la aplicación.
+    * DATABASE: Nombre de la base de datos en PostgreSQL.
+    * USERNAMEDB: Usuario del servidor de la base de datos.
+    * PASSWORDDB: Contraseña del servidor de la base de datos.
+    * HOSTDB: Dirección del Host que corre la base de datos.
+    * PORTDB: Puerto en el cual corre la base datos.
+    * SECRETORPRIVATEKEY: Utilizada para firmar token de acceso.
        
   * Desplegar la aplicación con el comando ```npm start```.
  
