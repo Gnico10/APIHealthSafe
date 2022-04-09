@@ -9,14 +9,18 @@ import sincronizarDB from './db/sincronizarDB';
 
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
+import profesionalRoutes from './routes/profesionales';
 
 class Server {
 
     private app : Application;
     private port : string;
+    
     private apiPaths = {
         auth: '/api/auth',
         usuarios: '/api/usuarios',
+        profesional: '/api/profesionales',
+        // Más rutas
         default: '*'
     }
 
@@ -105,6 +109,7 @@ class Server {
     routes() {
         this.app.use(this.apiPaths.auth, authRoutes);
         this.app.use(this.apiPaths.usuarios, userRoutes);
+        this.app.use(this.apiPaths.profesional, profesionalRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (req, res) => {

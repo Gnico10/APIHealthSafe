@@ -103,7 +103,7 @@ export const deleteUsuario = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo Actualizar el usuario.'
+            msg: 'Error Interno. No se pudo Eliminar el usuario.'
         });
     }
 }
