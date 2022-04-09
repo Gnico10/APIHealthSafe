@@ -10,22 +10,20 @@ import { getTurnos, getTurno, postTurno, putTurno, deleteTurno } from '../contro
 const router = Router();
 
 router.get('/', getTurnos);
+
 router.get('/:id', getTurno);
 
 router.post('/', [
-   // check('dni', 'El DNI es obligatorio').not().isEmpty(),
-  //  check('contrasena', 'La contraseña es obligatoria').not().isEmpty(),
-  //  validarCampos
+ 
 ], postTurno);
 
-router.post('/', [
-// check('dni', 'El dni es requerido.').not().isEmpty(),
- //   check('contrasena', 'La contrasena es requerida').not().isEmpty(),
- //   check('contrasena', 'La contraseña debe tener, al menos, 6 caracteres.').isLength({min: 6}),
-//    check('ispaciente', 'Se debe indicar si el Turno corresponde a un paciente o un profesional').not().isEmpty(),
- //   validarCampos
+router.post('/registrar-turno', [
+
 ],
 postTurno);
+
+
+
 router.put('/:id', putTurno);
 router.delete('/:id', [
     validarJWT

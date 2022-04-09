@@ -11,15 +11,17 @@ const pago = sequelize.define<IPago>('Pago',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
+            allowNull: true,
+
         },
         fechahora:{
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: true,
             defaultValue: DataTypes.NOW
         },
         link: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         }
     }
 );

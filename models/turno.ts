@@ -23,7 +23,7 @@ const turno = sequelize.define('turno', {
     },
     idpago: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: pago,
             key: 'idpago',
@@ -33,7 +33,7 @@ const turno = sequelize.define('turno', {
     },
     idagenda: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: agenda,
             key: 'idagenda',
@@ -43,7 +43,7 @@ const turno = sequelize.define('turno', {
     },
     idpaciente: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
 
             model: paciente,
@@ -54,7 +54,7 @@ const turno = sequelize.define('turno', {
     },
     idprofesional: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: profesional,
             key: 'idprofesional'
@@ -64,7 +64,7 @@ const turno = sequelize.define('turno', {
     },
     idmodalidad: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: modalidad,
             key: 'idmodalidad'
@@ -74,7 +74,7 @@ const turno = sequelize.define('turno', {
     },
     idobrasocial: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: obrasocial,
             key: 'idobrasocial'

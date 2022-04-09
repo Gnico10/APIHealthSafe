@@ -10,6 +10,7 @@ import sincronizarDB from './db/sincronizarDB';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
 import profesionalRoutes from './routes/profesionales';
+import turnoRoutes from  './routes/turnos';
 
 class Server {
 
@@ -111,6 +112,7 @@ class Server {
         this.app.use(this.apiPaths.auth, authRoutes);
         this.app.use(this.apiPaths.usuarios, userRoutes);
         this.app.use(this.apiPaths.profesional, profesionalRoutes);
+        this.app.use(this.apiPaths.turnos, turnoRoutes)
 
         // Ruta por defecto.
         this.app.get('*', (req, res) => {

@@ -4,7 +4,7 @@ interface ITurno extends Model{
     idturno? : number,
     fecha? : Date,
     fechasolicita? : Date,
-    idpago? : string,
+    idpago? : number,
     idestadoturno? : number,
     idagenda? : number,
     idpaciente? : number,
