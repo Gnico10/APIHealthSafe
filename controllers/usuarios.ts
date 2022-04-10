@@ -15,7 +15,7 @@ export const getUsuario = async (req: Request, res: Response) => {
         res.json(usuario);
     } else {
         res.status(404).json({
-            msg: `No existe un usuario con dni = ${id}`
+            msg: `No existe un usuario con DNI = ${id}`
         });
     }
 }
@@ -77,7 +77,7 @@ export const putUsuario = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo Actualizar el usuario.'
+            msg: 'Error Interno. No se pudo actualizar el usuario.'
         });
     }
 }
@@ -96,14 +96,14 @@ export const deleteUsuario = async (req: Request, res: Response) => {
         await usuario.destroy();
 
         res.json({
-            msg: 'El ususario fué eliminado con éxito.',
+            msg: 'El usuario fué eliminado con éxito.',
             usuario
         });
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo Eliminar el usuario.'
+            msg: 'Error Interno. No se pudo eliminar el usuario.'
         });
     }
 }

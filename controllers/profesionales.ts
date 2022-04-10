@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import { Op } from 'sequelize';
 import Profesional from '../models/profesional';
 
 export const getProfesionales = async (req: Request, res: Response) => {
@@ -12,9 +13,9 @@ export const getProfesional = async (req: Request, res: Response) => {
 
     if (profesional){
         res.json(profesional);
-    } else {
+    } else { 
         res.status(404).json({
-            msg: `No existe un Profesional con dni = ${id}`
+            msg: `No existe un Profesional con ID = ${id}`
         });
     }
 }
@@ -31,6 +32,7 @@ export const postProfesional = async (req: Request, res: Response) => {
     
     try {
         // Validaciones
+        // Validar que el ID no exista
         const existeProfesional = await Profesional.findOne({
             where: {dni}
         });
@@ -40,6 +42,23 @@ export const postProfesional = async (req: Request, res: Response) => {
                 msg: `El Profesional con el DNI = ${dni} ya existe`
             });
         }
+
+        // Validar que no se repita la matricula
+        const existeMatricula = await Profesional.findOne({
+            where: {
+                [Op.or]: [
+                    {matriculanacional},
+                    {matriculaprovincial}
+                ]
+            }
+        });
+
+        if (existeMatricula) {
+            return res.status(400).json({
+                msg: `La matricula nacional ${matriculanacional} o la matricula provincial ${matriculaprovincial} ya existe`
+            });
+        }
+
 
         // Creación de instancia en la base de datos.
         const profesional = Profesional.build({ idprofesional,
@@ -73,17 +92,17 @@ export const putProfesional = async (req: Request, res: Response) => {
             apellido,
             email,
             fechanacimiento,
-            dni } = req.body;
+            dni } = req.body; 
 
     try {
         const profesional = await Profesional.findByPk(idprofesional);
-        if (!Profesional) {
+        if (!profesional) {
             return res.status(404).json({
                 msg: `No existe un Profesional con el ID = ${idprofesional}`
             });
         }
 
-        await profesional?.update({matriculanacional,
+        await profesional.update({matriculanacional,
                                     matriculaprovincial,
                                     nombre,
                                     apellido,
@@ -93,7 +112,7 @@ export const putProfesional = async (req: Request, res: Response) => {
 
         res.json({
             msg:'Profesional actualizado con éxito.',
-            Profesional
+            profesional
         });
 
     } catch (error) {
@@ -109,17 +128,17 @@ export const deleteProfesional = async (req: Request, res: Response) => {
 
     try {
         const profesional = await Profesional.findByPk(idprofesional);
-        if (!Profesional) {
+        if (!profesional) {
             return res.status(404).json({
                 msg: `No existe un Profesional con el ID = ${idprofesional}`
             });
         }
 
-        await Profesional.destroy();
+        await profesional.destroy();
 
         res.json({
             msg: 'El Profesional fué eliminado con éxito.',
-            Profesional
+            profesional
         });
 
     } catch (error) {
