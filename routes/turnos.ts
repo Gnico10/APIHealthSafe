@@ -14,11 +14,11 @@ router.get('/', getTurnos);
 router.get('/:id', getTurno);
 
 router.post('/', [
- 
+    // TODO: Agregar validaciones
 ], postTurno);
 
-router.post('/registrar-turno', [
-
+router.post('/', [
+    // TODO: Agregar validaciones
 ],
 postTurno);
 
