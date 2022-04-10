@@ -41,7 +41,7 @@ const paciente = sequelize.define<IPaciente>('Paciente',
         },
         idobrasocial:{
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: obrasocial,
                 key: 'idobrasocial',

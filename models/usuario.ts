@@ -13,7 +13,9 @@ const usuario = sequelize.define<IUsuario>('Usuario',
             type: DataTypes.STRING,
             allowNull: false,
         },
-        imgperfil: DataTypes.BLOB
+        imgperfil:{
+        type: DataTypes.BLOB,
+        allowNull: true,}
     },
     {
         tableName: 'usuarios'
