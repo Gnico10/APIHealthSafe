@@ -26,8 +26,7 @@ export const postTurno = async (req: Request, res: Response) => {
     const { fechasolicita,
              idpago,
              idagenda, 
-             idpaciente, 
-             idprofesional, 
+             idpaciente,
              idmodalidad, 
              idobrasocial  } = req.body;
     try {
@@ -46,8 +45,7 @@ export const postTurno = async (req: Request, res: Response) => {
         const turno = Turno.build({  fechasolicita,
                idpago,
                idagenda,
-               idpaciente, 
-               idprofesional, 
+               idpaciente,
                idmodalidad,
                idobrasocial });
 

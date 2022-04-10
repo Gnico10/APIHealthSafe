@@ -5,7 +5,6 @@ import estadoturno from './estadoturno';
 import pago from './pago';
 import agenda from "./agenda";
 import paciente from "./paciente";
-import profesional from "./profesional";
 import modalidad from "./modalidad";
 import obrasocial from "./obrasocial";
 
@@ -33,7 +32,7 @@ const turno = sequelize.define('turno', {
     },
     idagenda: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
             model: agenda,
             key: 'idagenda',
@@ -51,16 +50,6 @@ const turno = sequelize.define('turno', {
         },
         onUpdate: 'CASCADE',
         onDelete: 'RESTRICT',
-    },
-    idprofesional: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: profesional,
-            key: 'idprofesional'
-        },
-        onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE'
     },
     idmodalidad: {
         type: DataTypes.INTEGER,
@@ -106,11 +95,6 @@ turno.belongsTo(agenda,{
 turno.belongsTo(paciente,{
     foreignKey: 'idpaciente',
     as: 'paciente',
-});
-
-turno.belongsTo(profesional,{
-    foreignKey: 'idprofesional',
-    as: 'profesional',
 });
 
 turno.belongsTo(modalidad,{
