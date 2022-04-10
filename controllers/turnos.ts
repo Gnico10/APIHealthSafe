@@ -27,6 +27,7 @@ export const getTurno = async (req: Request, res: Response) => {
 export const postTurno = async (req: Request, res: Response) => {
     // Obtiene los datos del turno
     const { fechasolicita,
+            precio,
             idpago,
             idagenda, 
             idpaciente, 
@@ -39,6 +40,7 @@ export const postTurno = async (req: Request, res: Response) => {
         
         // Creación de instancia en la base de datos.
         const turno = Turno.build({ fechasolicita,
+                                    precio,
                                     idpago,
                                     idagenda,
                                     idpaciente, 
@@ -64,6 +66,7 @@ export const postTurno = async (req: Request, res: Response) => {
 export const putTurno = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { fechasolicita,
+            precio,
             idpago,
             idagenda, 
             idpaciente, 
@@ -84,6 +87,7 @@ export const putTurno = async (req: Request, res: Response) => {
 
         // Actualiza el turno
         await turno.update({fechasolicita,
+                            precio,
                             idpago,
                             idagenda, 
                             idpaciente, 

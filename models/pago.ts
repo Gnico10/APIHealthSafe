@@ -10,8 +10,7 @@ const pago = sequelize.define<IPago>('Pago',
         idpago: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
-            allowNull: true,
+            autoIncrement: true
 
         },
         fechahora:{
