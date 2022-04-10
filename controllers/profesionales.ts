@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { Op } from 'sequelize/types';
+import { Op } from 'sequelize';
 import Profesional from '../models/profesional';
 
 export const getProfesionales = async (req: Request, res: Response) => {
