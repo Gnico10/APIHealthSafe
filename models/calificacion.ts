@@ -6,7 +6,7 @@ import ICalificacion from '../interfaces/iCalificacion';
 import paciente from "./paciente";
 import profesional from './profesional';
 
-const calificacion = sequelize.define<ICalificacion>('Calificacion',
+const calificacion = sequelize.define<ICalificacion>('calificacion',
     {
         idcalificacion: {
             type: DataTypes.INTEGER,

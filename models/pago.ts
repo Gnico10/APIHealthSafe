@@ -1,11 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
-import IPrescripcion from '../interfaces/iPrescripcion';
-
 import IPago from '../interfaces/iPago';
 
-const pago = sequelize.define<IPago>('Pago',
+const pago = sequelize.define<IPago>('pago',
     {
         idpago: {
             type: DataTypes.INTEGER,
@@ -22,6 +20,9 @@ const pago = sequelize.define<IPago>('Pago',
             type: DataTypes.STRING,
             allowNull: true,
         }
+    },
+    {
+        tableName: 'pagos'
     }
 );
 

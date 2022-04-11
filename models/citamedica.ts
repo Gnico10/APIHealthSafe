@@ -28,7 +28,7 @@ const citamedica = sequelize.define<ICitamedica>('Citamedica',
         },
     },
     {
-        tableName: 'citasmedica'
+        tableName: 'citasmedicas'
     }
 );
 

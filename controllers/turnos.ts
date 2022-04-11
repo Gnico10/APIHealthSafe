@@ -30,22 +30,21 @@ export const postTurno = async (req: Request, res: Response) => {
             precio,
             idpago,
             idagenda, 
-            idpaciente, 
-            idprofesional, 
+            idpaciente,
+            idprofesional,
             idmodalidad, 
-            idobrasocial} = req.body;
-
-    try {
+            idobrasocial  } = req.body;
+    try { 
         //TODO: Validaciones
         
         // Creación de instancia en la base de datos.
         const turno = Turno.build({ fechasolicita,
                                     precio,
                                     idpago,
-                                    idagenda,
-                                    idpaciente, 
-                                    idprofesional, 
-                                    idmodalidad,
+                                    idagenda, 
+                                    idpaciente,
+                                    idprofesional,
+                                    idmodalidad, 
                                     idobrasocial });
 
         await turno.save();

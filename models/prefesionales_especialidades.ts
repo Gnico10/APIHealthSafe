@@ -42,14 +42,14 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
 
 profesional.belongsToMany(especialidad,{
     through: 'profesionales_especialidades',
-    foreignKey: 'idprofesional',
+    foreignKey: 'idespecialidad',
     otherKey: 'idespecialidad',
     as:'especialidades'
 });
 
 especialidad.belongsToMany(profesional,{
     through: 'profesionales_especialidades',
-    foreignKey: 'idespecialidad',
+    foreignKey: 'idprofesional',
     otherKey: 'idprofesional',
     as: 'profesionales'
 });

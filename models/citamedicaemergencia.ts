@@ -40,7 +40,7 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
         }
     },
     {
-        tableName: 'citamedicaemergencia'
+        tableName: 'citamedicaemergencias'
     }
 );
 
