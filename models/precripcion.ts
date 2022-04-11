@@ -14,6 +14,9 @@ const prescripcion = sequelize.define<IPrescripcion>('Prescripcion',
             type: DataTypes.TEXT,
             allowNull: false,
         }
+    },
+    {
+        tableName: 'prescripciones'
     }
 );
 
