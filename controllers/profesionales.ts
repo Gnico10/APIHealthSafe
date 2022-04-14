@@ -1,10 +1,30 @@
 import {Request, Response} from 'express';
 import { Op } from 'sequelize';
 import Profesional from '../models/profesional';
+import IProfesional from '../interfaces/iProfesional';
+
+//TODO remover una vez implementado
+const adicional = {
+    "especialidad": "Clinico",
+    "calificacion": "5.0",
+    "localidad": "San Miguel de Tucumán",
+    "centrosAtencion": "Clinica Mayo - 9 de julio 279",
+    "modalidadAtencion": "Videollamada",
+    "precioConsulta": "5000"
+}
+
+//TODO remover una vez implementado
+const agregarCampos = (e: IProfesional) => {
+    return {...e.toJSON(), ...adicional}
+}
 
 export const getProfesionales = async (req: Request, res: Response) => {
     const profesionales = await Profesional.findAll();
-    res.json({profesionales});
+    let aux = []
+    for (const e of profesionales) {
+        aux.push(agregarCampos(e))
+    }
+    res.json({"profesionales": aux});
 }
 
 export const getProfesional = async (req: Request, res: Response) => {
@@ -12,7 +32,8 @@ export const getProfesional = async (req: Request, res: Response) => {
     const profesional = await Profesional.findByPk(id);
 
     if (profesional){
-        res.json(profesional);
+        let aux = agregarCampos(profesional)
+        res.json(aux);
     } else { 
         res.status(404).json({
             msg: `No existe un Profesional con ID = ${id}`
