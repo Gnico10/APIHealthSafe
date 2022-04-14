@@ -40,7 +40,7 @@ const calificacion = sequelize.define<ICalificacion>('calificacion',
         }
     },
     {
-        tableName: 'comentarios'
+        tableName: 'calificaciones'
     }
 );
 
