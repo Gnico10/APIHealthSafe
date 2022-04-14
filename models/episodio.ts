@@ -4,7 +4,7 @@ import sequelize from "../db/connection";
 import IEpisodio from "../interfaces/iEpisodio";
 
 import historiaclinica from './historiaclinica';
-import prescripcion from './precripcion';
+import prescripcion from './prescripcion';
 import indicacion from './indicacion';
 import citamedica from './citamedica';
 import citamedicaemergencia from './citamedicaemergencia';

@@ -7,8 +7,9 @@ import agenda from "./agenda";
 import paciente from "./paciente";
 import modalidad from "./modalidad";
 import obrasocial from "./obrasocial";
+import ITurno from "../interfaces/iTurno";
 
-const turno = sequelize.define('turno', {
+const turno = sequelize.define<ITurno>('turno', {
     idturno: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -19,6 +20,11 @@ const turno = sequelize.define('turno', {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW
+    },
+    precio:{
+        type: DataTypes.DECIMAL(10,2),
+        allowNull: false,
+        defaultValue: 0
     },
     idpago: {
         type: DataTypes.INTEGER,

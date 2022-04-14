@@ -12,19 +12,19 @@ const agenda = sequelize.define<IAgenda>('Agenda',
             primaryKey: true,
             autoIncrement: true,
         },
-        configuracionHorario: {
+        configuracionhorario: {
             type: DataTypes.STRING(1000),
             allowNull: false,
         },
-        fechaDesde: {
+        fechadesde: {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        fechaHasta: {
+        fechahasta: {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        duracionTurno: {
+        duracionturno: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },

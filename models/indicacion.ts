@@ -14,6 +14,9 @@ const indicacion = sequelize.define<IIndicacion>('Indicacion',
             type: DataTypes.TEXT,
             allowNull: false,
         }
+    },
+    {
+        tableName: 'indicaciones'
     }
 );
 
