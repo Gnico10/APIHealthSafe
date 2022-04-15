@@ -7,7 +7,9 @@ import Direcciones from '../models/direccion';
 import Localidades from '../models/localidad';
 import Profesional_Especialidades from '../models/prefesionales_especialidades';
 import Profesional_obrassociales from '../models/profesionales_obrassociales';
+import Agenda from '../models/agenda';
 import IProfesional from '../interfaces/iProfesional';
+import especialidad from '../models/especialidad';
 
 //TODO remover una vez implementado
 const adicional = {
@@ -177,15 +179,56 @@ export const getProfesionales = async (req: Request, res: Response) => {
 
 export const getProfesional = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const profesional = await Profesional.findByPk(id);
-
-    if (profesional){
-        let aux = agregarCampos(profesional)
-        res.json(aux);
-    } else { 
-        res.status(404).json({
-            msg: `No existe un Profesional con ID = ${id}`
-        });
+    
+    try {    const profesional = await Profesional.findOne({
+            where: {
+                idprofesional: id
+            },
+            include : [
+                {
+                    model: especialidad,
+                    as: 'especialidades'
+                }
+                /*{
+                    model: Profesional_Consultorios,
+                    as: 'consultorios',
+                    include: [{
+                        model: Consultorios,
+                        as: 'consultorio',
+                        include: [{
+                            model: Direcciones,
+                            as: 'direccion',
+                            include: [{
+                                model: Localidades,
+                                as: 'localidad',
+                                required: true
+                            }],
+                            required: true
+                        }],
+                        required: true
+                    }],
+                    required: true
+                },
+                {
+                    model: Profesional_obrassociales,
+                    as: 'obrassociales',
+                    required: true
+                }*/
+            ]
+        })
+        
+        if (profesional){
+            let aux = agregarCampos(profesional)
+            res.json(aux);
+        } else { 
+            res.status(404).json({
+                msg: `No existe un Profesional con ID = ${id}`
+            });
+        }
+    
+    } catch(e) {
+        console.log(e);
+        res.json(500)
     }
 }
 
