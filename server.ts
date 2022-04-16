@@ -13,6 +13,7 @@ import profesionalRoutes from './routes/profesionales';
 import pacienteRoutes from './routes/pacientes';
 import turnoRoutes from  './routes/turnos';
 import agendaRoutes from  './routes/agendas';
+import especialidadRoutes from  './routes/especialidades';
 
 class Server {
 
@@ -26,6 +27,7 @@ class Server {
         profesional: '/api/profesionales',
         pacientes: '/api/pacientes',
         agendas: '/api/agendas',
+        especialidades: '/api/especialidades',
         // Más rutas
         default: '*'
     }
@@ -117,8 +119,9 @@ class Server {
         this.app.use(this.apiPaths.usuarios, userRoutes);
         this.app.use(this.apiPaths.profesional, profesionalRoutes);
         this.app.use(this.apiPaths.pacientes, pacienteRoutes);
-        this.app.use(this.apiPaths.turnos, turnoRoutes)
-        this.app.use(this.apiPaths.agendas, agendaRoutes)
+        this.app.use(this.apiPaths.turnos, turnoRoutes);
+        this.app.use(this.apiPaths.agendas, agendaRoutes);
+        this.app.use(this.apiPaths.especialidades, especialidadRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (req, res) => {

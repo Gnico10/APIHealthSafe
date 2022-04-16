@@ -33,35 +33,71 @@ const sincronizarDB = async() =>  {
     // Sync all models that aren't already in the database
     // await sequelize.sync();
 
-    await usuario.sync({force: true});
-    await profesional.sync({force: true});
-    await localidad.sync({force: true});
-    await direccion.sync({force: true});
-    await consultorio.sync({force: true});
-    await profesionales_consultorios.sync({force: true});
-    await especialidad.sync({force: true});
-    await profesionales_especialidades.sync({force: true});
-    await obrasocial.sync({force: true});
-    await profesionales_obrassociales.sync({force: true});
-    await paciente.sync({force: true});
-    await estadoturno.sync({force: true});
-    await pago.sync({force: true});
-    await agenda.sync({force: true});
-    await modalidad.sync({force: true});
-    await turno.sync({force: true});
-    await calificacion.sync({force: true});
-    await dia.sync({force: true});
-    await horario.sync({force: true});
-    await horarios_modalidades.sync({force: true});
-    await citamedica.sync({force: true});
-    await pedidoemergencia.sync({force: true});
-    await citamedicaemergencia.sync({force: true});
-    await prescripcion.sync({force: true});
-    await indicacion.sync({force: true});
-    await historiaclinica.sync({force: true});
-    await episodio.sync({force: true});
-    await mensajeria.sync({force: true});
-    await mensaje.sync({force: true});
+    await usuario.sync();
+    await profesional.sync();
+    await localidad.sync();
+    await direccion.sync();
+    await consultorio.sync();
+    await profesionales_consultorios.sync();
+    await especialidad.sync();
+    await profesionales_especialidades.sync();
+    await obrasocial.sync();
+    await profesionales_obrassociales.sync();
+    await paciente.sync();
+    await estadoturno.sync();
+    await pago.sync();
+    await agenda.sync();
+    await modalidad.sync();
+    await turno.sync();
+    await calificacion.sync();
+    await dia.sync();
+    await horario.sync();
+    await horarios_modalidades.sync();
+    await citamedica.sync();
+    await pedidoemergencia.sync();
+    await citamedicaemergencia.sync();
+    await prescripcion.sync();
+    await indicacion.sync();
+    await historiaclinica.sync();
+    await episodio.sync();
+    await mensajeria.sync();
+    await mensaje.sync();
+
+    // Charge Especialidades when the database is empty.
+    if (await especialidad.count() === 0) {
+        await cargarEspecialidades();
+    }
 }
+
+const cargarEspecialidades = async() => {
+    // List of Especialidades
+    const descespe : string[] = ['Médico General', 
+                                'Cardiología', 
+                                'Dermatología', 
+                                'Endocrinología', 
+                                'Gastroenterología', 
+                                'Ginecología', 
+                                'Hematología', 
+                                'Infectología', 
+                                'Medicina general', 
+                                'Neumología', 
+                                'Neurología', 
+                                'Nutrición', 
+                                'Oftalmología', 
+                                'Oncología', 
+                                'Otorrinolaringología', 
+                                'Pediatría', 
+                                'Psiquiatría', 
+                                'Reumatología', 
+                                'Urología'];
+
+    // Create Especialidades in database
+    descespe.map(async (desc) => {
+        await especialidad.create({
+            descripcion: desc
+        });
+    });
+}
+    
 
 export default sincronizarDB;

@@ -9,6 +9,10 @@ import Profesional_Especialidades from '../models/prefesionales_especialidades';
 import Profesional_obrassociales from '../models/profesionales_obrassociales';
 
 export const getProfesionales = async (req: Request, res: Response) => {
+    // Armar consulta por defecto.
+    // return profesionales.findAll({});
+    
+    
     // variables para filtrar
     let where : any = {};
     let include : any = [];

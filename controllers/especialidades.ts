@@ -1,0 +1,22 @@
+import {Request, Response} from "express";
+import Especialidad from "../models/especialidad";
+
+// Get all Especialidades
+export const getEspecialidades = async (req: Request, res: Response) => {
+    const especialidades = await Especialidad.findAll();
+    res.json({especialidades});
+}
+
+// Get a single Especialidad by Id
+export const getEspecialidad = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const especialidad = await Especialidad.findByPk(id);
+
+    if (especialidad){
+        res.json(especialidad);
+    } else {
+        res.status(404).json({
+            msg: `No existe un especialidad con ID = ${id}`
+        });
+    }
+}
