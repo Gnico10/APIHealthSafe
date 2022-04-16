@@ -9,11 +9,11 @@ import Profesional_Especialidades from '../models/prefesionales_especialidades';
 import Profesional_obrassociales from '../models/profesionales_obrassociales';
 import Agenda from '../models/agenda';
 import IProfesional from '../interfaces/iProfesional';
-import especialidad from '../models/especialidad';
+import Especialidad from '../models/especialidad';
 
 //TODO remover una vez implementado
 const adicional = {
-    "especialidad": "Clinico",
+  
     "calificacion": "5.0",
     "localidad": "San Miguel de Tucumán",
     "centrosAtencion": "Clinica Mayo - 9 de julio 279",
@@ -30,6 +30,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
     // variables para filtrar
     let where : any = {};
     let include : any = [];
+    let whereInclude : any = {};
 
     const { nombre, 
             apellido,
@@ -94,7 +95,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
     // }
 
     // Filtros por parametro
-    nombre? where.nombre = { [Op.like]: `%${nombre}%` } : null;
+    nombre ? where.nombre = { [Op.like]: `%${nombre}%` } : null;
     apellido? where.apellido = { [Op.like]: `%${apellido}%` } : null;
     (preciodesde && preciohasta)? where.precio = { [Op.between]: [preciodesde, preciohasta] } : null; // BETWEEN preciodesde ANDpreciohasta
     (preciodesde && !preciohasta)? where.precio = { [Op.gte]: preciodesde } : null; // >= preciodesde
@@ -153,6 +154,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
         });
     }
 
+    idespecialidad ? whereInclude.especialidad = { idespecialidad: idespecialidad } : null
     // Buscar especialidad del profesional
     if (idespecialidad) {
         include.push({
@@ -168,7 +170,16 @@ export const getProfesionales = async (req: Request, res: Response) => {
     // Buscar profesionales
     const profesionales = await Profesional.findAll({
         where: where,
-        include: include
+        include: [
+            {
+                model: Especialidad,
+                through: {
+                    attributes: []
+                },
+                as: 'especialidades',
+                where: whereInclude.especialidad
+            }
+        ]
     });
     let aux = []
     for (const e of profesionales) {
@@ -180,15 +191,18 @@ export const getProfesionales = async (req: Request, res: Response) => {
 export const getProfesional = async (req: Request, res: Response) => {
     const { id } = req.params;
     
-    try {    const profesional = await Profesional.findOne({
+    try {   
+        const profesional = await Profesional.findOne({
             where: {
                 idprofesional: id
             },
             include : [
                 {
-                    model: especialidad,
+                    model: Especialidad,
+                    through: { attributes: [] },
                     as: 'especialidades'
                 }
+                //TODO Agregar demas includes
                 /*{
                     model: Profesional_Consultorios,
                     as: 'consultorios',
