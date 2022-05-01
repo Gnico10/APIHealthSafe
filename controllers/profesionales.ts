@@ -169,6 +169,9 @@ export const getProfesionales = async (req: Request, res: Response) => {
 
     // Buscar profesionales
     const profesionales = await Profesional.findAll({
+        /*where: {
+            '$especialidades.idespecialidad$': idespecialidad
+        },*/
         where: where,
         include: [
             {
