@@ -33,40 +33,35 @@ const sincronizarDB = async() =>  {
     // Sync all models that aren't already in the database
     // await sequelize.sync();
 
-    await usuario.sync();
-    await profesional.sync();
-    await localidad.sync();
-    await direccion.sync();
-    await consultorio.sync();
-    await profesionales_consultorios.sync();
-    await especialidad.sync();
-    await profesionales_especialidades.sync();
-    await obrasocial.sync();
-    await profesionales_obrassociales.sync();
-    await paciente.sync();
-    await estadoturno.sync();
-    await pago.sync();
-    await agenda.sync();
-    await modalidad.sync();
-    await turno.sync();
-    await calificacion.sync();
-    await dia.sync();
-    await horario.sync();
-    await horarios_modalidades.sync();
-    await citamedica.sync();
-    await pedidoemergencia.sync();
-    await citamedicaemergencia.sync();
-    await prescripcion.sync();
-    await indicacion.sync();
-    await historiaclinica.sync();
-    await episodio.sync();
-    await mensajeria.sync();
-    await mensaje.sync();
-
-    // Charge Especialidades when the database is empty.
-    if (await especialidad.count() === 0) {
-        await cargarEspecialidades();
-    }
+    await usuario.sync({force: false});
+    await profesional.sync({force: false});
+    await localidad.sync({force: false});
+    await direccion.sync({force: false});
+    await consultorio.sync({force: false});
+    await profesionales_consultorios.sync({force: false});
+    await especialidad.sync({force: false});
+    await profesionales_especialidades.sync({force: false});
+    await obrasocial.sync({force: false});
+    await profesionales_obrassociales.sync({force: false});
+    await paciente.sync({force: false});
+    await estadoturno.sync({force: false});
+    await pago.sync({force: false});
+    await agenda.sync({force: false});
+    await modalidad.sync({force: false});
+    await turno.sync({force: false});
+    await calificacion.sync({force: false});
+    await dia.sync({force: false});
+    await horario.sync({force: false});
+    await horarios_modalidades.sync({force: false});
+    await citamedica.sync({force: false});
+    await pedidoemergencia.sync({force: false});
+    await citamedicaemergencia.sync({force: false});
+    await prescripcion.sync({force: false});
+    await indicacion.sync({force: false});
+    await historiaclinica.sync({force: false});
+    await episodio.sync({force: false});
+    await mensajeria.sync({force: false});
+    await mensaje.sync({force: false});
 }
 
 const cargarEspecialidades = async() => {

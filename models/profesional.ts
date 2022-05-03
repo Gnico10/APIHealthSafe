@@ -2,6 +2,8 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
 import IProfesional from '../interfaces/iProfesional';
+import especialidad from "./especialidad";
+import profesionales_especialidades from "./prefesionales_especialidades";
 
 import usuario from "./usuario";
 
@@ -56,6 +58,5 @@ profesional.belongsTo(usuario,{
     foreignKey: 'dni',
     as: 'usuario',
 });
-
 
 export default profesional;

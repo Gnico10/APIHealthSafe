@@ -22,10 +22,10 @@ export const getAgenda = async (req: Request, res: Response) => {
     }
 }
 export const postAgenda = async (req: Request, res: Response) => {
-    const { configuracionHorario,
+    const { configuracionhorario,
              idpago,
-             fechaDesde, 
-             fechaHasta,
+             fechadesde, 
+             fechahasta,
              idprofesional,
              duracionTurno
                } = req.body;
@@ -33,10 +33,10 @@ export const postAgenda = async (req: Request, res: Response) => {
       
         // Creación de instancia en la base de datos.
         const agenda = Agenda.build({  
-            configuracionHorario,
+        configuracionhorario,
             idpago,
-            fechaDesde, 
-            fechaHasta,
+            fechadesde, 
+            fechahasta,
             idprofesional,
             duracionTurno
            });

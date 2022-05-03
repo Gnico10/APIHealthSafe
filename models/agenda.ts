@@ -13,20 +13,20 @@ const agenda = sequelize.define<IAgenda>('Agenda',
             autoIncrement: true,
         },
         configuracionhorario: {
-            type: DataTypes.STRING(1000),
+            type: DataTypes.JSON,
             allowNull: false,
         },
         fechadesde: {
             type: DataTypes.DATEONLY,
-            allowNull: false,
+            allowNull: true,
         },
         fechahasta: {
             type: DataTypes.DATEONLY,
-            allowNull: false,
+            allowNull: true,
         },
         duracionturno: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         idprofesional: {
             type: DataTypes.INTEGER,
