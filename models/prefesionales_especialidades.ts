@@ -9,31 +9,28 @@ import especialidad from "./especialidad";
 // tslint:disable-next-line: variable-name
 const profesionales_especialidades = sequelize.define<IProfesionales_Especialidades>('Profesionales_Especialidades',
     {
-        idprofesionalesespecialidades: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
         idprofesional: {
             type: DataTypes.INTEGER,
+            primaryKey: true,
             allowNull: false,
             references: {
                 model: profesional,
                 key: 'idprofesional'
             },
             onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
+            onDelete: 'RESTRICT'
         },
         idespecialidad: {
             type: DataTypes.INTEGER,
+            primaryKey: true,
             allowNull: false,
             references: {
                 model: especialidad,
-                key: 'idespecialidad',
+                key: 'idespecialidad'
             },
             onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+            onDelete: 'RESTRICT'
+        }
     },
     {
         tableName: 'profesionales_especialidades'
@@ -41,18 +38,17 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
 );
 
 profesional.belongsToMany(especialidad,{
-    through: 'profesionales_especialidades',
-    foreignKey: 'idespecialidad',
+    through: profesionales_especialidades,
+    foreignKey: 'idprofesional',
     otherKey: 'idespecialidad',
-    as:'especialidades'
+    as: 'especialidades'
 });
 
 especialidad.belongsToMany(profesional,{
-    through: 'profesionales_especialidades',
-    foreignKey: 'idprofesional',
+    through: profesionales_especialidades,
+    foreignKey: 'idespecialidad',
     otherKey: 'idprofesional',
     as: 'profesionales'
 });
-
 
 export default profesionales_especialidades;
