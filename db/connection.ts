@@ -11,12 +11,18 @@ const herokudatabase : string = process.env.HEROKUDATABASE || '';
 
 if (herokudatabase !== '') {
     //postgres://pmbfldzbowmrmv:9876c01f8ce8e6461979a7a7c845b8d756afe018dba3f390b02bc82139548b2e@ec2-52-86-56-90.compute-1.amazonaws.com:5432/d9arna9nf226me
+    console.log(`Heroku DB: ${herokudatabase}`);
     herokudatabase.replace('postgres://', ''); // Remove postgres://
     usernamedb = herokudatabase.split(':')[0]; // Get username
     passworddb = herokudatabase.split(':')[1].split('@')[0]; // Get password
-    database = herokudatabase.split('@')[1].split(':')[0]; // Get database
-    hostdb = herokudatabase.split('@')[1].split('/')[1]; // Get host
+    hostdb = herokudatabase.split('@')[1].split(':')[0]; // Get host
+    database = herokudatabase.split('@')[1].split('/')[1]; // Get database
 }
+
+console.log(`DB: ${database}`);
+console.log(`Username: ${usernamedb}`);
+console.log(`Password: ${passworddb}`);
+console.log(`Host: ${hostdb}`);
 
 const sequelize = new Sequelize(database, usernamedb, passworddb, {
     host: hostdb,
