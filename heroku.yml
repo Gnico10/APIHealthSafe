@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  web-db:
+    image: postgres:13-alpine
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      # Test if the database is ready to accept connections.
+      test: ["CMD", "psql", "-U", "postgres", "-c", "SELECT 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+    networks:
+      - default
+    volumes:
+      - ./db/scripts:/docker-entrypoint-initdb.d/
+
+  web:
+    build: .
+    volumes:
+      - .:/src
+    ports:
+      - 8080:8080
+    environment:
+      - PORT=8080
+      - DATABASE=API
+      - USERNAMEDB=postgres
+      - PASSWORDDB=postgres
+      - HOSTDB=web-db
+      - PORTDB=5432
+      - SECRETORPRIVATEKEY=6%J5HDD-x{.[@~#MrZ&xr7*A`yUj48
+    depends_on:
+      - web-db
