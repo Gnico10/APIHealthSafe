@@ -62,6 +62,9 @@ const sincronizarDB = async() =>  {
     await episodio.sync({force: false});
     await mensajeria.sync({force: false});
     await mensaje.sync({force: false});
+
+    // Create Especialidades in database
+    cargarEspecialidades();
 }
 
 const cargarEspecialidades = async() => {
