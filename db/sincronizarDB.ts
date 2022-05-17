@@ -21,7 +21,7 @@ import paciente from "../models/paciente";
 import pago from "../models/pago";
 import pedidoemergencia from "../models/pedidoemergencia";
 import prescripcion from "../models/prescripcion";
-import profesionales_especialidades from "../models/prefesionales_especialidades";
+import profesionales_especialidades from "../models/profesionales_especialidades";
 import profesional from "../models/profesional";
 import profesionales_consultorios from "../models/profesionales_consultorios";
 import profesionales_obrassociales from "../models/profesionales_obrassociales";

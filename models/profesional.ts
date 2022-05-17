@@ -3,7 +3,7 @@ import sequelize from "../db/connection";
 
 import IProfesional from '../interfaces/iProfesional';
 import especialidad from "./especialidad";
-import profesionales_especialidades from "./prefesionales_especialidades";
+import profesionales_especialidades from "./profesionales_especialidades";
 
 import usuario from "./usuario";
 

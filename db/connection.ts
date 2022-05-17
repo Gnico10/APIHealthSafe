@@ -1,4 +1,4 @@
-import {Sequelize} from 'sequelize';
+import {Options, Sequelize} from 'sequelize';
 
 let database : string = process.env.DATABASE || 'API';
 let usernamedb : string = process.env.USERNAMEDB || 'postgres';
@@ -19,22 +19,34 @@ if (herokudatabase !== '') {
     database = herokudatabase.split('@')[1].split('/')[1]; // Get database
 }
 
-console.log(`DB: ${database}`);
-console.log(`Username: ${usernamedb}`);
-console.log(`Password: ${passworddb}`);
-console.log(`Host: ${hostdb}`);
+console.log();
+console.log('\x1b[32m','╭────────  PostgreSQL  ─────────╮');
+console.log('\x1b[32m','│                               │');
+console.log('\x1b[32m',`    DB: ${database}`);
+console.log('\x1b[32m',`    Username: ${usernamedb}`);
+console.log('\x1b[32m',`    Password: ${passworddb}`);
+console.log('\x1b[32m',`    Host: ${hostdb}`);      
+console.log('\x1b[32m','│                               │');
+console.log('\x1b[32m','╰───────────────────────────────╯');
+console.log('\x1b[0m');
 
-const sequelize = new Sequelize(database, usernamedb, passworddb, {
+let optionsSequelize : Options = {
     host: hostdb,
     dialect: 'postgres',
     // logging: false
-    port: (portdb as unknown as number),
-    dialectOptions: {
+    port: (portdb as unknown as number)   
+}
+
+// This options is neecesary for coneccion to Heroku Postgres
+if (herokudatabase !== '') {
+    optionsSequelize.dialectOptions = {
         ssl: {
-          require: true,
-          rejectUnauthorized: false
-        }
+            require: true,
+            rejectUnauthorized: false
+          }
     }
-});
+}
+
+const sequelize = new Sequelize(database, usernamedb, passworddb, optionsSequelize);
 
 export default sequelize;

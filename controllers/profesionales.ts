@@ -5,7 +5,7 @@ import Profesional_Consultorios from '../models/profesionales_consultorios';
 import Consultorios from '../models/consultorio';
 import Direcciones from '../models/direccion';
 import Localidades from '../models/localidad';
-import Profesional_Especialidades from '../models/prefesionales_especialidades';
+import Profesional_Especialidades from '../models/profesionales_especialidades';
 import Profesional_obrassociales from '../models/profesionales_obrassociales';
 import Agenda from '../models/agenda';
 import IProfesional from '../interfaces/iProfesional';
@@ -188,10 +188,12 @@ export const getProfesionales = async (req: Request, res: Response) => {
             }
         ]
     });
+
     let aux = []
     for (const e of profesionales) {
         aux.push(agregarCampos(e))
     }
+    
     res.json({"profesionales": aux});
 }
 
@@ -294,14 +296,14 @@ export const postProfesional = async (req: Request, res: Response) => {
 
 
         // Creación de instancia en la base de datos.
-        const profesional = Profesional.build({ idprofesional,
-                                                matriculanacional,
-                                                matriculaprovincial,
-                                                nombre,
-                                                apellido,
-                                                email,
-                                                fechanacimiento,
-                                                dni });
+        const profesional = await Profesional.build({ idprofesional,
+                                                        matriculanacional,
+                                                        matriculaprovincial,
+                                                        nombre,
+                                                        apellido,
+                                                        email,
+                                                        fechanacimiento,
+                                                        dni });
 
         await profesional.save();
 
