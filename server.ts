@@ -82,18 +82,11 @@ class Server {
             await sincronizarDB();
 
             console.log();
-            console.log('\x1b[31m','╭──────────────  Health Safe API  ──────────────╮');
-            console.log('\x1b[32m','│                                               │');
-            console.log('\x1b[32m','│          Base de datos conectada !!           │');
-            console.log('\x1b[32m',`│    App corriendo en  http://localhost:${this.port}    │`);
-            console.log('\x1b[32m','│                                               │');
+            console.log('\x1b[31m','╭──────────────  Health Safe API  ──────────────╮\n');
+            console.log('\x1b[32m','           Base de datos conectada !!');
+            console.log('\x1b[32m',`     App corriendo en  http://localhost:${this.port}`);
             console.log('\x1b[31m','╰───────────────────────────────────────────────╯');
             console.log('\x1b[0m');
-
-            // console.log('\x1b[31m', '───────────────────── Health Safe API ─────────────────────');
-            // console.log('\x1b[32m', '    Base de datos conectada !!');
-            // console.log('\x1b[32m', `    El servidor está corriendo en: http://localhost:${this.port}`);
-            // console.log('\x1b[31m', '───────────────────────────────────────────────────────────');
         } catch (error) {
             console.log('\x1b[31m','Error al conectar con la base de datos:');
             console.log('\x1b[31m','- Asegurarse de tener levantado el servicio PostgreSQL.');
