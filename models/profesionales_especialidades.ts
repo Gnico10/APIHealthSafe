@@ -3,33 +3,23 @@ import sequelize from "../db/connection";
 
 import IProfesionales_Especialidades from '../interfaces/iProfesionales_Especialidades';
 
+import colegiomedico from "./colegiomedico";
 import profesional from "./profesional";
 import especialidad from "./especialidad";
 
-// tslint:disable-next-line: variable-name
 const profesionales_especialidades = sequelize.define<IProfesionales_Especialidades>('Profesionales_Especialidades',
     {
-        idprofesional: {
+        idprofesionalesespecialidades: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            allowNull: false,
-            references: {
-                model: profesional,
-                key: 'idprofesional'
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT'
+            autoIncrement: true
         },
-        idespecialidad: {
+        ano: {
             type: DataTypes.INTEGER,
-            primaryKey: true,
             allowNull: false,
-            references: {
-                model: especialidad,
-                key: 'idespecialidad'
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT'
+            validate:{
+                len: [4, 4] // number of 4 digits
+            }
         }
     },
     {
@@ -37,18 +27,27 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
     }
 );
 
-profesional.belongsToMany(especialidad,{
+profesionales_especialidades.belongsTo(colegiomedico, {
+    foreignKey: 'idcolegiomedico',
+    as: 'colegiomedico',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+})
+
+profesional.belongsToMany(especialidad, {
     through: profesionales_especialidades,
-    foreignKey: 'idprofesional',
-    otherKey: 'idespecialidad',
-    as: 'especialidades'
+    as: 'especialidades',
+    foreignKey: 'idespecialidad',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-especialidad.belongsToMany(profesional,{
+especialidad.belongsToMany(profesional, {
     through: profesionales_especialidades,
-    foreignKey: 'idespecialidad',
-    otherKey: 'idprofesional',
-    as: 'profesionales'
+    as: 'profesionales',
+    foreignKey: 'idprofesional',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default profesionales_especialidades;

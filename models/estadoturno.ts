@@ -8,7 +8,7 @@ const estadoturno = sequelize.define<IEstadoturno>('Estadoturno',
         idestadoturno: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         descripcion: {
             type: DataTypes.TEXT,

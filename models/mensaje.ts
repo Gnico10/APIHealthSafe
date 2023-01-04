@@ -21,26 +21,18 @@ const mensaje = sequelize.define<IMensaje>('Mensaje',
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
-        },
-        idmensajeria: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: mensajeria,
-                key: 'idmensajeria',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'mensajes'
     }
 );
 
-mensaje.belongsTo(mensajeria,{
+mensaje.belongsTo(mensajeria, {
     foreignKey: 'idmensajeria',
-    as: 'mensajeria'
+    as: 'mensajeria',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default mensaje;

@@ -16,7 +16,7 @@ const especialidad = sequelize.define<IEspecialidad>('Especialidad',
         descripcion: {
             type: DataTypes.STRING(50),
             allowNull: false,
-        },
+        }
     },
     {
         tableName: 'especialidades'

@@ -25,92 +25,51 @@ const turno = sequelize.define<ITurno>('turno', {
         type: DataTypes.DECIMAL(10,2),
         allowNull: false,
         defaultValue: 0
-    },
-    idpago: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: pago,
-            key: 'idpago',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',
-    },
-    idagenda: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: agenda,
-            key: 'idagenda',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',
-    },
-    idpaciente: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-
-            model: paciente,
-            key: 'idpaciente',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',
-    },
-    idmodalidad: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: modalidad,
-            key: 'idmodalidad'
-        },
-        onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE'
-    },
-    idobrasocial: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: obrasocial,
-            key: 'idobrasocial'
-        },
-        onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE'
-    },
+    }
 },
 {
     tableName: 'turnos'
 });
 
-turno.belongsTo(pago,{
+turno.belongsTo(pago, {
     foreignKey: 'idpago',
     as: 'pago',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-turno.belongsTo(estadoturno,{
+turno.belongsTo(estadoturno, {
     foreignKey: 'idestadoturno',
 
     as: 'estadoturno',
 });
 
-turno.belongsTo(agenda,{
+turno.belongsTo(agenda, {
     foreignKey: 'idagenda',
     as: 'agenda',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-turno.belongsTo(paciente,{
+turno.belongsTo(paciente, {
     foreignKey: 'idpaciente',
     as: 'paciente',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-turno.belongsTo(modalidad,{
+turno.belongsTo(modalidad, {
     foreignKey: 'idprofesional',
     as: 'modalidad',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE'
 });
 
-turno.belongsTo(obrasocial,{
+turno.belongsTo(obrasocial, {
     foreignKey: 'idobrasocial',
     as: 'obrasocial',
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE'
 });
 
 export default turno;

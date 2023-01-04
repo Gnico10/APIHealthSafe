@@ -10,21 +10,12 @@ const consultorio = sequelize.define<IConsultorio>('Consultorio',
         idconsultorio: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true
         },
         descripcion:{
             type: DataTypes.STRING(100),
             allowNull: false,
-        },
-        iddireccion: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: direccion,
-                key: 'iddireccion',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'consultorios'
@@ -34,6 +25,8 @@ const consultorio = sequelize.define<IConsultorio>('Consultorio',
 consultorio.belongsTo(direccion,{
     foreignKey: 'iddireccion',
     as: 'direccion',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default consultorio;

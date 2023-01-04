@@ -1,31 +1,70 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
+
 import IUsuario from '../interfaces/iUsuario';
+
+import rol from './rol'
 
 
 const usuario = sequelize.define<IUsuario>('Usuario',
-    {
-        dni: {
+    { 
+        idusuario: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
+        },
+        correo: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         contrasena: {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        dni: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        nombre: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
+        },
+        apellido: {
+            type: DataTypes.STRING(20),
+            allowNull: false,
+        },
+        fechanacimiento: {
+            type: DataTypes.DATE,
+            allowNull: false,
+        },
+        sexo: {
+            type: DataTypes.ENUM,
+            allowNull: false,
+            values: ['M', 'F']
+        },
         imgperfil:{
-        type: DataTypes.BLOB,
-        allowNull: true,}
+            type: DataTypes.BLOB,
+            allowNull: true,
+        },
+        imgdnifrente:{
+            type: DataTypes.BLOB,
+            allowNull: false,
+        },
+        imgdnidorso:{
+            type: DataTypes.BLOB,
+            allowNull: false,
+        }
     },
     {
         tableName: 'usuarios'
     }
 );
 
-// usuario.hasOne(paciente, {
-//     foreignKey: 'dni',
-//     onDelete: 'RESTRICT',
-//     onUpdate: 'CASCADE',
-// });
+usuario.belongsTo(rol, {
+    foreignKey: 'idrol',
+    as: 'rol',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
 
 export default usuario;

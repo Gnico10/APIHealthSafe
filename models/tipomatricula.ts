@@ -1,24 +1,23 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
+import ITipoMatricula from '../interfaces/iTipoMatricula';
 
-import IObrasocial from '../interfaces/iObrasocial';
 
-
-const obrasocial = sequelize.define<IObrasocial>('Obrasocial',
-    {
-        idobrasocial: {
+const tipomatricula = sequelize.define<ITipoMatricula>('TipoMatricula',
+    { 
+        idtipomatricula: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
         descripcion: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(20),
             allowNull: false,
         }
     },
     {
-        tableName: 'obrassociales'
+        tableName: 'tiposmatricula'
     }
 );
 
-export default obrasocial;
+export default tipomatricula;

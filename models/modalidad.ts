@@ -13,7 +13,7 @@ const modalidad = sequelize.define<IModalidad>('Modalidad',
         descripcion: {
             type: DataTypes.TEXT,
             allowNull: false
-        },
+        }
     },
     {
         tableName: 'modalidades'

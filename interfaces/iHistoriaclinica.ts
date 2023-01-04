@@ -1,9 +1,9 @@
 import { Model } from 'sequelize/types';
 
 interface IHistoriaClinica extends Model{
-    idhistorialclinica? : number;
-    descripcion? : string,
-    idpaciente? : number,
+    idhistoriaclinica? : number,
+    peso? : number,
+    edad? : number
 };
 
 export default IHistoriaClinica;

@@ -1,12 +1,11 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
+import IPais from '../interfaces/iPais';
 
-import IObrasocial from '../interfaces/iObrasocial';
 
-
-const obrasocial = sequelize.define<IObrasocial>('Obrasocial',
-    {
-        idobrasocial: {
+const pais = sequelize.define<IPais>('Pais',
+    { 
+        idpais: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -17,8 +16,8 @@ const obrasocial = sequelize.define<IObrasocial>('Obrasocial',
         }
     },
     {
-        tableName: 'obrassociales'
+        tableName: 'paises'
     }
 );
 
-export default obrasocial;
+export default pais;

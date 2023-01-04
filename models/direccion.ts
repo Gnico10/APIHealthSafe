@@ -10,6 +10,7 @@ const direccion = sequelize.define<IDireccion>('Direccion',
         iddireccion: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true
         },
         calle:{
             type: DataTypes.STRING(100),
@@ -17,17 +18,7 @@ const direccion = sequelize.define<IDireccion>('Direccion',
         },
         piso: DataTypes.STRING(100),
         manzana: DataTypes.STRING(100),
-        lote: DataTypes.STRING(100),
-        codpostal: {
-            type: DataTypes.STRING(10),
-            allowNull: false,
-            references: {
-                model: localidad,
-                key: 'codpostal',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        lote: DataTypes.STRING(100)
     },
     {
         tableName: 'direcciones'
@@ -37,6 +28,8 @@ const direccion = sequelize.define<IDireccion>('Direccion',
 direccion.belongsTo(localidad, {
     foreignKey: 'codpostal',
     as: 'localidad',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default direccion;

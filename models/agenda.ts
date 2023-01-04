@@ -10,7 +10,7 @@ const agenda = sequelize.define<IAgenda>('Agenda',
         idagenda: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         configuracionhorario: {
             type: DataTypes.JSON,
@@ -27,17 +27,7 @@ const agenda = sequelize.define<IAgenda>('Agenda',
         duracionturno: {
             type: DataTypes.INTEGER,
             allowNull: true,
-        },
-        idprofesional: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: profesional,
-                key: 'idprofesional'
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'agendas'
@@ -46,7 +36,9 @@ const agenda = sequelize.define<IAgenda>('Agenda',
 
 agenda.belongsTo(profesional,{
     foreignKey: 'idprofesional',
-    as:'especialidades'
+    as:'especialidades',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default agenda;

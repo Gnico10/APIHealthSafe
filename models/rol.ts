@@ -1,12 +1,11 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
+import IRol from '../interfaces/iRol';
 
-import IObrasocial from '../interfaces/iObrasocial';
 
-
-const obrasocial = sequelize.define<IObrasocial>('Obrasocial',
-    {
-        idobrasocial: {
+const rol = sequelize.define<IRol>('Rol',
+    { 
+        idrol: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -17,8 +16,8 @@ const obrasocial = sequelize.define<IObrasocial>('Obrasocial',
         }
     },
     {
-        tableName: 'obrassociales'
+        tableName: 'roles'
     }
 );
 
-export default obrasocial;
+export default rol;

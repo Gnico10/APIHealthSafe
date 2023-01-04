@@ -10,22 +10,12 @@ const citamedica = sequelize.define<ICitamedica>('Citamedica',
         idcitamedica: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         fechayhora: {
             type: DataTypes.DATE,
             allowNull: false,
-        },
-        idturno: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: turno,
-                key: 'idturno',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'citasmedicas'
@@ -35,6 +25,8 @@ const citamedica = sequelize.define<ICitamedica>('Citamedica',
 citamedica.belongsTo(turno,{
     foreignKey: 'idturno',
     as: 'turno',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default citamedica;

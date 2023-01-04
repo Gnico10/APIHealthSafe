@@ -8,12 +8,12 @@ const localidad = sequelize.define<ILocalidad>('Localidad',
         codpostal: {
             type: DataTypes.STRING(10),
             primaryKey: true,
-            allowNull: false,
+            allowNull: false
         },
         descripcion: {
             type: DataTypes.STRING(100),
             allowNull: false,
-        },
+        }
     },
     {
         tableName: 'localidades'

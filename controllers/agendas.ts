@@ -33,13 +33,13 @@ export const postAgenda = async (req: Request, res: Response) => {
       
         // Creación de instancia en la base de datos.
         const agenda = Agenda.build({  
-        configuracionhorario,
+            configuracionhorario,
             idpago,
             fechadesde, 
             fechahasta,
             idprofesional,
             duracionTurno
-           });
+        });
 
         await agenda.save();
 
