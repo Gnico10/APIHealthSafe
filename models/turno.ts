@@ -40,8 +40,9 @@ turno.belongsTo(pago, {
 
 turno.belongsTo(estadoturno, {
     foreignKey: 'idestadoturno',
-
     as: 'estadoturno',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 turno.belongsTo(agenda, {
@@ -59,7 +60,7 @@ turno.belongsTo(paciente, {
 });
 
 turno.belongsTo(modalidad, {
-    foreignKey: 'idprofesional',
+    foreignKey: 'idmodalidad',
     as: 'modalidad',
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE'

@@ -11,7 +11,7 @@ const pago = sequelize.define<IPago>('pago',
             autoIncrement: true
 
         },
-        fechahora:{
+        fechahora: {
             type: DataTypes.DATE,
             allowNull: true,
             defaultValue: DataTypes.NOW

@@ -10,7 +10,7 @@ const historiaclinica = sequelize.define<IHistoriaClinica>('Historiaclinica',
             primaryKey: true,
             autoIncrement: true
         },
-        peso:{
+        peso: {
             type: DataTypes.FLOAT,
             allowNull: false
         },

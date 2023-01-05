@@ -26,9 +26,9 @@ const router = Router();
  */
 
 router.post('/login', [
-    check('dni', 'El dni es requerido').not().isEmpty(),
+    check('correo', 'El correo es requerido').not().isEmpty(),
     check('contrasena', 'La contraseña es requerida').not().isEmpty(),
-    validarCampos],
-    login);
+    validarCampos
+], login);
 
 export default router;

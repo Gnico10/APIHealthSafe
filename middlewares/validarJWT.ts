@@ -14,9 +14,9 @@ const validarJWT = (req : Request, res : Response, next : any) => {
     }
 
     try {
-        // Sacar propiedad dni del payload.
-        const { dni } : IUsuario = (jwt.verify(token, secretOrPrivateKey) as IUsuario);
-        const usuario = Usuario.findByPk(dni);
+        // search usuario in db
+        const {idusuario} : IUsuario = (jwt.verify(token, secretOrPrivateKey) as IUsuario);
+        const usuario = Usuario.findByPk(idusuario);
 
         if (!usuario) {
             return res.status(401).json({

@@ -4,7 +4,6 @@ import sequelize from '../db/connection';
 import IUniversidad from '../interfaces/iUniversidad';
 
 import pais from './pais';
-import matriculaprofesional from './matriculaprofesional';
 
 const universidad = sequelize.define<IUniversidad>('Universidad',
     { 

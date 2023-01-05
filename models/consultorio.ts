@@ -12,7 +12,7 @@ const consultorio = sequelize.define<IConsultorio>('Consultorio',
             primaryKey: true,
             autoIncrement: true
         },
-        descripcion:{
+        descripcion: {
             type: DataTypes.STRING(100),
             allowNull: false,
         }

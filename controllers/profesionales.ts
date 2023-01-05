@@ -13,7 +13,6 @@ import Especialidad from '../models/especialidad';
 
 //TODO remover una vez implementado
 const adicional = {
-  
     "calificacion": "5.0",
     "localidad": "San Miguel de Tucumán",
     "centrosAtencion": "Clinica Mayo - 9 de julio 279",

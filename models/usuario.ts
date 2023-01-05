@@ -48,11 +48,11 @@ const usuario = sequelize.define<IUsuario>('Usuario',
         },
         imgdnifrente:{
             type: DataTypes.BLOB,
-            allowNull: false,
+            // allowNull: false,
         },
         imgdnidorso:{
             type: DataTypes.BLOB,
-            allowNull: false,
+            // allowNull: false,
         }
     },
     {

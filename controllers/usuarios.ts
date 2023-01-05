@@ -2,50 +2,74 @@ import {Request, Response} from 'express';
 import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
 
+import rol from '../models/rol'
+
 export const getUsuarios = async (req: Request, res: Response) => {
-    const usuarios = await Usuario.findAll();
+    const usuarios = await Usuario.findAll({
+        include: [{
+            model: rol,
+            as: 'rol'
+        }]
+    }
+    );
     res.json({usuarios});
 }
 
 export const getUsuario = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const usuario = await Usuario.findByPk(id);
+    const {id} = req.params;
+    const usuario = await Usuario.findByPk(id, {
+        include: [{
+            model: rol,
+            as: 'rol'
+        }]        
+    });
 
     if (usuario){
         res.json(usuario);
     } else {
         res.status(404).json({
-            msg: `No existe un usuario con DNI = ${id}`
+            msg: `No existe un usuario con Id : ${id}`
         });
     }
 }
 
 export const postUsuario = async (req: Request, res: Response) => {
-    const { dni, contrasena, imgperfil } = req.body;
+    const {body} = req;
 
     try {
         // Validaciones
         const existeUsuario = await Usuario.findOne({
-            where: {dni}
+            where: {
+                correo: body.correo
+            }
         });
 
         if (existeUsuario) {
             return res.status(400).json({
-                msg: `El usuario con el DNI = ${dni} ya existe`
+                msg: `El usuario con el Correo = ${body.correo} ya existe`
             });
         }
 
         // Creación de instancia en la base de datos.
-        const usuario = Usuario.build({ dni, contrasena, imgperfil });
+        const usuario = Usuario.build(body);
 
         const salt = await bcryptjs.genSalt();
-        usuario.contrasena = bcryptjs.hashSync(contrasena, salt);
-
+        usuario.contrasena = bcryptjs.hashSync(body.contrasena, salt);
         await usuario.save();
-
+        
+        const newusuario = await Usuario.findOne({
+            where: {
+                correo: body.correo
+            },
+            include: [{
+                model: rol,
+                as: 'rol'
+            }]
+        });
+        
         res.json({
             msg:'Usuario dado de alta',
-            usuario
+            newusuario
         });
     } catch (error) {
         console.log(error);
@@ -56,18 +80,23 @@ export const postUsuario = async (req: Request, res: Response) => {
 }
 
 export const putUsuario = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { contrasena } = req.body;
+    const { correo, contrasena } = req.body;
 
     try {
-        const usuario = await Usuario.findByPk(id);
+        const usuario = await Usuario.findOne({
+            where: {correo}
+        });
         if (!usuario) {
             return res.status(404).json({
-                msg: `No existe un usuario con el DNI = ${id}`
+                msg: `No existe un usuario con el Correo : ${correo}`
             });
         }
 
-        await usuario.update({contrasena});
+        const salt = await bcryptjs.genSalt();
+        let nuevacontrasena = bcryptjs.hashSync(contrasena, salt);
+        await usuario.update({
+            contrasena: nuevacontrasena
+        });
 
         res.json({
             msg:'Usuario actualizado con éxito.',
@@ -83,13 +112,14 @@ export const putUsuario = async (req: Request, res: Response) => {
 }
 
 export const deleteUsuario = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const {id} = req.params;
 
     try {
-        const usuario = await Usuario.findByPk(id);
+        const usuario = await Usuario.findByPk(id)
+
         if (!usuario) {
             return res.status(404).json({
-                msg: `No existe un usuario con el DNI = ${id}`
+                msg: `No existe un usuario con el id : ${id}`
             });
         }
 

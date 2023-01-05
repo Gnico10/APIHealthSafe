@@ -12,7 +12,7 @@ const direccion = sequelize.define<IDireccion>('Direccion',
             primaryKey: true,
             autoIncrement: true
         },
-        calle:{
+        calle: {
             type: DataTypes.STRING(100),
             allowNull: false,
         },

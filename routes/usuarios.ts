@@ -35,7 +35,9 @@ const router = Router();
  */
 
 router.get('/', getUsuarios);
-router.get('/:id', getUsuario);
+router.get('/:id', [
+    validarJWT
+], getUsuario);
 
 /**
  * @swagger
@@ -57,20 +59,20 @@ router.get('/:id', getUsuario);
  *          description: Error en el request
  */
 router.post('/', [
-    check('dni', 'El DNI es obligatorio').not().isEmpty(),
+    check('correo', 'El correo es obligatorio').not().isEmpty(),
     check('contrasena', 'La contraseña es obligatoria').not().isEmpty(),
+    check('contrasena', 'La contraseña debe tener, al menos, 6 caracteres.').isLength({min: 6}),
+    check('dni', 'El DNI es obligatorio').not().isEmpty(),
+    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+    check('apellido', 'El apellido es obligatorio').not().isEmpty(),
+    check('fechanacimiento', 'La fecha de nacimiento es obligatoria').not().isEmpty(),
+    check('sexo', 'El sexo es obligatorio').not().isEmpty(),
+    check('idrol', 'El rol es obligatorio').not().isEmpty(),
     validarCampos
 ], postUsuario);
 
-router.post('/', [
-    check('dni', 'El dni es requerido.').not().isEmpty(),
-    check('contrasena', 'La contrasena es requerida').not().isEmpty(),
-    check('contrasena', 'La contraseña debe tener, al menos, 6 caracteres.').isLength({min: 6}),
-    check('ispaciente', 'Se debe indicar si el usuario corresponde a un paciente o un profesional').not().isEmpty(),
-    validarCampos
-],
-postUsuario);
 router.put('/:id', putUsuario);
+
 router.delete('/:id', [
     validarJWT
 ], deleteUsuario);
