@@ -9,7 +9,7 @@ const load = async() => {
     loadRoles();
     loadPaises();
     loadTipoMatricula();
-    // loadUniversidades();
+    loadUniversidades();
 }
 
 export default load;

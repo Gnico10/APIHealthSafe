@@ -14,7 +14,7 @@ const loadUniversidades = async() => {
         }
     ];
 
-    // Create Roles in database
+    // Create Universidades in database
     listuniversidades.map(async (univer) => {
         await universidad.create({
             nombre: univer.nombre,
