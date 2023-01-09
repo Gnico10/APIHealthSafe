@@ -4,12 +4,12 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getProfesionales, getProfesional, postProfesional, putProfesional, deleteProfesional } from '../controllers/profesionales';
+import { getProfesionales,  postProfesional } from '../controllers/profesionales';
 
 const router = Router();
 
 router.get('/', getProfesionales);
-router.get('/:id', getProfesional);
+//router.get('/:id', getProfesional);
 
 router.post('/', [
     check('dni', 'El dni es requerido.').not().isEmpty(),
@@ -18,11 +18,8 @@ router.post('/', [
 ],
 postProfesional);
 
-router.put('/:id', putProfesional);
 
-router.delete('/:id', [
-    validarJWT
-], deleteProfesional);
+
 
 
 export default router;
