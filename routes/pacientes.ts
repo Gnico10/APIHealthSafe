@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getPacientes, getPaciente, postPaciente, putPaciente, deletePaciente } from '../controllers/pacientes';
+import { getPacientes, getPaciente, postPaciente, deletePaciente } from '../controllers/pacientes';
 
 const router = Router();
 
@@ -17,7 +17,6 @@ router.post('/', [
 ],
 postPaciente);
 
-router.put('/:id', putPaciente);
 
 router.delete('/:id', [
     validarJWT
