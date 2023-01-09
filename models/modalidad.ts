@@ -21,3 +21,5 @@ const modalidad = sequelize.define<IModalidad>('Modalidad',
 );
 
 export default modalidad;
+
+// profesional_modalidad

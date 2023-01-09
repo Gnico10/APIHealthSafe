@@ -2,7 +2,7 @@
 import sequelize from "../db/connection";
 import { DataTypes } from 'sequelize';
 import estadoturno from './estadoturno';
-import pago from './pago';
+// import pago from './pago';
 import agenda from "./agenda";
 import paciente from "./paciente";
 import modalidad from "./modalidad";
@@ -16,6 +16,8 @@ const turno = sequelize.define<ITurno>('turno', {
         autoIncrement: true
     },
     fecha: DataTypes.DATE,
+    // horainicio,
+    // horafin
     fechasolicita: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -31,26 +33,26 @@ const turno = sequelize.define<ITurno>('turno', {
     tableName: 'turnos'
 });
 
-turno.belongsTo(pago, {
-    foreignKey: 'idpago',
-    as: 'pago',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
+// turno.belongsTo(pago, {
+//     foreignKey: 'idpago',
+//     as: 'pago',
+//     onUpdate: 'CASCADE',
+//     onDelete: 'RESTRICT',
+// });
 
-turno.belongsTo(estadoturno, {
-    foreignKey: 'idestadoturno',
-    as: 'estadoturno',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
+// turno.belongsTo(estadoturno, {
+//     foreignKey: 'idestadoturno',
+//     as: 'estadoturno',
+//     onUpdate: 'CASCADE',
+//     onDelete: 'RESTRICT',
+// });
 
-turno.belongsTo(agenda, {
-    foreignKey: 'idagenda',
-    as: 'agenda',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
+// turno.belongsTo(agenda, {
+//     foreignKey: 'idagenda',
+//     as: 'agenda',
+//     onUpdate: 'CASCADE',
+//     onDelete: 'RESTRICT',
+// });
 
 turno.belongsTo(paciente, {
     foreignKey: 'idpaciente',

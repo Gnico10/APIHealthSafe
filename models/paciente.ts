@@ -29,7 +29,7 @@ paciente.belongsTo(usuario,{
 
 paciente.belongsTo(historiaclinica,{
     foreignKey: 'idhistoriaclinica',
-    as: 'hisotiraclinica',
+    as: 'historiaclinica',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

@@ -18,7 +18,6 @@ import mensajeria from "../models/mensajeria";
 import modalidad from "../models/modalidad";
 import obrasocial from "../models/obrasocial";
 import paciente from "../models/paciente";
-import pago from "../models/pago";
 import pedidoemergencia from "../models/pedidoemergencia";
 import prescripcion from "../models/prescripcion";
 import profesionales_especialidades from "../models/profesionales_especialidades";
@@ -61,7 +60,6 @@ const sincronizarDB = async() =>  {
     await historiaclinica.sync({force: false});
     await paciente.sync({force: false});
     await estadoturno.sync({force: false});
-    await pago.sync({force: false});
     await agenda.sync({force: false});
     await modalidad.sync({force: false});
     await turno.sync({force: false});

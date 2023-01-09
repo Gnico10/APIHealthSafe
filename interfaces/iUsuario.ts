@@ -11,7 +11,8 @@ interface IUsuario extends Model {
     sexo? : string,
     imgperfil? : Blob,
     imgdnifrente? : Blob,
-    imgdnidorso? : Blob
+    imgdnidorso? : Blob,
+    idrol? : number
 }
 
 export default IUsuario;

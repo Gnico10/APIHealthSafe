@@ -12,10 +12,6 @@ const agenda = sequelize.define<IAgenda>('Agenda',
             primaryKey: true,
             autoIncrement: true
         },
-        configuracionhorario: {
-            type: DataTypes.JSON,
-            allowNull: false,
-        },
         fechadesde: {
             type: DataTypes.DATEONLY,
             allowNull: true,
@@ -24,10 +20,14 @@ const agenda = sequelize.define<IAgenda>('Agenda',
             type: DataTypes.DATEONLY,
             allowNull: true,
         },
+        // horainicio,
+        // horafin,
+        // modalidad,
         duracionturno: {
             type: DataTypes.INTEGER,
             allowNull: true,
         }
+        // precio
     },
     {
         tableName: 'agendas'
@@ -42,3 +42,6 @@ agenda.belongsTo(profesional,{
 });
 
 export default agenda;
+
+
+// Evitar 

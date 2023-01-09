@@ -12,8 +12,7 @@ router.get('/', getPacientes);
 router.get('/:id', getPaciente);
 
 router.post('/', [
-    check('dni', 'El dni es requerido.').not().isEmpty(),
-    // TODO: Agregar validaciones
+    check('idusuario', 'El usuario es requerido.').not().isEmpty(),
     validarCampos
 ],
 postPaciente);
