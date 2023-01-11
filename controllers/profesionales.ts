@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { Op } from 'sequelize';
+import sequelize from '../db/connection';
 import Profesional from '../models/profesional';
 import Profesional_Consultorios from '../models/profesionales_consultorios';
 import Consultorios from '../models/consultorio';
@@ -13,6 +14,7 @@ import Especialidad from '../models/especialidad';
 import Modalidad from '../models/modalidad';
 import Rol from '../models/rol';
 import Usuario from '../models/usuario';
+import matriculaprofesional from '../models/matriculaprofesional';
 
 //TODO remover una vez implementado
 const adicional = {
@@ -34,57 +36,66 @@ export const getProfesionales = async (req: Request, res: Response) => {
 }
 
 export const postProfesional = async (req: Request, res: Response) => {
-    const { idprofesional,
-             idusuario} = req.body;
+    const {
+        idusuario,
+        profesional_matriculas, 
+        profesional_especialidades
+    } = req.body;
+
+    const existeProfesional = await Profesional.findOne({
+        where: {idusuario: idusuario}
+    });
+
+    if (existeProfesional) {
+        return res.status(400).json({
+            msg: 'El Profesional ya existe'
+        });
+    }
+
+    const usuario = await Usuario.findByPk(idusuario);
+    const rol = await Rol.findByPk(usuario?.idrol);
+    if ( rol?.descripcion != 'Profesional') {
+        return res.status(400).json({
+            msg: 'El usuario seleccionado no es un Profesional.'
+        });      
+    }
     
     try {
-       
-        const existeProfesional = await Profesional.findOne({
-            where: {idusuario: idusuario}
+        const transaction = await sequelize.transaction();
+        console.log(profesional_matriculas);
+        console.log(profesional_especialidades);
+        // Creación de instancia en la base de datos.
+        // const profesional = await Profesional.create({
+        //     idusuario: idusuario
+        // });
+
+
+        profesional_matriculas.map(async (matriculas: any) => {
+            await matriculaprofesional.build();
+            // await rol.build({
+            //     descripcion: desc
+            // });
         });
 
-        if (existeProfesional) {
-            return res.status(400).json({
-                msg: `El Profesional con el id = ${idusuario} ya existe`
-            });
-        }
+        // const profesionalDB = await Profesional.findOne({
+        //     where: {
+        //         idusuario: idusuario
+        //     },
+        //     include: [{
+        //         model: Usuario,
+        //         as: 'usuario'
+        //     }],
+        // });
 
-        const usuario = await Usuario.findByPk(idusuario);
-        const rol = await Rol.findByPk(usuario?.idrol);
-        if ( rol?.descripcion != 'Profesional') {
-            return res.status(400).json({
-                msg: 'El usuario seleccionado no es un Profesional.'
-            });      
-        }
- // Creación de instancia en la base de datos.
-        const profesional = Profesional.build({
-            idusuario: idusuario,
-           
-        });
-
-        await profesional.save();
-
-        const pacienteDB = await Profesional.findOne({
-            where: {
-                idusuario: idusuario
-            },
-            include: [
-                {
-                    model: Usuario,
-                    as: 'usuario'
-                },
-              
-            ],
-        });
-
-        res.json({
-            msg:'Profesional dado de alta',
-            pacienteDB
-        });
+        // res.json({
+        //     msg:'Profesional dado de alta',
+        //     profesionalDB
+        // });
+        transaction.commit();
     } catch (error) {
         console.log(error);
         res.status(500).json({
             msg: 'Error Interno. No se pudo crear el profesional.'
         });
     }
-    }
+}

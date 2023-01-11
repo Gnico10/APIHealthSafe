@@ -14,7 +14,7 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
             primaryKey: true,
             autoIncrement: true
         },
-        ano: {
+        anio: {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate:{

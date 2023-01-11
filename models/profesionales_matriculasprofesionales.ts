@@ -17,7 +17,7 @@ const profesionales_matriculasprofesionales = sequelize.define<IProfesionales_Ma
             type: DataTypes.STRING(50),
             allowNull: false
         },
-        ano: {
+        anio: {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate:{
