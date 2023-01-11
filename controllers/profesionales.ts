@@ -4,7 +4,7 @@ import sequelize from '../db/connection';
 import Profesional from '../models/profesional';
 import Profesional_Consultorios from '../models/profesionales_consultorios';
 import Consultorios from '../models/consultorio';
-import Direcciones from '../models/direccion';
+import Direccion from '../models/direccion';
 import Localidades from '../models/localidad';
 import Profesional_Especialidades from '../models/profesionales_especialidades';
 import Profesional_obrassociales from '../models/profesionales_obrassociales';
@@ -15,6 +15,7 @@ import Modalidad from '../models/modalidad';
 import Rol from '../models/rol';
 import Usuario from '../models/usuario';
 import matriculaprofesional from '../models/matriculaprofesional';
+
 
 //TODO remover una vez implementado
 const adicional = {
@@ -30,10 +31,37 @@ const agregarCampos = (e: IProfesional) => {
     return {...e.toJSON(), ...adicional}
 }
 
+
 export const getProfesionales = async (req: Request, res: Response) => {
-    const profesionales = await Profesional.findAll();
-    res.json({profesionales});
+   
+    const { idespecialidad, codpostal } = req.query;
+ 
+
+    const profesional = await Profesional.findAll({
+        include: [
+            {
+                model: Especialidad,
+                as: 'especialidades',
+                where: {
+                    idespecialidad: idespecialidad
+                } 
+            },
+            {
+                model: Direccion,
+                as: 'direcciones',
+                where: {
+                    codpostal: codpostal
+                }
+            }
+        ]
+    });
+    
+    res.json({
+        profesional
+    });
 }
+
+
 
 export const postProfesional = async (req: Request, res: Response) => {
     const {
