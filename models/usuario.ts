@@ -43,16 +43,16 @@ const usuario = sequelize.define<IUsuario>('Usuario',
             values: ['M', 'F']
         },
         imgperfil:{
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true,
         },
         imgdnifrente:{
-            type: DataTypes.BLOB,
-            // allowNull: false,
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         imgdnidorso:{
-            type: DataTypes.BLOB,
-            // allowNull: false,
+            type: DataTypes.STRING,
+            allowNull: false,
         }
     },
     {

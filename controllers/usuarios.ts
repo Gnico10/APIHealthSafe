@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import { generarJWT } from '../helpers/generarJWT';
 import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
 
@@ -51,13 +52,13 @@ export const postUsuario = async (req: Request, res: Response) => {
         }
 
         // Creación de instancia en la base de datos.
-        const usuario = Usuario.build(body);
+        const newusuario = Usuario.build(body);
 
         const salt = await bcryptjs.genSalt();
-        usuario.contrasena = bcryptjs.hashSync(body.contrasena, salt);
-        await usuario.save();
+        newusuario.contrasena = bcryptjs.hashSync(body.contrasena, salt);
+        await newusuario.save();
         
-        const newusuario = await Usuario.findOne({
+        const usuario : any = await Usuario.findOne({
             where: {
                 correo: body.correo
             },
@@ -66,10 +67,14 @@ export const postUsuario = async (req: Request, res: Response) => {
                 as: 'rol'
             }]
         });
+
+        // Generar JWT.
+        const token = await generarJWT(usuario.idusuario);
         
         res.json({
             msg:'Usuario dado de alta',
-            newusuario
+            usuario,
+            token
         });
     } catch (error) {
         console.log(error);

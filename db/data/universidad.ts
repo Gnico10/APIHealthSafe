@@ -16,9 +16,13 @@ const loadUniversidades = async() => {
 
     // Create Universidades in database
     listuniversidades.map(async (univer) => {
-        await universidad.create({
-            nombre: univer.nombre,
-            idpais: 1
+        await universidad.findOrCreate({
+            where: {
+                nombre: univer.nombre,
+            },
+            defaults: {
+                idpais: 1
+            }
         });
     });
 }

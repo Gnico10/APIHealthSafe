@@ -13,8 +13,8 @@ const loadPaises = async() => {
 
     // Create Paises in database
     descrpaises.map(async (desc) => {
-        await pais.create({
-            descripcion: desc
+        await pais.findOrCreate({
+            where: { descripcion: desc }
         });
     });
 }

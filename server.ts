@@ -120,7 +120,7 @@ class Server {
         this.app.use(this.apiPaths.profesionales_especialidades, profesionales_especialidadesRoutes);
 
         // Ruta por defecto.
-        this.app.get('*', (req, res) => {
+        this.app.get('*', (_req, res) => {
             res.redirect('/api-doc'); // Redirecciona a la documentación.
         });
     }

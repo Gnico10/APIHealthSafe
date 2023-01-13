@@ -9,8 +9,10 @@ const loadTipoMatricula = async() => {
 
     // Create TiposMatricula in database
     desctipomatricula.map(async (desc) => {
-        await tipomatricula.create({
-            descripcion: desc
+        await tipomatricula.findOrCreate({
+            where: {
+                descripcion: desc
+            }
         });
     });
 }

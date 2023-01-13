@@ -1,4 +1,4 @@
-import especialidad from "../../models/especialidad";
+import Especialidad from "../../models/especialidad";
 
 const loadEspecialidades = async() => {
     // List of Especialidades
@@ -26,8 +26,10 @@ const loadEspecialidades = async() => {
 
     // Create Especialidades in database
     descespe.map(async (desc) => {
-        await especialidad.create({
-            descripcion: desc
+        await Especialidad.findOrCreate({
+            where:{
+                descripcion: desc
+            }
         });
     });
 }
