@@ -26,7 +26,17 @@ const agenda = sequelize.define<IAgenda>('Agenda',
         duracionturno: {
             type: DataTypes.INTEGER,
             allowNull: true,
-        }
+        },
+        horainicio: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        
+        },
+        horafin: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        
+        },
         // precio
     },
     {
@@ -36,7 +46,7 @@ const agenda = sequelize.define<IAgenda>('Agenda',
 
 agenda.belongsTo(profesional,{
     foreignKey: 'idprofesional',
-    as:'especialidades',
+    as:'profesionales',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
@@ -44,4 +54,3 @@ agenda.belongsTo(profesional,{
 export default agenda;
 
 
-// Evitar 
