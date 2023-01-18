@@ -12,7 +12,7 @@ export const getPacientes = async (req: Request, res: Response) => {
 
 export const getPaciente = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const paciente = await Paciente.findByPk(id);
+    let paciente = await Paciente.findByPk(id);
 
     if (paciente){
         res.json(paciente);
@@ -28,7 +28,7 @@ export const postPaciente = async (req: Request, res: Response) => {
 
     try {
         // Validaciones
-        const existepaciente = await Paciente.findOne({
+        let existepaciente = await Paciente.findOne({
             where: {
                 idusuario: idusuario
             }
@@ -40,28 +40,37 @@ export const postPaciente = async (req: Request, res: Response) => {
             });
         }
 
-        const usuario = await Usuario.findByPk(idusuario);
-        const rol = await Rol.findByPk(usuario?.idrol);
-        if ( rol?.descripcion != 'Paciente') {
+        let usuario : any = await Usuario.findByPk(idusuario, {
+            include: [{
+                model: Rol,
+                as: 'rol'
+            }]        
+        });
+
+        if (usuario) {
             return res.status(400).json({
-                msg: 'El usuario seleccionado no es un paciente.'
+                msg: 'El usuario no existe'
+            });
+        }
+        
+        if ( usuario.rol.descripcion != 'Paciente') {
+            return res.status(400).json({
+                msg: 'El usuario seleccionado no es un Paciente'
             }); 
         }
 
         // Creación de instancia en la base de datos.
-        const historiaclinica = await HistoriaClinica.create({
+        let historiaclinica = await HistoriaClinica.create({
             peso: 0,
             edad: 0
         });
 
-        const paciente = Paciente.build({
+        let paciente = Paciente.create({
             idusuario: idusuario,
             idhistoriaclinica: historiaclinica.idhistoriaclinica
         });
 
-        await paciente.save();
-
-        const pacienteDB = await Paciente.findOne({
+        let pacienteDB = await Paciente.findOne({
             where: {
                 idusuario: idusuario
             },
@@ -78,13 +87,13 @@ export const postPaciente = async (req: Request, res: Response) => {
         });
 
         res.json({
-            msg:'paciente dado de alta',
-            pacienteDB
+            msg:'Paciente dado de alta',
+            paciente: pacienteDB
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo crear el paciente.'
+            msg: 'Error Interno. No se pudo crear el paciente'
         });
     }
 }

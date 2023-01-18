@@ -3,12 +3,12 @@ import { generarJWT } from '../helpers/generarJWT';
 import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
 
-import rol from '../models/rol'
+import Rol from '../models/rol'
 
 export const getUsuarios = async (req: Request, res: Response) => {
     const usuarios = await Usuario.findAll({
         include: [{
-            model: rol,
+            model: Rol,
             as: 'rol'
         }]
     }
@@ -20,7 +20,7 @@ export const getUsuario = async (req: Request, res: Response) => {
     const {id} = req.params;
     const usuario = await Usuario.findByPk(id, {
         include: [{
-            model: rol,
+            model: Rol,
             as: 'rol'
         }]        
     });
@@ -63,7 +63,7 @@ export const postUsuario = async (req: Request, res: Response) => {
                 correo: body.correo
             },
             include: [{
-                model: rol,
+                model: Rol,
                 as: 'rol'
             }]
         });

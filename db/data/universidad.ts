@@ -1,4 +1,4 @@
-import universidad from "../../models/universidad";
+import Universidad from "../../models/universidad";
 
 const loadUniversidades = async() => {
     // List of universidades
@@ -16,7 +16,7 @@ const loadUniversidades = async() => {
 
     // Create Universidades in database
     listuniversidades.map(async (univer) => {
-        await universidad.findOrCreate({
+        await Universidad.findOrCreate({
             where: {
                 nombre: univer.nombre,
             },

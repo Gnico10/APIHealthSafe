@@ -1,4 +1,4 @@
-import tipomatricula from "../../models/tipomatricula";
+import TipoMatricula from "../../models/tipomatricula";
 
 const loadTipoMatricula = async() => {
     // List of TipoMatricula
@@ -9,7 +9,7 @@ const loadTipoMatricula = async() => {
 
     // Create TiposMatricula in database
     desctipomatricula.map(async (desc) => {
-        await tipomatricula.findOrCreate({
+        await TipoMatricula.findOrCreate({
             where: {
                 descripcion: desc
             }

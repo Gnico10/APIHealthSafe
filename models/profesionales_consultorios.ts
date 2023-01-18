@@ -21,16 +21,16 @@ const profesionales_consultorios = sequelize.define<IProfesionales_Consultorios>
 
 profesional.belongsToMany(consultorio, {
     through: profesionales_consultorios,
-    as:'consultorios',
-    foreignKey: 'idconsultorio',
+    as: 'PC_consultorios',
+    foreignKey: 'idprofesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
 consultorio.belongsToMany(profesional, {
     through: profesionales_consultorios,
-    as: 'profesionales',
-    foreignKey: 'idprofesional',
+    as:'PC_profesionales',
+    foreignKey: 'idconsultorio',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

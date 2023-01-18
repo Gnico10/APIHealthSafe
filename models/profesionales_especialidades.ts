@@ -14,7 +14,7 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
             primaryKey: true,
             autoIncrement: true
         },
-        anio: {
+        aniootorgamiento: {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate:{
@@ -36,18 +36,29 @@ profesionales_especialidades.belongsTo(colegiomedico, {
 
 profesional.belongsToMany(especialidad, {
     through: profesionales_especialidades,
-    as: 'especialidades',
-    foreignKey: 'idespecialidad',
+    as: 'PE_especialidades',
+    foreignKey: 'idprofesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
 especialidad.belongsToMany(profesional, {
     through: profesionales_especialidades,
-    as: 'profesionales',
-    foreignKey: 'idprofesional',
+    as: 'PE_profesionales',
+    foreignKey: 'idespecialidad',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
+});
+
+
+profesional.hasMany(profesionales_especialidades, {
+    foreignKey: 'idprofesional',
+    as: 'especialidades'
+});
+
+especialidad.hasMany(profesionales_especialidades, {
+    foreignKey: 'idespecialidad',
+    as: 'profesionales'
 });
 
 export default profesionales_especialidades;

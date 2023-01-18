@@ -1,20 +1,16 @@
 import {Request, Response} from 'express';
-import { Op } from 'sequelize';
-import sequelize from '../db/connection';
+
 import Profesional from '../models/profesional';
-import Profesional_Consultorios from '../models/profesionales_consultorios';
-import Consultorios from '../models/consultorio';
 import Direccion from '../models/direccion';
-import Localidades from '../models/localidad';
-import Profesional_Especialidades from '../models/profesionales_especialidades';
-import Profesional_obrassociales from '../models/profesionales_obrassociales';
-import Agenda from '../models/agenda';
 import IProfesional from '../interfaces/iProfesional';
 import Especialidad from '../models/especialidad';
-import Modalidad from '../models/modalidad';
+
 import Rol from '../models/rol';
 import Usuario from '../models/usuario';
-import matriculaprofesional from '../models/matriculaprofesional';
+import MatriculaProfesional from '../models/matriculaprofesional';
+import Profesionales_MatriculasProfesionales from '../models/profesionales_matriculasprofesionales';
+import Profesionales_Especialidades from '../models/profesionales_especialidades';
+import ColegioMedico from '../models/colegiomedico';
 
 
 //TODO remover una vez implementado
@@ -70,58 +66,119 @@ export const postProfesional = async (req: Request, res: Response) => {
         profesional_especialidades
     } = req.body;
 
-    const existeProfesional = await Profesional.findOne({
-        where: {idusuario: idusuario}
-    });
-
-    if (existeProfesional) {
-        return res.status(400).json({
-            msg: 'El Profesional ya existe'
-        });
-    }
-
-    const usuario = await Usuario.findByPk(idusuario);
-    const rol = await Rol.findByPk(usuario?.idrol);
-    if ( rol?.descripcion != 'Profesional') {
-        return res.status(400).json({
-            msg: 'El usuario seleccionado no es un Profesional.'
-        });      
-    }
-    
     try {
-        const transaction = await sequelize.transaction();
-        console.log(profesional_matriculas);
-        console.log(profesional_especialidades);
-        // Creación de instancia en la base de datos.
-        // const profesional = await Profesional.create({
-        //     idusuario: idusuario
+        // Validaciones
+        const existeProfesional = await Profesional.findOne({
+            where: {idusuario: idusuario}
+        });
+    
+        if (existeProfesional) {
+            return res.status(400).json({
+                msg: 'El Profesional ya existe.'
+            });
+        }
+    
+        const usuario : any = await Usuario.findByPk(idusuario, {
+            include: [{
+                model: Rol,
+                as: 'rol'
+            }]        
+        });
+
+        if (!usuario) {
+            return res.status(400).json({
+                msg: 'El usuario no existe'
+            });
+        }
+        
+        if (usuario.rol.descripcion != 'Profesional') {
+            return res.status(400).json({
+                msg: 'El usuario seleccionado no es un Profesional.'
+            }); 
+        }
+
+        // let flag = false;
+        // await profesional_especialidades.foreach(async(especialidad : any) => {
+        //     let existeespecialidad = await Especialidad.findByPk(especialidad.idespecialidad);
+        //     let existecolegiomedico = await ColegioMedico.findByPk(especialidad.idcolegiomedico);
+
+        //     if (!existeespecialidad || !existecolegiomedico) {
+        //         flag = true;
+        //         return;
+        //     }
         // });
 
+        // console.log(flag)
+        // if (flag) {
+        //     return res.status(400).json({
+        //         msg: 'Especialidad o Colegio médico no encontrado en la DB.'
+        //     }); 
+        // }
+
+        // DB
+        let profesional = await Profesional.create({idusuario});
 
         profesional_matriculas.map(async (matriculas: any) => {
-            await matriculaprofesional.build();
-            // await rol.build({
-            //     descripcion: desc
-            // });
+            let matriculaprofesional = await MatriculaProfesional.create({
+                numero : matriculas.numero,
+                idtipomatricula : matriculas.idtipomatricula,
+                iduniversidad : matriculas.iduniversidad
+            });
+
+            await Profesionales_MatriculasProfesionales.create({
+                titulogrado : matriculas.titulogrado,
+                aniootorgamiento : matriculas.aniootorgamiento,
+                idmatriculaprofesiona : matriculaprofesional.idmatriculaprofesional,
+                idprofesional : profesional.idprofesional
+            });
         });
 
-        // const profesionalDB = await Profesional.findOne({
-        //     where: {
-        //         idusuario: idusuario
-        //     },
-        //     include: [{
-        //         model: Usuario,
-        //         as: 'usuario'
-        //     }],
-        // });
+        profesional_especialidades.map(async (especialidad: any) => {
+            await Profesionales_Especialidades.create({
+                idcolegiomedico : especialidad.idcolegiomedico,
+                idespecialidad : especialidad.idespecialidad,
+                aniootorgamiento : especialidad.aniootorgamiento,
+                idprofesional : profesional.idprofesional
+            });
+        });
 
-        // res.json({
-        //     msg:'Profesional dado de alta',
-        //     profesionalDB
-        // });
-        transaction.commit();
+        const profesionalDB = await Profesional.findOne({
+            where: {idusuario},
+            include: [
+                {
+                    model: Usuario,
+                    as: 'usuario'
+                },
+                {
+                    model: Especialidad,
+                    as: 'PE_especialidades',
+                    through: {
+                        attributes: ['aniootorgamiento']
+                    },
+                },
+                {
+                    model: MatriculaProfesional,
+                    as: 'PM_matriculas_profesionales'
+                }
+                // {
+                //     model: Profesionales_Especialidades,
+                //     as: 'Especialidades',
+                //     include: [{
+                //         model: Especialidad,
+                //         as: 'Especialidad'
+                //     }]
+                // }
+            ],
+            logging: console.log,
+        });
+
+        // TODO: Find new profesional with all associations and return them
+        res.json({
+            msg:'Profesional dado de alta',
+            profesional: profesionalDB
+        });
     } catch (error) {
-        console.log(error);
+        console.log(error)
         res.status(500).json({
             msg: 'Error Interno. No se pudo crear el profesional.'
         });

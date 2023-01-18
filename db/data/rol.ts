@@ -1,4 +1,4 @@
-import rol from "../../models/rol";
+import Rol from "../../models/rol";
 
 const loadRoles = async() => {
     // List of Roles
@@ -9,7 +9,7 @@ const loadRoles = async() => {
 
     // Create Roles in database
     descroles.map(async (desc) => {
-        await rol.findOrCreate({
+        await Rol.findOrCreate({
             where: {
                 descripcion: desc
             }

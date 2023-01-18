@@ -21,16 +21,16 @@ const profesionales_obrassociales = sequelize.define<IProfesionales_Obrassociale
 
 profesional.belongsToMany(obrasocial, {
     through: profesionales_obrassociales,
-    as:'obrassociales',
-    foreignKey: 'idobrasocial',
+    as:'PO_obrassociales',
+    foreignKey: 'idprofesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
 obrasocial.belongsToMany(profesional, {
     through: profesionales_obrassociales,
-    as: 'profesionales',
-    foreignKey: 'idprofesional',
+    as: 'PO_profesionales',
+    foreignKey: 'idobrasocial',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

@@ -1,4 +1,4 @@
-import pais from "../../models/pais";
+import Pais from "../../models/pais";
 
 const loadPaises = async() => {
     // List of Paises
@@ -13,7 +13,7 @@ const loadPaises = async() => {
 
     // Create Paises in database
     descrpaises.map(async (desc) => {
-        await pais.findOrCreate({
+        await Pais.findOrCreate({
             where: { descripcion: desc }
         });
     });

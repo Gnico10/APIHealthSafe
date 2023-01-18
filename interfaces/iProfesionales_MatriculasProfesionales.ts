@@ -3,7 +3,7 @@ import { Model } from 'sequelize/types';
 interface IProfesionales_MatriculasProfesionales extends Model{
     idprofesionalesmatriculasprofesionales: string;
     titulogrado? : string,
-    ano? : number
+    aniootorgamiento? : number
     idmatriculaprofesiona? : number,
     idprofesional? : number,
 };

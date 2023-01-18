@@ -35,7 +35,6 @@ router.post('/login', [
 router.post('/renovartoken', [
     check('correo', 'El correo es requerido').not().isEmpty(),
     validarCampos,
-    validarJWT
 ], renovarToken)
 
 export default router;

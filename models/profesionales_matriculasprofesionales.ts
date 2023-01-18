@@ -17,7 +17,7 @@ const profesionales_matriculasprofesionales = sequelize.define<IProfesionales_Ma
             type: DataTypes.STRING(50),
             allowNull: false
         },
-        anio: {
+        aniootorgamiento: {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate:{
@@ -32,16 +32,16 @@ const profesionales_matriculasprofesionales = sequelize.define<IProfesionales_Ma
 
 profesional.belongsToMany(matriculaprofesional, {
     through: profesionales_matriculasprofesionales,
-    as: 'matriculas_profesionales',
-    foreignKey: 'idmatriculaprofesional',
+    as: 'PM_matriculas_profesionales',
+    foreignKey: 'idprofesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
 matriculaprofesional.belongsToMany(profesional, {
     through: profesionales_matriculasprofesionales,
-    as: 'profesionales',
-    foreignKey: 'idprofesional',
+    as: 'PM_profesionales',
+    foreignKey: 'idmatriculaprofesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
