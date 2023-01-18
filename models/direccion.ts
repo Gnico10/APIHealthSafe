@@ -16,9 +16,10 @@ const direccion = sequelize.define<IDireccion>('Direccion',
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        piso: DataTypes.STRING(100),
-        manzana: DataTypes.STRING(100),
-        lote: DataTypes.STRING(100)
+        piso: {
+        type: DataTypes.STRING(100),
+              allowNull: false,
+        }
     },
     {
         tableName: 'direcciones'
