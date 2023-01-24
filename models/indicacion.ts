@@ -8,7 +8,7 @@ const indicacion = sequelize.define<IIndicacion>('Indicacion',
         idindicacion: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         descripcion: {
             type: DataTypes.TEXT,

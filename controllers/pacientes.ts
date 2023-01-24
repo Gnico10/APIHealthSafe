@@ -1,6 +1,10 @@
 import {Request, Response} from 'express';
 import Paciente from '../models/paciente';
 
+import HistoriaClinica from '../models/historiaclinica';
+import Usuario from '../models/usuario';
+import Rol from '../models/rol';
+
 export const getPacientes = async (req: Request, res: Response) => {
     const pacientes = await Paciente.findAll();
     res.json({pacientes});
@@ -8,94 +12,88 @@ export const getPacientes = async (req: Request, res: Response) => {
 
 export const getPaciente = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const paciente = await Paciente.findByPk(id);
+    let paciente = await Paciente.findByPk(id);
 
     if (paciente){
         res.json(paciente);
     } else {
         res.status(404).json({
-            msg: `No existe un paciente con dni = ${id}`
+            msg: `No existe un paciente con id = ${id}`
         });
     }
 }
 
 export const postPaciente = async (req: Request, res: Response) => {
-    const { idpaciente,
-            idobrasocial,
-            nombre,
-            apellido,
-            email,
-            fechanacimiento,
-            dni } = req.body;
-    
+    const {idusuario} = req.body;
+
     try {
         // Validaciones
-        const existepaciente = await Paciente.findOne({
-            where: {dni}
+        let existepaciente = await Paciente.findOne({
+            where: {
+                idusuario: idusuario
+            }
         });
 
         if (existepaciente) {
             return res.status(400).json({
-                msg: `El paciente con el DNI = ${dni} ya existe`
+                msg: 'El paciente ya existe'
             });
+        }
+
+        let usuario : any = await Usuario.findByPk(idusuario, {
+            include: [{
+                model: Rol,
+                as: 'rol'
+            }]        
+        });
+
+        if (usuario) {
+            return res.status(400).json({
+                msg: 'El usuario no existe'
+            });
+        }
+        
+        if ( usuario.rol.descripcion != 'Paciente') {
+            return res.status(400).json({
+                msg: 'El usuario seleccionado no es un Paciente'
+            }); 
         }
 
         // Creación de instancia en la base de datos.
-        const paciente = Paciente.build({       idpaciente,
-                                                idobrasocial,
-                                                nombre,
-                                                apellido,
-                                                email,
-                                                fechanacimiento,
-                                                dni });
+        let historiaclinica = await HistoriaClinica.create({
+            peso: 0,
+            edad: 0
+        });
 
-        await paciente.save();
+        let paciente = Paciente.create({
+            idusuario: idusuario,
+            idhistoriaclinica: historiaclinica.idhistoriaclinica
+        });
+
+        let pacienteDB = await Paciente.findOne({
+            where: {
+                idusuario: idusuario
+            },
+            include: [
+                {
+                    model: Usuario,
+                    as: 'usuario'
+                },
+                {
+                    model: HistoriaClinica,
+                    as: 'historiaclinica'
+                }
+            ],
+        });
 
         res.json({
-            msg:'paciente dado de alta',
-            paciente
+            msg:'Paciente dado de alta',
+            paciente: pacienteDB
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo crear el paciente.'
-        });
-    }
-}
-
-export const putPaciente = async (req: Request, res: Response) => {
-    const { idpaciente } = req.params;
-    const { idobrasocial,
-            nombre,
-            apellido,
-            email,
-            fechanacimiento,
-            dni } = req.body;
-
-    try {
-        const paciente = await Paciente.findByPk(idpaciente);
-        if (!paciente) {
-            return res.status(404).json({
-                msg: `No existe un paciente con el ID = ${idpaciente}`
-            });
-        }
-
-        await paciente?.update({    idobrasocial,
-                                    nombre,
-                                    apellido,
-                                    email,
-                                    fechanacimiento,
-                                    dni});
-
-        res.json({
-            msg:'paciente actualizado con éxito.',
-            paciente
-        });
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            msg: 'Error Interno. No se pudo Actualizar el paciente.'
+            msg: 'Error Interno. No se pudo crear el paciente'
         });
     }
 }

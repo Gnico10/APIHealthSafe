@@ -5,49 +5,14 @@ import IPaciente from '../interfaces/iPaciente';
 
 import usuario from "./usuario";
 import obrasocial from './obrasocial';
+import historiaclinica from "./historiaclinica";
 
 const paciente = sequelize.define<IPaciente>('Paciente',
     {
         idpaciente: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
-        },
-        nombre: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        apellido: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        email: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        fechanacimiento: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        dni:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: usuario,
-                key: 'dni',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idobrasocial:{
-            type: DataTypes.INTEGER,
-            allowNull: true,
-            references: {
-                model: obrasocial,
-                key: 'idobrasocial',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
+            autoIncrement: true
         }
     },
     {
@@ -56,16 +21,24 @@ const paciente = sequelize.define<IPaciente>('Paciente',
 );
 
 paciente.belongsTo(usuario,{
-    foreignKey: 'dni',
+    foreignKey: 'idusuario',
     as: 'usuario',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
+
+paciente.belongsTo(historiaclinica,{
+    foreignKey: 'idhistoriaclinica',
+    as: 'historiaclinica',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 paciente.belongsTo(obrasocial,{
     foreignKey: 'idobrasocial',
     as: 'obrasocial',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
-
-
-
 
 export default paciente;

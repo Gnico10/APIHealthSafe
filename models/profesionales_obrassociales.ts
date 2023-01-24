@@ -11,46 +11,28 @@ const profesionales_obrassociales = sequelize.define<IProfesionales_Obrassociale
         idprofesionalesobrassociales: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
-        },
-        idprofesional: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: profesional,
-                key: 'idprofesional'
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idobrasocial: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: obrasocial,
-                key: 'idobrasocial',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+            autoIncrement: true
+        }
     },
     {
         tableName: 'profesionales_obrassociales'
     }
 );
 
-profesional.belongsToMany(obrasocial,{
-    through: 'profesionales_obrassociales',
+profesional.belongsToMany(obrasocial, {
+    through: profesionales_obrassociales,
+    as:'PO_obrassociales',
     foreignKey: 'idprofesional',
-    otherKey: 'idobrasocial',
-    as:'obrassociales'
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-obrasocial.belongsToMany(profesional,{
-    through: 'profesionales_obrassociales',
+obrasocial.belongsToMany(profesional, {
+    through: profesionales_obrassociales,
+    as: 'PO_profesionales',
     foreignKey: 'idobrasocial',
-    otherKey: 'idprofesional',
-    as: 'profesionales'
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default profesionales_obrassociales;

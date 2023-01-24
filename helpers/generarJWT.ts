@@ -1,9 +1,9 @@
 import { isJSDocUnknownTag } from "typescript";
 import jwt, { Secret } from 'jsonwebtoken';
 
-export const generarJWT = ( dni : number ) => {
+export const generarJWT = ( idusuario : number ) => {
     return new Promise((Resolve : any, Reject : any) => {
-        const payload = { dni };
+        const payload = { idusuario };
         const secretOrPrivateKey : Secret = process.env.SECRETORPRIVATEKEY!;
 
         jwt.sign(payload, secretOrPrivateKey, {

@@ -21,86 +21,46 @@ const episodio = sequelize.define<IEpisodio>('Episodio',
         fechahora: {
             type: DataTypes.DATE,
             allowNull: false,
-        },
-        idhistoriaclinica: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: historiaclinica,
-                key: 'idhistoriaclinica',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idprescripcion: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: prescripcion,
-                key: 'idprescripcion',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idindicacion: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: indicacion,
-                key: 'idindicacion',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idcitamedica: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: citamedica,
-                key: 'idcitamedica',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idcitamedicaemergencia: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: citamedicaemergencia,
-                key: 'idcitamedicaemergencia',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'episodios'
     }
 );
 
-episodio.belongsTo(historiaclinica,{
+episodio.belongsTo(historiaclinica, {
     foreignKey: 'idhistoriaclinica',
     as: 'historiaclinica',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-episodio.belongsTo(prescripcion,{
+episodio.belongsTo(prescripcion, {
     foreignKey: 'idprescripcion',
     as: 'prescripcion',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-episodio.belongsTo(indicacion,{
+episodio.belongsTo(indicacion, {
     foreignKey: 'idindicacion',
     as: 'indicacion',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-episodio.belongsTo(citamedica,{
+episodio.belongsTo(citamedica, {
     foreignKey: 'idcitamedica',
     as: 'citamedica',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-episodio.belongsTo(citamedicaemergencia,{
+episodio.belongsTo(citamedicaemergencia, {
     foreignKey: 'idcitamedicaemergencia',
     as: 'citamedicaemergencia',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default episodio;

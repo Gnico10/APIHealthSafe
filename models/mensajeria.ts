@@ -12,41 +12,25 @@ const mensajeria = sequelize.define<IMensajeria>('Mensajeria',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
-        },
-        idpaciente: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: paciente,
-                key: 'idpaciente',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idprofesional: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: profesional,
-                key: 'idprofesional',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'mensajerias'
     }
 );
 
-mensajeria.belongsTo(paciente,{
+mensajeria.belongsTo(paciente, {
     foreignKey: 'idpaciente',
-    as: 'paciente'
+    as: 'paciente',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-mensajeria.belongsTo(profesional,{
+mensajeria.belongsTo(profesional, {
     foreignKey: 'idprofesional',
-    as: 'profesional'
+    as: 'profesional',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default mensajeria;

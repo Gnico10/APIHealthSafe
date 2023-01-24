@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getPacientes, getPaciente, postPaciente, putPaciente, deletePaciente } from '../controllers/pacientes';
+import { getPacientes, getPaciente, postPaciente,  deletePaciente } from '../controllers/pacientes';
 
 const router = Router();
 
@@ -12,13 +12,12 @@ router.get('/', getPacientes);
 router.get('/:id', getPaciente);
 
 router.post('/', [
-    check('dni', 'El dni es requerido.').not().isEmpty(),
-    // TODO: Agregar validaciones
+    check('idusuario', 'El usuario es requerido.').not().isEmpty(),
     validarCampos
 ],
 postPaciente);
 
-router.put('/:id', putPaciente);
+
 
 router.delete('/:id', [
     validarJWT

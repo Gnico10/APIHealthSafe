@@ -11,7 +11,7 @@ const pedidoemergencia = sequelize.define<IPedidoEmergencia>('Pedidoemergencia',
         idpedidoemergencia: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         sintomas: DataTypes.TEXT,
         fechahora: {
@@ -22,26 +22,6 @@ const pedidoemergencia = sequelize.define<IPedidoEmergencia>('Pedidoemergencia',
         estado: {
             type: DataTypes.STRING(10),
             allowNull: false,
-        },
-        idespecialidad: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: especialidad,
-                key: 'idespecialidad',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idpaciente: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: paciente,
-                key: 'idpaciente',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
         }
     },
     {
@@ -49,14 +29,18 @@ const pedidoemergencia = sequelize.define<IPedidoEmergencia>('Pedidoemergencia',
     }
 );
 
-pedidoemergencia.belongsTo(especialidad,{
+pedidoemergencia.belongsTo(especialidad, {
     foreignKey: 'idespecialidad',
-    as: 'especialidad'
+    as: 'especialidad',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-pedidoemergencia.belongsTo(paciente,{
+pedidoemergencia.belongsTo(paciente, {
     foreignKey: 'idpaciente',
-    as: 'paciente'
+    as: 'paciente',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default pedidoemergencia;

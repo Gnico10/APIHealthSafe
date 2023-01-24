@@ -8,7 +8,7 @@ const prescripcion = sequelize.define<IPrescripcion>('Prescripcion',
         idprescripcion: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         descripcion: {
             type: DataTypes.TEXT,

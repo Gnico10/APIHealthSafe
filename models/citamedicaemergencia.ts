@@ -11,32 +11,12 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
         idcitamedicaemergencia: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         fechahora: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,
-        },
-        idpaciente:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: paciente,
-                key: 'idpaciente',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
-        idprofesional:{
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: profesional,
-                key: 'idprofesional',
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
         }
     },
     {
@@ -44,14 +24,18 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
     }
 );
 
-citamedicaemergencia.belongsTo(paciente,{
+citamedicaemergencia.belongsTo(paciente, {
     foreignKey: 'idpaciente',
     as: 'paciente',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
-citamedicaemergencia.belongsTo(profesional,{
+citamedicaemergencia.belongsTo(profesional, {
     foreignKey: 'idprofesional',
     as: 'profesional',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default citamedicaemergencia;

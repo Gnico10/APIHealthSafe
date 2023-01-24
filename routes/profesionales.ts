@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getProfesionales, getProfesional, postProfesional, putProfesional, deleteProfesional } from '../controllers/profesionales';
+import { getProfesionales, getProfesional, postProfesional } from '../controllers/profesionales';
 
 const router = Router();
 
@@ -12,17 +12,17 @@ router.get('/', getProfesionales);
 router.get('/:id', getProfesional);
 
 router.post('/', [
-    check('dni', 'El dni es requerido.').not().isEmpty(),
-    // TODO: Agregar validaciones
+    check('idusuario', 'El usuario es requerido.').not().isEmpty(),
+    check('profesional_matriculas', 'Las matriculas del profesional son requeridos'). not().isEmpty(),
+    check('profesional_especialidades', 'Las especialidades del profesional son requeridos').not().isEmpty(),
     validarCampos
-],
-postProfesional);
+], postProfesional);
 
-router.put('/:id', putProfesional);
+// router.put('/:id', putProfesional);
 
-router.delete('/:id', [
-    validarJWT
-], deleteProfesional);
+// router.delete('/:id', [
+//     validarJWT
+// ], deleteProfesional);
 
 
 export default router;

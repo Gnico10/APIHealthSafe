@@ -19,17 +19,7 @@ const horario = sequelize.define<IHorario>('horarios',
         horafin: {
             type: DataTypes.TIME,
             allowNull: false,
-        },
-        idagenda: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: agenda,
-                key: 'idagenda'
-            },
-            onUpdate: 'CASCADE',
-            onDelete: 'RESTRICT',
-        },
+        }
     },
     {
         tableName: 'horarios'
@@ -38,7 +28,9 @@ const horario = sequelize.define<IHorario>('horarios',
 
 horario.belongsTo(agenda, {
     foreignKey: 'idagenda',
-    as:'agendas'
+    as:'agendas',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
 });
 
 export default horario;

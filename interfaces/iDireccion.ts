@@ -4,9 +4,7 @@ interface IDireccion extends Model{
     iddireccion? : number,
     calle? : string,
     piso? : string,
-    manzana? : string,
-    lote? : string,
-    codposta? : string,
+    numero? : string,
 };
 
 export default IDireccion;
