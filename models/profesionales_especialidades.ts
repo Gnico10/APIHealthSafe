@@ -50,15 +50,4 @@ especialidad.belongsToMany(profesional, {
     onDelete: 'RESTRICT',
 });
 
-
-profesional.hasMany(profesionales_especialidades, {
-    foreignKey: 'idprofesional',
-    as: 'especialidades'
-});
-
-especialidad.hasMany(profesionales_especialidades, {
-    foreignKey: 'idespecialidad',
-    as: 'profesionales'
-});
-
 export default profesionales_especialidades;

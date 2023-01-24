@@ -4,6 +4,7 @@ import sequelize from '../db/connection';
 import IConsultorio from '../interfaces/iConsultorio';
 
 import direccion from './direccion';
+import profesional from './profesional';
 
 const consultorio = sequelize.define<IConsultorio>('Consultorio',
     {
@@ -22,9 +23,16 @@ const consultorio = sequelize.define<IConsultorio>('Consultorio',
     }
 );
 
-consultorio.belongsTo(direccion,{
+consultorio.belongsTo(direccion, {
     foreignKey: 'iddireccion',
     as: 'direccion',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
+
+consultorio.belongsTo(profesional, {
+    foreignKey: 'idprofesional',
+    as: 'profesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

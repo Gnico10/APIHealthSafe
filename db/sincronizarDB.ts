@@ -22,7 +22,6 @@ import pedidoemergencia from "../models/pedidoemergencia";
 import prescripcion from "../models/prescripcion";
 import profesionales_especialidades from "../models/profesionales_especialidades";
 import profesional from "../models/profesional";
-import profesionales_consultorios from "../models/profesionales_consultorios";
 import profesionales_obrassociales from "../models/profesionales_obrassociales";
 import turno from "../models/turno";
 import usuario from "../models/usuario";
@@ -46,7 +45,6 @@ const sincronizarDB = async() =>  {
     await localidad.sync({force: false});
     await direccion.sync({force: false});
     await consultorio.sync({force: false});
-    await profesionales_consultorios.sync({force: false});
     await pais.sync({force: false});
     await especialidad.sync({force: false});
     await colegiomedico.sync({force: false});

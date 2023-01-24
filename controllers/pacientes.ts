@@ -18,7 +18,7 @@ export const getPaciente = async (req: Request, res: Response) => {
         res.json(paciente);
     } else {
         res.status(404).json({
-            msg: `No existe un paciente con dni = ${id}`
+            msg: `No existe un paciente con id = ${id}`
         });
     }
 }

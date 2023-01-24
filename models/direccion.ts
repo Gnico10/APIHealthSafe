@@ -17,9 +17,10 @@ const direccion = sequelize.define<IDireccion>('Direccion',
             allowNull: false,
         },
         piso: {
-        type: DataTypes.STRING(100),
-              allowNull: false,
-        }
+            type: DataTypes.STRING(100),
+            allowNull: false,
+        },
+        numero: {type: DataTypes.STRING(5)},
     },
     {
         tableName: 'direcciones'

@@ -57,6 +57,45 @@ export const getProfesionales = async (req: Request, res: Response) => {
     });
 }
 
+export const getProfesional = async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+ 
+    const profesional = await Profesional.findOne({
+        where: {
+            idprofesional: id
+        },
+        include: [
+            {
+                model: Usuario,
+                as: 'usuario'
+            },
+            {
+                model: MatriculaProfesional,
+                as: 'PM_matriculas_profesionales',
+                through: {
+                    attributes: ['titulogrado', 'aniootorgamiento'],
+                }
+            },
+            {
+                model: Especialidad,
+                as: 'PE_especialidades',
+                through: {
+                    attributes: ['idcolegiomedico', 'aniootorgamiento'],
+                },
+            },
+        ],
+        logging: console.log,
+    });
+
+    if (profesional){
+        res.json(profesional);
+    } else {
+        res.status(404).json({
+            msg: `No existe un profesional con id = ${id}`
+        });
+    }
+}
 
 
 export const postProfesional = async (req: Request, res: Response) => {
@@ -97,28 +136,25 @@ export const postProfesional = async (req: Request, res: Response) => {
             }); 
         }
 
-        // let flag = false;
-        // await profesional_especialidades.foreach(async(especialidad : any) => {
-        //     let existeespecialidad = await Especialidad.findByPk(especialidad.idespecialidad);
-        //     let existecolegiomedico = await ColegioMedico.findByPk(especialidad.idcolegiomedico);
+        for (let especialidad of profesional_especialidades){
+            let existeEspecialidad = await Especialidad.findByPk(especialidad.idespecialidad);
+            if (!existeEspecialidad) {
+                return res.status(400).json({
+                    msg: `La especialidad con id ${especialidad.idespecialidad} no existe`
+                });
+            }
 
-        //     if (!existeespecialidad || !existecolegiomedico) {
-        //         flag = true;
-        //         return;
-        //     }
-        // });
-
-        // console.log(flag)
-        // if (flag) {
-        //     return res.status(400).json({
-        //         msg: 'Especialidad o Colegio médico no encontrado en la DB.'
-        //     }); 
-        // }
+            let existeColegioMedico = await ColegioMedico.findByPk(especialidad.idcolegiomedico);
+            if (!existeColegioMedico) {
+                return res.status(400).json({
+                    msg: `El Colegio Medico con id ${especialidad.idcolegiomedico} no existe`
+                });
+            }
+        }
 
         // DB
         let profesional = await Profesional.create({idusuario});
-
-        profesional_matriculas.map(async (matriculas: any) => {
+        for (const matriculas of profesional_matriculas){
             let matriculaprofesional = await MatriculaProfesional.create({
                 numero : matriculas.numero,
                 idtipomatricula : matriculas.idtipomatricula,
@@ -128,20 +164,20 @@ export const postProfesional = async (req: Request, res: Response) => {
             await Profesionales_MatriculasProfesionales.create({
                 titulogrado : matriculas.titulogrado,
                 aniootorgamiento : matriculas.aniootorgamiento,
-                idmatriculaprofesiona : matriculaprofesional.idmatriculaprofesional,
+                idmatriculaprofesional : matriculaprofesional.idmatriculaprofesional,
                 idprofesional : profesional.idprofesional
             });
-        });
+        }
 
-        profesional_especialidades.map(async (especialidad: any) => {
+        for (const especialidad of profesional_especialidades){
             await Profesionales_Especialidades.create({
                 idcolegiomedico : especialidad.idcolegiomedico,
                 idespecialidad : especialidad.idespecialidad,
                 aniootorgamiento : especialidad.aniootorgamiento,
                 idprofesional : profesional.idprofesional
             });
-        });
-
+        }
+        
         const profesionalDB = await Profesional.findOne({
             where: {idusuario},
             include: [
@@ -154,25 +190,18 @@ export const postProfesional = async (req: Request, res: Response) => {
                     as: 'PE_especialidades',
                     through: {
                         attributes: ['aniootorgamiento']
-                    },
+                    }
                 },
                 {
                     model: MatriculaProfesional,
-                    as: 'PM_matriculas_profesionales'
+                    as: 'PM_matriculas_profesionales',
+                    through: {
+                        attributes: ['titulogrado', 'aniootorgamiento']
+                    }
                 }
-                // {
-                //     model: Profesionales_Especialidades,
-                //     as: 'Especialidades',
-                //     include: [{
-                //         model: Especialidad,
-                //         as: 'Especialidad'
-                //     }]
-                // }
-            ],
-            logging: console.log,
+            ]
         });
 
-        // TODO: Find new profesional with all associations and return them
         res.json({
             msg:'Profesional dado de alta',
             profesional: profesionalDB
