@@ -15,6 +15,11 @@ import turnoRoutes from  './routes/turnos';
 import agendaRoutes from  './routes/agendas';
 import especialidadRoutes from  './routes/especialidades';
 import profesionales_especialidadesRoutes from './routes/profesionales_especialidades';
+import paisesRoutes from './routes/paises';
+import rolesRoutes from './routes/roles';
+import universidadesRoutes from './routes/universidades';
+import tiposmatriculasRoutes from './routes/tiposmatriculas';
+import colegiosmedicosRoutes from './routes/colegiosmedicos';
 
 class Server {
 
@@ -29,7 +34,12 @@ class Server {
         pacientes: '/api/pacientes',
         agendas: '/api/agendas',
         especialidades: '/api/especialidades',
-        profesionales_especialidades: '/api/profesionales_especialidades',        
+        profesionales_especialidades: '/api/profesionales_especialidades',
+        paises: '/api/paises',
+        roles: '/api/roles',
+        universidades: '/api/universidades',
+        tiposmatriculas: '/api/tiposmatriculas',
+        colegiosmedicos: '/api/colegiosmedicos',
         // Más rutas
         default: '*'
     }
@@ -118,6 +128,11 @@ class Server {
         this.app.use(this.apiPaths.agendas, agendaRoutes);
         this.app.use(this.apiPaths.especialidades, especialidadRoutes);
         this.app.use(this.apiPaths.profesionales_especialidades, profesionales_especialidadesRoutes);
+        this.app.use(this.apiPaths.paises, paisesRoutes);
+        this.app.use(this.apiPaths.roles, rolesRoutes);
+        this.app.use(this.apiPaths.universidades, universidadesRoutes);
+        this.app.use(this.apiPaths.tiposmatriculas, tiposmatriculasRoutes);
+        this.app.use(this.apiPaths.colegiosmedicos, colegiosmedicosRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {

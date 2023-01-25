@@ -3,7 +3,7 @@ import TipoMatricula from "../../models/tipomatricula";
 const loadTipoMatricula = async() => {
     // List of TipoMatricula
     const desctipomatricula : string[] = [
-        'Maitricula Nacional', 
+        'Matricula Nacional', 
         'Matricula Provincial'
     ];
 
