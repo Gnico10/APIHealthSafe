@@ -32,33 +32,38 @@ export const getProfesionales = async (req: Request, res: Response) => {
    
     const { idespecialidad, codpostal } = req.query;
  
-
-    const profesional = await Profesional.findAll({
-        include: [
-            {
-                model: Especialidad,
-                as: 'especialidades',
-                where: {
-                    idespecialidad: idespecialidad
-                } 
-            },
-            {
-                model: Direccion,
-                as: 'direcciones',
-                where: {
-                    codpostal: codpostal
+    try {
+        const profesional = await Profesional.findAll({
+            include: [
+                {
+                    model: Especialidad,
+                    as: 'especialidades',
+                    where: {
+                        idespecialidad: idespecialidad
+                    } 
+                },
+                {
+                    model: Direccion,
+                    as: 'direcciones',
+                    where: {
+                        codpostal: codpostal
+                    }
                 }
-            }
-        ]
-    });
-    
-    res.json({
-        profesional
-    });
+            ]
+        });
+
+        res.json({
+            profesional
+        });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar los profesionales.'
+        });
+    }
 }
 
 export const getProfesional = async (req: Request, res: Response) => {
-
     const { id } = req.params;
  
     const profesional = await Profesional.findOne({
@@ -108,7 +113,7 @@ export const postProfesional = async (req: Request, res: Response) => {
     try {
         // Validaciones
         const existeProfesional = await Profesional.findOne({
-            where: {idusuario: idusuario}
+            where: {idusuario}
         });
     
         if (existeProfesional) {
