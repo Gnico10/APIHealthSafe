@@ -3,6 +3,8 @@ import sequelize from '../db/connection';
 
 import IAgenda from '../interfaces/iAgenda';
 
+import consultorio from './consultorio';
+import modalidad from './modalidad';
 import profesional from './profesional';
 
 const agenda = sequelize.define<IAgenda>('Agenda',
@@ -20,37 +22,47 @@ const agenda = sequelize.define<IAgenda>('Agenda',
             type: DataTypes.DATEONLY,
             allowNull: true,
         },
-        // horainicio,
-        // horafin,
-        // modalidad,
-        duracionturno: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
         horainicio: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
-        
         },
         horafin: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        duracion: { // minutos
             type: DataTypes.INTEGER,
             allowNull: true,
-        
         },
-        // precio
+        precio: {
+            type: DataTypes.FLOAT,
+            allowNull: true,
+        }
     },
     {
         tableName: 'agendas'
     }
 );
 
-agenda.belongsTo(profesional,{
+agenda.belongsTo(profesional, {
     foreignKey: 'idprofesional',
     as:'profesionales',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
+agenda.belongsTo(modalidad, {
+    foreignKey: 'idmodalidad',
+    as: 'modalidad',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
+
+agenda.belongsTo(consultorio, {
+    foreignKey: 'idconsultorio',
+    as: 'consultorio',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
+
 export default agenda;
-
-

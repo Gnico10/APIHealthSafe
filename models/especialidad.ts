@@ -3,8 +3,6 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
 import IEspecialidad from '../interfaces/iEspecialidad';
-import profesional from "./profesional";
-
 
 const especialidad = sequelize.define<IEspecialidad>('Especialidad',
     {

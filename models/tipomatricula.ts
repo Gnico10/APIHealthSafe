@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
-import ITipoMatricula from '../interfaces/iTipoMatricula';
 
+import ITipoMatricula from '../interfaces/iTipoMatricula';
 
 const tipomatricula = sequelize.define<ITipoMatricula>('TipoMatricula',
     { 

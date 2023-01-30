@@ -4,6 +4,8 @@ import loadPaises from "./data/pais";
 import loadTipoMatricula from "./data/tipomatricula";
 import loadUniversidades from "./data/universidad";
 import loadColegiosMedicos from "./data/colegiomedico";
+import loadLocalidades from "./data/localidad";
+import loadModalidades from "./data/modalidad";
 
 const load = async() => {
     loadEspecialidades();
@@ -12,6 +14,8 @@ const load = async() => {
     loadTipoMatricula();
     loadUniversidades();
     loadColegiosMedicos();
+    // loadLocalidades();
+    loadModalidades();
 }
 
 export default load;

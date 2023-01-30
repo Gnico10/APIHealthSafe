@@ -1,46 +1,45 @@
 import {Request, Response} from 'express';
+import Modalidad from '../models/modalidad';
 
-import Localidad from '../models/localidad';
-
-export const getLocalidades = async (req: Request, res: Response) => {
+export const getModalidades = async (req: Request, res: Response) => {
 
     try {
-        const localidades = await Localidad.findAll({
+        const modalidades = await Modalidad.findAll({
             attributes: { exclude: ['createdAt', 'updatedAt'] }
         });
 
         res.json({
-            localidades
+            modalidades
         });
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar las localidades.'
+            msg: 'Error Interno. No se pudo consultar las modalidades.'
         });
     }
 }
 
-export const getLocalidad = async (req: Request, res: Response) => {
+export const getModalidad = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
-        const localidad = await Localidad.findByPk(id, {
+        const modalidad = await Modalidad.findByPk(id, {
             attributes: { exclude: ['createdAt', 'updatedAt'] }
         });
 
-        if (!localidad) {
+        if (!modalidad) {
             return res.status(400).json({
-                msg: `La localidad con id ${id} no existe.`
+                msg: `La modalidad con id ${id} no existe.`
             });
         }
 
         res.json({
-            localidad
+            modalidad
         });
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar la localidad.'
+            msg: 'Error Interno. No se pudo consultar la modalidad.'
         });
     }
 }

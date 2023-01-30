@@ -2,7 +2,7 @@ import { Model } from 'sequelize/types';
 
 interface ITipoMatricula extends Model{
     idtipomatricula? : number,
-    descripcion? : string
+    descripcion? : string,
 };
 
 export default ITipoMatricula;

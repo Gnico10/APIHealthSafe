@@ -5,7 +5,6 @@ import IUsuario from '../interfaces/iUsuario';
 
 import rol from './rol'
 
-
 const usuario = sequelize.define<IUsuario>('Usuario',
     { 
         idusuario: {
