@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
-import IRol from '../interfaces/iRol';
 
+import IRol from '../interfaces/iRol';
 
 const rol = sequelize.define<IRol>('Rol',
     { 

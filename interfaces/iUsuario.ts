@@ -9,10 +9,10 @@ interface IUsuario extends Model {
     apellido? : string,
     fechanacimiento? : Date,
     sexo? : string,
-    imgperfil? : Blob,
-    imgdnifrente? : Blob,
-    imgdnidorso? : Blob,
-    idrol? : number
+    imgperfil? : string,
+    imgdnifrente? : string,
+    imgdnidorso? : string,
+    idrol? : number,
 }
 
 export default IUsuario;

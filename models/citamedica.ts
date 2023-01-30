@@ -22,7 +22,7 @@ const citamedica = sequelize.define<ICitamedica>('Citamedica',
     }
 );
 
-citamedica.belongsTo(turno,{
+citamedica.belongsTo(turno, {
     foreignKey: 'idturno',
     as: 'turno',
     onUpdate: 'CASCADE',

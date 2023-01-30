@@ -5,6 +5,7 @@ interface IDireccion extends Model{
     calle? : string,
     piso? : string,
     numero? : string,
+    codpostal? : string,
 };
 
 export default IDireccion;

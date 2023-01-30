@@ -20,6 +20,8 @@ import rolesRoutes from './routes/roles';
 import universidadesRoutes from './routes/universidades';
 import tiposmatriculasRoutes from './routes/tiposmatriculas';
 import colegiosmedicosRoutes from './routes/colegiosmedicos';
+import localidadesRoutes from './routes/localidades';
+import modalidadesRoutes from './routes/modalidades';
 
 class Server {
 
@@ -40,6 +42,8 @@ class Server {
         universidades: '/api/universidades',
         tiposmatriculas: '/api/tiposmatriculas',
         colegiosmedicos: '/api/colegiosmedicos',
+        localidades: '/api/localidades',
+        modalidades: '/api/modalidades',
         // Más rutas
         default: '*'
     }
@@ -133,6 +137,8 @@ class Server {
         this.app.use(this.apiPaths.universidades, universidadesRoutes);
         this.app.use(this.apiPaths.tiposmatriculas, tiposmatriculasRoutes);
         this.app.use(this.apiPaths.colegiosmedicos, colegiosmedicosRoutes);
+        this.app.use(this.apiPaths.localidades, localidadesRoutes);
+        this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {

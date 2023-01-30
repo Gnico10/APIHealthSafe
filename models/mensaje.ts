@@ -5,7 +5,6 @@ import IMensaje from '../interfaces/iMensaje';
 
 import mensajeria from "./mensajeria";
 
-
 const mensaje = sequelize.define<IMensaje>('Mensaje',
     {
         idmensaje: {

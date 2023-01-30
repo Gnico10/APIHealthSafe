@@ -1,4 +1,4 @@
-import { Model } from 'sequelize/types';
+import { Model } from "sequelize/types";
 
 interface IModalidad extends Model{
     idmodalidad? : number,

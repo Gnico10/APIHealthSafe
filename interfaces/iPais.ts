@@ -2,7 +2,7 @@ import { Model } from 'sequelize/types';
 
 interface IPais extends Model{
     idpais? : number,
-    descripcion? : string
+    descripcion? : string,
 };
 
 export default IPais;

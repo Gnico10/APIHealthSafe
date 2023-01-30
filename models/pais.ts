@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
-import IPais from '../interfaces/iPais';
 
+import IPais from '../interfaces/iPais';
 
 const pais = sequelize.define<IPais>('Pais',
     { 
