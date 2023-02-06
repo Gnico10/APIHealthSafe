@@ -33,7 +33,7 @@ const turno = sequelize.define<ITurno>('turno', {
         allowNull: true,
         defaultValue: DataTypes.NOW
     },
-    idprecio:{
+    idprecio: { // Mercado Libre.
         type: DataTypes.STRING,
         allowNull: true
     }
@@ -58,7 +58,7 @@ turno.belongsTo(paciente, {
 
 turno.belongsTo(profesional, {
     foreignKey: 'idprofesional',
-    as:'profesionales',
+    as:'profesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

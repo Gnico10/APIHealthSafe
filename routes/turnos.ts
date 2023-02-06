@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getTurnos, getTurno, postTurno, putTurno, deleteTurno } from '../controllers/turnos';
+import { getTurnos, getTurno, postTurno, deleteTurno } from '../controllers/turnos';
 
 const router = Router();
 
@@ -16,7 +16,6 @@ router.post('/', [
     // TODO: Agregar validaciones
 ], postTurno);
 
-router.put('/:id', putTurno);
 router.delete('/:id', [
     validarJWT
 ], deleteTurno);

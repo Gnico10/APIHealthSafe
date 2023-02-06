@@ -1,17 +1,57 @@
 import {Request, Response} from 'express';
 import Agenda from '../models/agenda';
 
+import Consultorio from '../models/consultorio';
+import Modalidad from '../models/modalidad';
+import Profesional from '../models/profesional';
+
 
 //get: all agendas
 export const getAgendas = async (req: Request, res: Response) => {
-    const agendas = await Agenda.findAll();
+    const agendas = await Agenda.findAll({
+        include: [
+            {
+                model: Profesional,
+                as: 'profesional',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Modalidad,
+                as: 'modalidad',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Consultorio,
+                as: 'consultorio',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            }
+        ]
+    });
     res.json({agendas});
 }
 
 //get: una sola agenda por id
 export const getAgenda = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const agenda = await Agenda.findByPk(id);
+    const agenda = await Agenda.findByPk(id, {
+        include: [
+            {
+                model: Profesional,
+                as: 'profesional',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Modalidad,
+                as: 'modalidad',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Consultorio,
+                as: 'consultorio',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            }
+        ]
+    });
 
     if (agenda){
         res.json(agenda);
@@ -22,34 +62,58 @@ export const getAgenda = async (req: Request, res: Response) => {
     }
 }
 export const postAgenda = async (req: Request, res: Response) => {
-    const { 
-                fechadesde, 
-                fechahasta,
-                idprofesional,
-                duracionturno,
-                horainicio,
-                horafin,
-                idmodalidad
-               } = req.body;
+    const {
+        fechadesde,
+        fechahasta,
+        horainicio,
+        horafin,
+        duracion,
+        precio,
+        idprofesional,
+        idmodalidad,
+        idconsultorio
+    } = req.body;
+
     try {
-      
         // Creación de instancia en la base de datos.
-        const agenda = Agenda.build({  
-             
-            fechadesde, 
+        const agenda = Agenda.build({
+            fechadesde,
             fechahasta,
-            idprofesional,
-            duracionturno,
             horainicio,
             horafin,
-            idmodalidad
+            duracion,
+            precio,
+            idprofesional,
+            idmodalidad,
+            idconsultorio
         });
 
         await agenda.save();
 
+        const agendaDB = Agenda.findOne({
+            where: {idagenda: agenda.idagenda},
+            include: [
+                {
+                    model: Profesional,
+                    as: 'profesional',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Modalidad,
+                    as: 'modalidad',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Consultorio,
+                    as: 'consultorio',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
+        });
+
         res.json({
             msg:'agenda dada de alta',
-            agenda
+            agenda: agendaDB
         });
     } catch (error) {
         console.log(error);
@@ -59,19 +123,7 @@ export const postAgenda = async (req: Request, res: Response) => {
     }
 
 }
-export const putAgenda = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { contrasena } = req.body;
 
-    try {
-    
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            msg: 'Error Interno. No se pudo Actualizar la agenda.'
-        });
-    }
-}
 
 export const deleteAgenda = async (req: Request, res: Response) => {
     const { id } = req.params;

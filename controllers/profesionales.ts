@@ -132,7 +132,7 @@ export const postProfesional = async (req: Request, res: Response) => {
 
         if (!usuario) {
             return res.status(400).json({
-                msg: 'El usuario no existe'
+                msg: 'El usuario no existe.'
             });
         }
         

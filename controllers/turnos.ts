@@ -1,4 +1,6 @@
 import {Request, Response} from 'express';
+
+import Agenda from '../models/agenda';
 import Turno from '../models/turno';
 
 
@@ -26,28 +28,82 @@ export const getTurno = async (req: Request, res: Response) => {
 
 export const postTurno = async (req: Request, res: Response) => {
     // Obtiene los datos del turno
-    const { fechasolicita,
-            precio,
-            idpago,
-            idagenda, 
-            idpaciente,
-            idprofesional,
-            idmodalidad, 
-            idobrasocial  } = req.body;
+    const { 
+        fecha,
+        horainicio,
+        horafin,
+        idprecio,
+        idagenda,
+        idpaciente,
+        idprofesional,
+        idmodalidad,
+        idconsultorio
+    } = req.body;
     try { 
         //TODO: Validaciones
+        let agenda : any = await Agenda.findByPk(idagenda);
+        if (!agenda) {
+            return res.status(400).json({
+                msg: 'La agenda no existe.'
+            });
+        }
+
+        let fechaTurno = new Date(fecha);
+        let fechadesdeAgenda = new Date(agenda.fechadesde);
+        let fechahastaAgenda = new Date(agenda.fechahasta);
+        if (fechaTurno.getTime() < fechadesdeAgenda.getTime() ||
+            fechaTurno.getTime() > fechahastaAgenda.getTime()) {
+            return res.status(400).json({
+                msg: 'La fecha no cumple con la configuración de la agenda.'
+            });
+        }
+
+        let horaInicioTurno = horainicio.split(':');
+        let horaInicioAgenda = agenda.horainicio.split(':');
+        if (horaInicioTurno[0] < horaInicioAgenda[0]) { // horas
+            return res.status(400).json({
+                msg: 'La hora inicio no cumple con la configuración de la agenda.'
+            });
+        }        
+
+        if (horaInicioTurno[0] == horaInicioAgenda[0] && // horas
+            horaInicioTurno[1] < horaInicioAgenda[1]) { // minutos
+            return res.status(400).json({
+                msg: 'Los minutos de lahora inicio no cumple con la configuración de la agenda.'
+            });
+        }
+
+        let horaFinTurno = horafin.split(':');
+        let horaFinAgenda = agenda.horafin.split(':');
+        if (horaFinTurno[0] > horaFinAgenda[0]) { // horas
+            return res.status(400).json({
+                msg: 'La hora fin no cumple con la configuración de la agenda.'
+            });
+        }
+
+        if (horaFinTurno[0] == horaFinAgenda[0] && // horas
+            horaFinTurno[1] > horaFinAgenda[1]) { // minutos
+            return res.status(400).json({
+                msg: 'Los minutos de la hora fin no cumple con la configuración de la agenda.'
+            });
+        }
         
         // Creación de instancia en la base de datos.
-        const turno = Turno.build({ fechasolicita,
-                                    precio,
-                                    idpago,
-                                    idagenda, 
-                                    idpaciente,
-                                    idprofesional,
-                                    idmodalidad, 
-                                    idobrasocial });
+        const turno = Turno.build({ 
+            fecha,
+            horainicio,
+            horafin,
+            idprecio,
+            idagenda,
+            idpaciente,
+            idprofesional,
+            idmodalidad,
+            idconsultorio 
+        });
 
         await turno.save();
+
+        //TODO: Obtener turno con sus datos y mostrar
         
         res.json({
             msg:'Turno dado de alta',
@@ -62,50 +118,6 @@ export const postTurno = async (req: Request, res: Response) => {
 
 }
 
-export const putTurno = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { fechasolicita,
-            precio,
-            idpago,
-            idagenda, 
-            idpaciente, 
-            idprofesional, 
-            idmodalidad, 
-            idobrasocial} = req.body;
-
-    try {
-        // Busca el turno según el id
-        const turno = await Turno.findByPk(id);
-
-        // Validar que el turno exista
-        if (!turno) {
-            return res.status(404).json({
-                msg: `No existe un Turno con el ID = ${id}`
-            });
-        }
-
-        // Actualiza el turno
-        await turno.update({fechasolicita,
-                            precio,
-                            idpago,
-                            idagenda, 
-                            idpaciente, 
-                            idprofesional, 
-                            idmodalidad, 
-                            idobrasocial});
-
-        res.json({
-            msg:'Turno actualizado con éxito.',
-            turno
-        });
-    
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            msg: 'Error Interno. No se pudo actualizar el turno.'
-        });
-    }
-}
 
 export const deleteTurno = async (req: Request, res: Response) => {
     const { id } = req.params;

@@ -46,7 +46,7 @@ const agenda = sequelize.define<IAgenda>('Agenda',
 
 agenda.belongsTo(profesional, {
     foreignKey: 'idprofesional',
-    as:'profesionales',
+    as:'profesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

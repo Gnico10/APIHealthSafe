@@ -47,7 +47,7 @@ export const postPaciente = async (req: Request, res: Response) => {
             }]        
         });
 
-        if (usuario) {
+        if (!usuario) {
             return res.status(400).json({
                 msg: 'El usuario no existe'
             });
