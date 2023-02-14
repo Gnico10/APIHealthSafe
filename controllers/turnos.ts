@@ -40,7 +40,8 @@ export const postTurno = async (req: Request, res: Response) => {
         idpaciente,
         idprofesional,
         idmodalidad,
-        idconsultorio
+        idconsultorio,
+    
     } = req.body;
     try { 
         //TODO: Validaciones
@@ -54,8 +55,6 @@ export const postTurno = async (req: Request, res: Response) => {
        
         let fechaTurno = new Date(fecha);
         let fechadesdeAgenda = new Date(agenda.fechadesde);
-        fechaTurno.setHours(0,0);
-        fechadesdeAgenda.setHours(0,0);
         let fechahastaAgenda = new Date(agenda.fechahasta);
         if (fechaTurno.getTime() < fechadesdeAgenda.getTime() ||
             fechaTurno.getTime() > fechahastaAgenda.getTime()) {
@@ -116,7 +115,7 @@ export const postTurno = async (req: Request, res: Response) => {
                   }
                 ]
               }}).then(count => {
-            if(count != 0){
+            if(count = 0){
               return res.status(400).json({
                 msg: 'El turno existe.'
               });
