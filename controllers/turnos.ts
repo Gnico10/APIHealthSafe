@@ -3,6 +3,8 @@ import {Request, Response} from 'express';
 import Agenda from '../models/agenda';
 import Turno from '../models/turno';
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 //get: all turnos
 export const getTurnos = async (req: Request, res: Response) => {
@@ -100,7 +102,20 @@ export const postTurno = async (req: Request, res: Response) => {
 
         } 
         //validación si el turno que se intenta crear existe o no
-            await Turno.count({where: {fechaTurno:fechaTurno}}).then(count => {
+            await Turno.count({where: {  fechaTurno: fechaTurno,
+                [Op.or]: [
+                  {
+                    horaInicio: {
+                      [Op.between]: [horainicio, horafin]
+                    }
+                  },
+                  {
+                    horaFin: {
+                      [Op.between]: [horainicio, horafin]
+                    }
+                  }
+                ]
+              }}).then(count => {
             if(count != 0){
               return res.status(400).json({
                 msg: 'El turno existe.'
