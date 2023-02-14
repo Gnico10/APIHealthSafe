@@ -93,7 +93,7 @@ export const postTurno = async (req: Request, res: Response) => {
         }
         // validación si la fecha actual es anterior a la fecha que se intenta crear un turno
        let  fechaActual = new Date();
-        if(fechaActual < fechaTurno ) {
+        if(fechaActual > fechaTurno) {
             return res.status(400).json({
                 msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
             })
