@@ -29,6 +29,7 @@ export const getTurno = async (req: Request, res: Response) => {
 export const postTurno = async (req: Request, res: Response) => {
     // Obtiene los datos del turno
     const { 
+        idturno,
         fecha,
         horainicio,
         horafin,
@@ -46,18 +47,21 @@ export const postTurno = async (req: Request, res: Response) => {
             return res.status(400).json({
                 msg: 'La agenda no existe.'
             });
-        }
 
+        }
+       
         let fechaTurno = new Date(fecha);
         let fechadesdeAgenda = new Date(agenda.fechadesde);
+        fechaTurno.setHours(0,0);
+        fechadesdeAgenda.setHours(0,0);
         let fechahastaAgenda = new Date(agenda.fechahasta);
         if (fechaTurno.getTime() < fechadesdeAgenda.getTime() ||
             fechaTurno.getTime() > fechahastaAgenda.getTime()) {
             return res.status(400).json({
                 msg: 'La fecha no cumple con la configuración de la agenda.'
             });
+            
         }
-
         let horaInicioTurno = horainicio.split(':');
         let horaInicioAgenda = agenda.horainicio.split(':');
         if (horaInicioTurno[0] < horaInicioAgenda[0]) { // horas
@@ -69,7 +73,7 @@ export const postTurno = async (req: Request, res: Response) => {
         if (horaInicioTurno[0] == horaInicioAgenda[0] && // horas
             horaInicioTurno[1] < horaInicioAgenda[1]) { // minutos
             return res.status(400).json({
-                msg: 'Los minutos de lahora inicio no cumple con la configuración de la agenda.'
+                msg: 'Los minutos de la hora inicio no cumple con la configuración de la agenda.'
             });
         }
 
@@ -87,9 +91,32 @@ export const postTurno = async (req: Request, res: Response) => {
                 msg: 'Los minutos de la hora fin no cumple con la configuración de la agenda.'
             });
         }
+        // validación si la fecha actual es anterior a la fecha que se intenta crear un turno
+       let  fechaActual = new Date();
+        if(fechaActual < fechaTurno ) {
+            return res.status(400).json({
+                msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
+            })
+
+        } 
+        //validación si el turno que se intenta crear existe o no
+            await Turno.count({where: {fechaTurno:fechaTurno}}).then(count => {
+            if(count != 0){
+              return res.status(400).json({
+                msg: 'El turno existe.'
+              });
+            }
+          });  
+    
+              
+     
+    
+    
+        //
         
         // Creación de instancia en la base de datos.
         const turno = Turno.build({ 
+          
             fecha,
             horainicio,
             horafin,
