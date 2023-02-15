@@ -75,6 +75,24 @@ export const postAgenda = async (req: Request, res: Response) => {
     } = req.body;
 
     try {
+        // Validaciones
+        // Si es presencial, cargar consultorio.
+        const modalidad = await Modalidad.findByPk(idmodalidad);
+        if (modalidad?.descripcion == 'Presencial' && idconsultorio == null){
+            return res.status(400).json({
+                msg: 'Si la modadalidad es Presencial, se debe cargar un consultorio médico.'
+            });
+        }
+
+        if (idconsultorio != null){
+            const consultorio = await Consultorio.findByPk(idconsultorio);
+            if (consultorio?.idprofesional != idprofesional){
+                return res.status(400).json({
+                    msg: 'El Consultorio Medico no pertenece al profesional informado.'
+                }); 
+            }
+        }
+
         // Creación de instancia en la base de datos.
         const agenda = Agenda.build({
             fechadesde,
