@@ -53,11 +53,11 @@ export const postTurno = async (req: Request, res: Response) => {
 
         }
        
-        let fechaTurno = new Date(fecha);
+        let fechaturno = new Date(fecha);
         let fechadesdeAgenda = new Date(agenda.fechadesde);
         let fechahastaAgenda = new Date(agenda.fechahasta);
-        if (fechaTurno.getTime() < fechadesdeAgenda.getTime() ||
-            fechaTurno.getTime() > fechahastaAgenda.getTime()) {
+        if (fechaturno.getTime() < fechadesdeAgenda.getTime() ||
+            fechaturno.getTime() > fechahastaAgenda.getTime()) {
             return res.status(400).json({
                 msg: 'La fecha no cumple con la configuración de la agenda.'
             });
@@ -93,23 +93,23 @@ export const postTurno = async (req: Request, res: Response) => {
             });
         }
         // validación si la fecha actual es anterior a la fecha que se intenta crear un turno
-       let  fechaActual = new Date();
-        if(fechaActual > fechaTurno) {
+        let fechaActual = new Date();
+        if(fechaActual.getTime() < fechaturno.getTime()) {
             return res.status(400).json({
                 msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
-            })
+            });
 
         } 
         //validación si el turno que se intenta crear existe o no
-            await Turno.count({where: {  fechaTurno: fechaTurno,
+             Turno.count({where: {  fecha: fecha,
                 [Op.or]: [
                   {
-                    horaInicio: {
+                    horainicio: {
                       [Op.between]: [horainicio, horafin]
                     }
                   },
                   {
-                    horaFin: {
+                    horafin: {
                       [Op.between]: [horainicio, horafin]
                     }
                   }
@@ -151,9 +151,9 @@ export const postTurno = async (req: Request, res: Response) => {
             turno
         });
     } catch (error) {
-        console.log(error);
+       
         res.status(500).json({
-            msg: 'Error Interno. No se pudo crear el turno.'
+            msg: 'Error General. No se pudo crear el turno.' +  error
         });
     }
 
