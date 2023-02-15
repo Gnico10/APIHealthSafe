@@ -18,15 +18,15 @@ const turno = sequelize.define<ITurno>('turno', {
     },
     fecha: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
     },
     horainicio: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     horafin: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     fechasolicita: {
         type: DataTypes.DATE,
@@ -36,9 +36,20 @@ const turno = sequelize.define<ITurno>('turno', {
     idprecio: { // Mercado Libre.
         type: DataTypes.STRING,
         allowNull: true
-    }
-},
-{
+    },
+     idprofesional: {
+         type: DataTypes.INTEGER,
+         allowNull: false
+    },
+    idpaciente: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    idagenda: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+   
     tableName: 'turnos'
 });
 
@@ -61,6 +72,7 @@ turno.belongsTo(profesional, {
     as:'profesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
+      
 });
 
 turno.belongsTo(modalidad, {
