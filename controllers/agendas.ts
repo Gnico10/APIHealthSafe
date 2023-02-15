@@ -84,7 +84,7 @@ export const postAgenda = async (req: Request, res: Response) => {
         let  fechaActual = new Date();
             console.log(fechaActual);
             if(fechaActual.getTime() > fechadesdeAgenda.getTime() ||
-               fechaActual.getTime() < fechahastaAgenda.getTime()) {
+               fechaActual.getTime() > fechahastaAgenda.getTime()) {
                 return res.status(400).json({
                     msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
                 })
