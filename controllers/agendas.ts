@@ -5,6 +5,9 @@ import Consultorio from '../models/consultorio';
 import Modalidad from '../models/modalidad';
 import Profesional from '../models/profesional';
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 
 //get: all agendas
 export const getAgendas = async (req: Request, res: Response) => {
@@ -75,6 +78,18 @@ export const postAgenda = async (req: Request, res: Response) => {
     } = req.body;
 
     try {
+        
+        let fechadesdeAgenda = new Date(fechadesde);
+        let fechahastaAgenda = new Date(fechahasta);
+        let  fechaActual = new Date();
+            console.log(fechaActual);
+            if(fechaActual.getTime() > fechadesdeAgenda.getTime() ||
+               fechaActual.getTime() < fechahastaAgenda.getTime()) {
+                return res.status(400).json({
+                    msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
+                })
+    
+            } 
         // Creación de instancia en la base de datos.
         const agenda = Agenda.build({
             fechadesde,
@@ -150,3 +165,5 @@ export const deleteAgenda = async (req: Request, res: Response) => {
         });
     }
 }
+
+  
