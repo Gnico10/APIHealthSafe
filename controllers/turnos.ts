@@ -102,54 +102,42 @@ export const postTurno = async (req: Request, res: Response) => {
         } 
         if (horaInicioTurno[0] > horaFinTurno[0] )  { // horas
         return res.status(400).json({
-               msg: 'La hora de inicio no puede ser mayor a la hora de fin'
+               msg: 'La hora de inicio no puede ser mayor a la horade fin'
             });
-    }
+        }
         if (horaInicioTurno[0] == horaFinTurno[0]  &&  // horas
             horaInicioTurno[1] > horaFinTurno[1]) { // minutos
             return res.status(400).json({
-       msg: 'Los minutos de inicio no puede ser mayor a los minutos de fin'
+         msg: 'Los minutos de inicio no puede ser mayor a los minutos de fin'
             });
         }
-        //validación si el turno que se intenta crear existe o no
-      // define una función asíncrona que recibe una solicitud y una respuesta
-    async function buscarTurno(req: Request, res: Response) {
-    const { fecha, horainicio, horafin } = req.body;
-  
-    // realiza la consulta para contar los turnos en la fecha y el rango de tiempo dados
-    const count = await Turno.count({
-      where: {
-        fecha: fecha,
-        [Op.and]: [
-          {
-            horainicio: {
-              [Op.between]: [horainicio, horafin]
+          
+            // Obtener los turnos existentes para la fecha dada y el rango de horarios
+            const turnosExistentes = await Turno.findAll({
+              where: {
+                fecha,
+                [Op.and]: [
+                  {
+                    horainicio: {
+                      [Op.between]: [horainicio, horafin]
+                    }
+                  },
+                  {
+                    horafin: {
+                      [Op.between]: [horainicio, horafin]
+                    }
+                  }
+                ]
+              }
+            });
+          
+            // Comprobar si existen turnos para el rango de horarios
+            if (turnosExistentes.length > 0) {
+                return res.status(400).json({
+                    msg: 'Ya existe un turno para este rango de horarios en la fecha dada.'
+                 }); 
             }
-          },
-          {
-            horafin: {
-              [Op.between]: [horainicio, horafin]
-            }
-          }
-        ]
-      }
-    });
-  
-    // comprueba si el recuento es cero y devuelve una respuesta JSON en consecuencia
-    if (count != 0) {
-      return res.status(400).json({
-        msg: 'El turno existe.'
-      });
-    } else {
-      return res.status(200).json({
-        msg: 'El turno está disponible.'
-      });
-    }
-
-   
-  }
-  
-  module.exports = { buscarTurno };
+          
     
         //
         
