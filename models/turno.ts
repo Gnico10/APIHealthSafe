@@ -37,7 +37,7 @@ const turno = sequelize.define<ITurno>('turno', {
         type: DataTypes.STRING,
         allowNull: true
     },
-     idprofesional: {
+    idprofesional: {
          type: DataTypes.INTEGER,
          allowNull: false
     },
@@ -49,9 +49,12 @@ const turno = sequelize.define<ITurno>('turno', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-   
+  
+},
+{
     tableName: 'turnos'
-});
+}
+);
 
 turno.belongsTo(agenda, {
     foreignKey: 'idagenda',
