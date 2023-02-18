@@ -64,6 +64,40 @@ export const getAgenda = async (req: Request, res: Response) => {
         });
     }
 }
+
+export const updatedAgenda = async (req: Request, res: Response) => {
+    const { precio } = req.params;
+    const {id} = req.body;
+    const idprofesional = req.params.idprofesional;
+
+    const agenda = await Agenda.findOne({ where: { id } });
+
+     if (!agenda) {
+      return res.status(404).json({
+      msg: `No se encontró ninguna agenda con el ID ${id}.`
+         });
+     }
+
+      if (agenda.idprofesional !== parseInt(idprofesional)) {
+        return res.status(403).json({
+        msg: 'No tienes permiso para actualizar esta agenda.'
+         });
+      }
+
+     const [numUpdated, updatedAgendas] = await Agenda.update(
+    { precio },
+    { where: { id } }
+    );
+
+    if (numUpdated > 0) {
+    res.json(updatedAgendas);
+     } else {
+    res.status(404).json({
+      msg: `No se encontró ninguna agenda con el ID ${id}.`
+    });
+  }
+};
+
 export const postAgenda = async (req: Request, res: Response) => {
     const {
         fechadesde,
