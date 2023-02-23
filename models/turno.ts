@@ -70,13 +70,13 @@ turno.belongsTo(paciente, {
     onDelete: 'RESTRICT',
 });
 
-turno.belongsTo(profesional, {
+/*turno.belongsTo(profesional, {
     foreignKey: 'idprofesional',
     as:'profesional',
     onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
+    onDelete: 'RESTRICT', 
       
-});
+});*/
 
 turno.belongsTo(modalidad, {
     foreignKey: 'idmodalidad',
