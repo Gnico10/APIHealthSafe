@@ -20,7 +20,13 @@ const mensaje = sequelize.define<IMensaje>('Mensaje',
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
-        }
+        },
+        created_at: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,
+          },
+      
     },
     {
         tableName: 'mensajes'

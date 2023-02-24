@@ -3,10 +3,10 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
-
+import http from 'http';
+import { Server, Socket } from 'socket.io';
 import sequelize from './db/connection';
 import sincronizarDB from './db/sincronizarDB';
-
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
 import profesionalRoutes from './routes/profesionales';
@@ -23,7 +23,26 @@ import colegiosmedicosRoutes from './routes/colegiosmedicos';
 import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
 
-class Server {
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket: Socket) => {
+  console.log("a user connected");
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+
+server.listen(3000, () => {
+  console.log("listening on *:3000");
+});
+
+
+
+class Servers {
 
     private app : Application;
     private port : string;
@@ -44,10 +63,12 @@ class Server {
         colegiosmedicos: '/api/colegiosmedicos',
         localidades: '/api/localidades',
         modalidades: '/api/modalidades',
+        mensajes:'/api/mensajes',
         // Más rutas
         default: '*'
+        
     }
-
+    
     private swaggerSpec: swaggerJsDoc.Options;
 
     constructor() {
@@ -76,7 +97,9 @@ class Server {
             },
             apis: [path.join(__dirname, './routes/*.js')]
         };
-
+       
+        
+       
         // Conexión a la base de datos.
         this.dbConnection();
 
@@ -86,6 +109,8 @@ class Server {
         // Define las rutas del api.
         this.routes();
     }
+  
+      
 
     async dbConnection() {
         try{
@@ -122,6 +147,7 @@ class Server {
         // Documentación Swagger;
         this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(this.swaggerSpec)));
     }
+    
 
     routes() {
         this.app.use(this.apiPaths.auth, authRoutes);
@@ -151,4 +177,5 @@ class Server {
     }
 }
 
-export default Server; // Esta clase se exporta por defecto.
+
+export default Servers; // Esta clase se exporta por defecto.
