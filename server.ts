@@ -20,7 +20,6 @@ import tiposmatriculasRoutes from './routes/tiposmatriculas';
 import colegiosmedicosRoutes from './routes/colegiosmedicos';
 import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
-import MessageController from './routes/mensajes';
 
 // Importar los paquetes necesarios
 import express, { Request, Response, Application } from 'express';
@@ -213,6 +212,7 @@ class Servers {
         this.app.use(this.apiPaths.colegiosmedicos, colegiosmedicosRoutes);
         this.app.use(this.apiPaths.localidades, localidadesRoutes);
         this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
+        this.app.use(this.apiPaths.mensajes, modalidadesRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {
