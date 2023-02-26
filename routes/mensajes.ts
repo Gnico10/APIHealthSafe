@@ -1,11 +1,10 @@
-// routes.ts
-
 import { Router } from 'express';
-import MessageController from '../controllers/mensajes';
+import { crearMensajeria, enviarMensaje, obtenerMensajes } from '../controllers/mensajes';
 
 const router = Router();
 
-router.get('/messages', MessageController.getMessages);
-router.post('/messages', MessageController.addMessage);
+router.post('/mensajeria', crearMensajeria);
+router.post('/mensaje', enviarMensaje);
+router.get('/mensajes/:idmensajeria', obtenerMensajes);
 
 export default router;

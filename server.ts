@@ -1,10 +1,8 @@
 import path from 'path';
-import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
 import http from 'http';
-import { Server, Socket } from 'socket.io';
 import sequelize from './db/connection';
 import sincronizarDB from './db/sincronizarDB';
 import authRoutes from './routes/auth';
@@ -22,25 +20,75 @@ import tiposmatriculasRoutes from './routes/tiposmatriculas';
 import colegiosmedicosRoutes from './routes/colegiosmedicos';
 import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
+import MessageController from './routes/mensajes';
 
+// Importar los paquetes necesarios
+import express, { Request, Response, Application } from 'express';
+import { Server } from 'socket.io';
+import Mensajeria from './models/mensajeria';
+import Mensaje from './models/mensaje';
 
+// Inicializar la aplicación Express y el servidor HTTP
 const app = express();
 const server = http.createServer(app);
+
+// Inicializar el servidor Socket.io
 const io = new Server(server);
 
-io.on("connection", (socket: Socket) => {
-  console.log("a user connected");
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+// Configurar la conexión de Socket.io
+io.on('connection', (socket) => {
+  console.log('Usuario conectado:', socket.id);
+  
+  // Manejar la recepción de mensajes de un usuario
+  socket.on('mensaje', async (data) => {
+    const { idmensajeria, mensaje } = data;
+    
+    // Guardar el mensaje en la base de datos
+    const nuevoMensaje = await Mensaje.create({ idmensajeria, mensaje });
+    
+    // Enviar el mensaje a todos los usuarios conectados a la misma mensajería
+    io.to(`mensajeria-${idmensajeria}`).emit('mensaje', nuevoMensaje);
+  });
+  
+  // Manejar la conexión de un usuario a una mensajería
+  socket.on('conectar', (data) => {
+    const { idmensajeria } = data;
+    
+    // Unir al usuario a la sala correspondiente a la mensajería
+   socket.join(`mensajeria-${idmensajeria}`);
+  });
+  
+  // Manejar la desconexión de un usuario
+  socket.on('disconnect', () => {
+    console.log('Usuario desconectado:', socket.id);
   });
 });
 
-server.listen(3000, () => {
-  console.log("listening on *:3000");
+// Configurar las rutas de la aplicación
+app.get('/mensajerias', async (req: Request, res: Response) => {
+  // Obtener todas las mensajerías de la base de datos
+  const mensajerias = await Mensajeria.findAll();
+  
+  // Enviar las mensajerías como respuesta
+  res.json(mensajerias);
 });
 
+app.get('/mensajerias/:id/mensajes', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  
+  // Obtener todos los mensajes de una mensajería específica
+  const mensajes = await Mensaje.findAll({ where: { idmensajeria: id } });
+  
+  // Enviar los mensajes como respuesta
+  res.json(mensajes);
+});
 
+// Iniciar el servidor
+sequelize.sync().then(() => {
+  server.listen(3000, () => {
+    console.log('Servidor iniciado en el puerto 3000');
+  });
+});
 
 class Servers {
 
@@ -68,7 +116,7 @@ class Servers {
         default: '*'
         
     }
-    
+      
     private swaggerSpec: swaggerJsDoc.Options;
 
     constructor() {
