@@ -4,7 +4,7 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getAgendas, getAgenda, postAgenda, deleteAgenda } from '../controllers/agendas';
+import { getAgendas, getAgenda, postAgenda, deleteAgenda} from '../controllers/agendas';
 
 
 const router = Router();
@@ -17,9 +17,14 @@ router.post('/', [
     // TODO: Agregar validaciones
 ], postAgenda);
 
+/*router.put('/', 
+    // TODO: Agregar validaciones
+    
+ updatedAgenda);
+
 router.delete('/:id', [
     validarJWT
-], deleteAgenda);
+], deleteAgenda);*/
 
 
 export default router;
