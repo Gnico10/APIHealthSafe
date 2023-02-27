@@ -26,11 +26,4 @@ profesional.belongsTo(usuario, {
     onDelete: 'RESTRICT',
 });
 
-profesional.belongsTo(profesional, {
-    foreignKey: 'iddireccion',
-    as: 'direccion',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
-
 export default profesional;

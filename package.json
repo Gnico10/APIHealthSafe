@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "ts-node-dev app.ts",
-        "docker:run": "docker compose up --build",
+        "docker:run": "docker compose up -d --build",
         "start": "tsc && node ./dist/app.js"
     },
     "keywords": [],
