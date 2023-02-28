@@ -123,64 +123,43 @@ export const postAgenda = async (req: Request, res: Response) => {
         
         let fechadesdeAgenda = new Date(fechadesde);
         let fechahastaAgenda = new Date(fechahasta);
-        let  fechaActual = new Date();
-            console.log(fechaActual);
-            if(fechaActual.getTime() > fechadesdeAgenda.getTime() ||
-               fechaActual.getTime() > fechahastaAgenda.getTime()) {
-                return res.status(400).json({
-                    msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
-                })
-    
-            } 
-             // Obtener las agendas existentes para la fecha dada y el rango de horarios
-             const agendasExistentes = await Agenda.findAll({
-                where: {
-                  [Op.and]: [
+        let fechaActual = new Date();
+        if(fechaActual.getTime() > fechadesdeAgenda.getTime() ||
+            fechaActual.getTime() > fechahastaAgenda.getTime()) {
+            return res.status(400).json({
+                msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
+            })
+        } 
+        
+        // Obtener las agendas existentes para la fecha dada y el rango de horarios
+        const agendasExistentes = await Agenda.findAll({
+            where: {
+                [Op.and]: [
                     {
-                      horainicio: {
-                        [Op.lt]: horafin // La hora de inicio debe ser menor que la hora de fin
-                      },
-                      horafin: {
-                        [Op.gt]: horainicio // La hora de fin debe ser mayor que la hora de inicio
-                      }
+                        horainicio: {[Op.lt]: horafin}, // La hora de inicio debe ser menor que la hora de fin
+                        horafin: {[Op.gt]: horainicio} // La hora de fin debe ser mayor que la hora de inicio
                     },
                     {
-                      [Op.or]: [
-                        {
-                          fechadesde: {
-                            [Op.between]: [fechadesde, fechahasta]
-                          }
-                        },
-                        {
-                          fechahasta: {
-                            [Op.between]: [fechadesde, fechahasta]
-                          }
-                        },
-                        {
-                          [Op.and]: [
+                        [Op.or]: [
+                            {fechadesde: {[Op.between]: [fechadesde, fechahasta]}},
+                            {fechahasta: {[Op.between]: [fechadesde, fechahasta]}},
                             {
-                              fechadesde: {
-                                [Op.lt]: fechadesde // La fecha de inicio debe ser menor que la fecha de inicio buscada
-                              },
-                              fechahasta: {
-                                [Op.gt]: fechahasta // La fecha de fin debe ser mayor que la fecha de fin buscada
-                              }
+                                [Op.and]: [{
+                                    fechadesde: {[Op.lt]: fechadesde}, // La fecha de inicio debe ser menor que la fecha de inicio buscada
+                                    fechahasta: {[Op.gt]: fechahasta} // La fecha de fin debe ser mayor que la fecha de fin buscada
+                                }]
                             }
-                          ]
-                        }
-                      ]
+                        ]
                     }
-                  ]
-                }
-              });
-              
-            
-              // Comprobar si existen turnos para el rango de horarios
-              if (agendasExistentes.length > 0) {
-                  return res.status(400).json({
-                      msg: 'Ya existe una agenda para este rango de fechas y horarios dados'
-                   }); 
-              }
+                ]
+            }
+        });
+
+        if (agendasExistentes.length > 0) {
+            return res.status(400).json({
+                msg: 'Ya existe una agenda para este rango de fechas y horarios dados'
+            }); 
+        }
               
         // Creación de instancia en la base de datos.
         const agenda = Agenda.build({

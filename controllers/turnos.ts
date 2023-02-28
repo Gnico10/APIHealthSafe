@@ -44,7 +44,7 @@ export const postTurno = async (req: Request, res: Response) => {
     
     } = req.body;
     try { 
-        //TODO: Validaciones
+        // Validaciones
         let agenda : any = await Agenda.findByPk(idagenda);
         if (!agenda) {
             return res.status(400).json({
@@ -112,38 +112,26 @@ export const postTurno = async (req: Request, res: Response) => {
             });
         }
           
-            // Obtener los turnos existentes para la fecha dada y el rango de horarios
-            const turnosExistentes = await Turno.findAll({
-              where: {
+        // Obtener los turnos existentes para la fecha dada y el rango de horarios
+        const turnosExistentes = await Turno.findAll({
+            where: {
                 fecha,
                 [Op.and]: [
-                  {
-                    horainicio: {
-                      [Op.between]: [horainicio, horafin]
-                    }
-                  },
-                  {
-                    horafin: {
-                      [Op.between]: [horainicio, horafin]
-                    }
-                  }
+                    {horainicio: {[Op.between]: [horainicio, horafin]}},
+                    {horafin: {[Op.between]: [horainicio, horafin]}}
                 ]
-              }
-            });
-          
-            // Comprobar si existen turnos para el rango de horarios
-            if (turnosExistentes.length > 0) {
-                return res.status(400).json({
-                    msg: 'Ya existe un turno para este rango de horarios en la fecha dada.'
-                 }); 
             }
+        });
           
-    
-        //
+        // Comprobar si existen turnos para el rango de horarios
+        if (turnosExistentes.length > 0) {
+            return res.status(400).json({
+                msg: 'Ya existe un turno para este rango de horarios en la fecha dada.'
+                }); 
+        }
         
         // Creación de instancia en la base de datos.
         const turno = Turno.build({ 
-          
             fecha,
             horainicio,
             horafin,
@@ -164,9 +152,9 @@ export const postTurno = async (req: Request, res: Response) => {
             turno
         });
     } catch (error) {
-       
+        console.log(error);
         res.status(500).json({
-            msg: 'Error General. No se pudo crear el turno.' +  error
+            msg: 'Error General. No se pudo crear el turno.'
         });
     }
 
