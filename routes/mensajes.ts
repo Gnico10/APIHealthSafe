@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { crearMensajeria, enviarMensaje, obtenerMensajes } from '../controllers/mensajes';
+import { getMensajes, postMensaje  } from '../controllers/mensajes';
 
 const router = Router();
 
-router.post('/mensajeria', crearMensajeria);
-router.post('/mensaje', enviarMensaje);
-router.get('/mensajes/:idmensajeria', obtenerMensajes);
+
+router.post('/', postMensaje);
+router.get('/:idmensajeria', getMensajes);
 
 export default router;

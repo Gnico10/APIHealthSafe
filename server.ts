@@ -1,8 +1,9 @@
 import path from 'path';
 import cors from 'cors';
+import http from 'http';
+import express, { Application } from 'express';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
-import http from 'http';
 import sequelize from './db/connection';
 import sincronizarDB from './db/sincronizarDB';
 import authRoutes from './routes/auth';
@@ -20,79 +21,15 @@ import tiposmatriculasRoutes from './routes/tiposmatriculas';
 import colegiosmedicosRoutes from './routes/colegiosmedicos';
 import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
+import mensajesRoutes from './routes/mensajes';
+import mensajeriaRoutes from './routes/mensajeria';
 
-// Importar los paquetes necesarios
-import express, { Request, Response, Application } from 'express';
-import { Server } from 'socket.io';
-import Mensajeria from './models/mensajeria';
-import Mensaje from './models/mensaje';
 
-// Inicializar la aplicación Express y el servidor HTTP
-const app = express();
-const server = http.createServer(app);
-
-// Inicializar el servidor Socket.io
-const io = new Server(server);
-
-// Configurar la conexión de Socket.io
-io.on('connection', (socket) => {
-  console.log('Usuario conectado:', socket.id);
-  
-  // Manejar la recepción de mensajes de un usuario
-  socket.on('mensaje', async (data) => {
-    const { idmensajeria, mensaje } = data;
-    
-    // Guardar el mensaje en la base de datos
-    const nuevoMensaje = await Mensaje.create({ idmensajeria, mensaje });
-    
-    // Enviar el mensaje a todos los usuarios conectados a la misma mensajería
-    io.to(`mensajeria-${idmensajeria}`).emit('mensaje', nuevoMensaje);
-  });
-  
-  // Manejar la conexión de un usuario a una mensajería
-  socket.on('conectar', (data) => {
-    const { idmensajeria } = data;
-    
-    // Unir al usuario a la sala correspondiente a la mensajería
-   socket.join(`mensajeria-${idmensajeria}`);
-  });
-  
-  // Manejar la desconexión de un usuario
-  socket.on('disconnect', () => {
-    console.log('Usuario desconectado:', socket.id);
-  });
-});
-
-// Configurar las rutas de la aplicación
-app.get('/mensajerias', async (req: Request, res: Response) => {
-  // Obtener todas las mensajerías de la base de datos
-  const mensajerias = await Mensajeria.findAll();
-  
-  // Enviar las mensajerías como respuesta
-  res.json(mensajerias);
-});
-
-app.get('/mensajerias/:id/mensajes', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  
-  // Obtener todos los mensajes de una mensajería específica
-  const mensajes = await Mensaje.findAll({ where: { idmensajeria: id } });
-  
-  // Enviar los mensajes como respuesta
-  res.json(mensajes);
-});
-
-// Iniciar el servidor
-sequelize.sync().then(() => {
-  server.listen(3000, () => {
-    console.log('Servidor iniciado en el puerto 3000');
-  });
-});
-
-class Servers {
+class Server {
 
     private app : Application;
     private port : string;
+    public server: any;
     
     private apiPaths = {
         auth: '/api/auth',
@@ -111,6 +48,7 @@ class Servers {
         localidades: '/api/localidades',
         modalidades: '/api/modalidades',
         mensajes:'/api/mensajes',
+        mensajeria:'/api/mensajeria',
         // Más rutas
         default: '*'
         
@@ -121,6 +59,7 @@ class Servers {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '8080';
+        this.server = http.createServer(this.app);
 
         // Configuración de Swagger
         this.swaggerSpec = {
@@ -212,7 +151,9 @@ class Servers {
         this.app.use(this.apiPaths.colegiosmedicos, colegiosmedicosRoutes);
         this.app.use(this.apiPaths.localidades, localidadesRoutes);
         this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
-        this.app.use(this.apiPaths.mensajes, modalidadesRoutes);
+        this.app.use(this.apiPaths.mensajes, mensajesRoutes);
+        this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
+    
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {
@@ -221,9 +162,9 @@ class Servers {
     }
 
     listen() {
-        this.app.listen(this.port);
+        this.server.listen(this.port);
     }
 }
 
 
-export default Servers; // Esta clase se exporta por defecto.
+export default Server; // Esta clase se exporta por defecto.
