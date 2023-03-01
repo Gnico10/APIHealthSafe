@@ -14,7 +14,7 @@ export const getRoles = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los roles.'
+            msg: 'Error Interno. No se pudo consultar los roles'
         });
     }
 }
@@ -29,7 +29,7 @@ export const getRol = async (req: Request, res: Response) => {
 
         if (!rol) {
             return res.status(400).json({
-                msg: `El rol con id ${id} no existe.`
+                msg: `El rol con id ${id} no existe`
             });
         }
 
@@ -39,7 +39,7 @@ export const getRol = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar el rol.'
+            msg: 'Error Interno. No se pudo consultar el rol'
         });
     }
 }

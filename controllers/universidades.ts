@@ -20,7 +20,7 @@ export const getUniversidades = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar las universidades.'
+            msg: 'Error Interno. No se pudo consultar las universidades'
         });
     }
 }
@@ -50,7 +50,7 @@ export const getUniversidad = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar la universidad.'
+            msg: 'Error Interno. No se pudo consultar la universidad'
         });
     }
 }

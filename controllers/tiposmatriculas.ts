@@ -15,7 +15,7 @@ export const getTiposMatriculas = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los tiposmatriculas.'
+            msg: 'Error Interno. No se pudo consultar los tiposmatriculas'
         });
     }
 }
@@ -30,7 +30,7 @@ export const getTipoMatricula = async (req: Request, res: Response) => {
 
         if (!tipomatricula) {
             return res.status(400).json({
-                msg: `El tipo matricula con id ${id} no existe.`
+                msg: `El tipo matricula con id ${id} no existe`
             });
         }
 
@@ -40,7 +40,7 @@ export const getTipoMatricula = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar el tipo matricula.'
+            msg: 'Error Interno. No se pudo consultar el tipo matricula'
         });
     }
 }

@@ -12,6 +12,14 @@ const mensajeria = sequelize.define<IMensajeria>('Mensajeria',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
+        },
+        idpaciente:   {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idprofesional: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

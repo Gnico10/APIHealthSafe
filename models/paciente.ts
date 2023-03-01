@@ -12,6 +12,14 @@ const paciente = sequelize.define<IPaciente>('Paciente',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
+        },
+        idusuario: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idhistoriaclinica: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

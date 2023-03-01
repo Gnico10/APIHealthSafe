@@ -20,7 +20,7 @@ export const getColegiosMedicos = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los colegios medicos.'
+            msg: 'Error Interno. No se pudo consultar los colegios medicos'
         });
     }
 }
@@ -48,7 +48,7 @@ export const getColegioMedico = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar el colegio medico.'
+            msg: 'Error Interno. No se pudo consultar el colegio medico'
         });
     }
 }

@@ -21,6 +21,10 @@ const direccion = sequelize.define<IDireccion>('Direccion',
             allowNull: false,
         },
         numero: {type: DataTypes.STRING(5)},
+        codpostal: {
+            type: DataTypes.STRING(10),
+            allowNull: false
+        }
     },
     {
         tableName: 'direcciones'

@@ -15,7 +15,11 @@ const universidad = sequelize.define<IUniversidad>('Universidad',
         nombre: {
             type: DataTypes.STRING(50),
             allowNull: false
-        }
+        },
+        idpais: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
     },
     {
         tableName: 'universidades'

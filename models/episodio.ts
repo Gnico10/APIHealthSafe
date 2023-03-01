@@ -20,7 +20,27 @@ const episodio = sequelize.define<IEpisodio>('Episodio',
         descripcion: DataTypes.TEXT,
         fechahora: {
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: false
+        },
+        idhistoriaclinica: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idprescripcion: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idindicacion: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idcitamedica: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idcitamedicaemergencia: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

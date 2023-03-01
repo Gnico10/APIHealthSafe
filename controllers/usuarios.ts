@@ -79,7 +79,7 @@ export const postUsuario = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo crear el usuario.'
+            msg: 'Error Interno. No se pudo crear el usuario'
         });
     }
 }
@@ -104,14 +104,14 @@ export const putUsuario = async (req: Request, res: Response) => {
         });
 
         res.json({
-            msg:'Usuario actualizado con éxito.',
+            msg:'Usuario actualizado con éxito',
             usuario
         });
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo actualizar el usuario.'
+            msg: 'Error Interno. No se pudo actualizar el usuario'
         });
     }
 }
@@ -131,14 +131,14 @@ export const deleteUsuario = async (req: Request, res: Response) => {
         await usuario.destroy();
 
         res.json({
-            msg: 'El usuario fué eliminado con éxito.',
+            msg: 'El usuario fué eliminado con éxito',
             usuario
         });
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo eliminar el usuario.'
+            msg: 'Error Interno. No se pudo eliminar el usuario'
         });
     }
 }

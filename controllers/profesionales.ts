@@ -29,7 +29,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
             let especialidad = await Especialidad.findByPk(Number(idespecialidad));
             if (!especialidad){
                 return res.status(404).json({
-                    msg: `La especialidad con id ${idespecialidad} no existe.`
+                    msg: `La especialidad con id ${idespecialidad} no existe`
                 });
             }
             
@@ -39,7 +39,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
             });
             if (profesionales_especialidades.length == 0){
                 return res.status(404).json({
-                    msg: `No existen profesionales con la especialidad ${idespecialidad} : ${especialidad?.descripcion}.`
+                    msg: `No existen profesionales con la especialidad ${idespecialidad} : ${especialidad?.descripcion}`
                 });
             }
             
@@ -69,7 +69,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
             });
             if (consultorios.length == 0){
                 return res.status(404).json({
-                    msg: `No existen profesionales con consultorios médicos con código postal ${codpostal}.`
+                    msg: `No existen profesionales con consultorios médicos con código postal ${codpostal}`
                 });
             }
             
@@ -91,7 +91,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
             let modalidad = await Modalidad.findByPk(Number(idmodalidad));
             if (!modalidad){
                 return res.status(404).json({
-                    msg: `La modalidad con id ${idmodalidad} no existe.`
+                    msg: `La modalidad con id ${idmodalidad} no existe`
                 });
             }
 
@@ -107,7 +107,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
             });
             if (agendas.length == 0){
                 return res.status(404).json({
-                    msg: `No existen profesionales que atiendan con modalidad ${idmodalidad} : ${modalidad?.descripcion}.`
+                    msg: `No existen profesionales que atiendan con modalidad ${idmodalidad} : ${modalidad?.descripcion}`
                 });
             }
             
@@ -155,7 +155,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los profesionales.'
+            msg: 'Error Interno. No se pudo consultar los profesionales'
         });
     }
 }
@@ -216,7 +216,7 @@ export const postProfesional = async (req: Request, res: Response) => {
     
         if (existeProfesional) {
             return res.status(400).json({
-                msg: 'El Profesional ya existe.'
+                msg: 'El Profesional ya existe'
             });
         }
     
@@ -229,13 +229,13 @@ export const postProfesional = async (req: Request, res: Response) => {
 
         if (!usuario) {
             return res.status(400).json({
-                msg: 'El usuario no existe.'
+                msg: 'El usuario no existe'
             });
         }
         
         if (usuario.rol.descripcion != 'Profesional') {
             return res.status(400).json({
-                msg: 'El usuario seleccionado no es un Profesional.'
+                msg: 'El usuario seleccionado no es un Profesional'
             }); 
         }
 
@@ -314,7 +314,7 @@ export const postProfesional = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo crear el profesional.'
+            msg: 'Error Interno. No se pudo crear el profesional'
         });
     }
 }

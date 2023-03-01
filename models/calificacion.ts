@@ -15,9 +15,17 @@ const calificacion = sequelize.define<ICalificacion>('calificacion',
         },
         numcalificacion: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false
         },
-        comentario: DataTypes.TEXT
+        comentario: DataTypes.TEXT,
+        idpaciente: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idprofesional: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     },
     {
         tableName: 'calificaciones'

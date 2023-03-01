@@ -15,7 +15,7 @@ export const getLocalidades = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar las localidades.'
+            msg: 'Error Interno. No se pudo consultar las localidades'
         });
     }
 }
@@ -40,7 +40,7 @@ export const getLocalidad = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar la localidad.'
+            msg: 'Error Interno. No se pudo consultar la localidad'
         });
     }
 }

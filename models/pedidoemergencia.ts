@@ -22,6 +22,14 @@ const pedidoemergencia = sequelize.define<IPedidoEmergencia>('Pedidoemergencia',
         estado: {
             type: DataTypes.STRING(10),
             allowNull: false,
+        },
+        idespecialidad:  {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idpaciente:  {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

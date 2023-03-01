@@ -11,49 +11,43 @@ import profesional from "./profesional";
 import consultorio from "./consultorio";
 
 const turno = sequelize.define<ITurno>('turno', {
-    idturno: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        idturno: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        fecha: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        horainicio: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        horafin: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        fechasolicita: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        },
+        idprecio: { // Mercado Pago.
+            type: DataTypes.STRING
+        },
+        idpaciente: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idagenda: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idconsultorio: {type: DataTypes.INTEGER}
     },
-    fecha: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-    },
-    horainicio: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    horafin: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    fechasolicita: {
-        type: DataTypes.DATE,
-        allowNull: true,
-        defaultValue: DataTypes.NOW
-    },
-    idprecio: { // Mercado Libre.
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-    idprofesional: {
-         type: DataTypes.INTEGER,
-         allowNull: false
-    },
-    idpaciente: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    idagenda: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-  
-},
-{
-    tableName: 'turnos'
-}
+    {
+        tableName: 'turnos'
+    }
 );
 
 turno.belongsTo(agenda, {
@@ -69,14 +63,6 @@ turno.belongsTo(paciente, {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
-
-/*turno.belongsTo(profesional, {
-    foreignKey: 'idprofesional',
-    as:'profesional',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT', 
-      
-});*/
 
 turno.belongsTo(modalidad, {
     foreignKey: 'idmodalidad',

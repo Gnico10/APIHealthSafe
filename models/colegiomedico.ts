@@ -14,7 +14,11 @@ const colegiomedico = sequelize.define<IColegioMedico>('ColegioMedico',
         },
         nombre: {
             type: DataTypes.STRING(50),
-            allowNull: false,
+            allowNull: false
+        },
+        idpais: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

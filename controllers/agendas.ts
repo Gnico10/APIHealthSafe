@@ -1,13 +1,11 @@
 import {Request, Response} from 'express';
+import { Op } from 'sequelize';
 import Agenda from '../models/agenda';
 
 import Consultorio from '../models/consultorio';
 import Modalidad from '../models/modalidad';
 import Profesional from '../models/profesional';
-
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-
+import Turno from '../models/turno';
 
 //get: all agendas
 export const getAgendas = async (req: Request, res: Response) => {
@@ -81,7 +79,7 @@ export const updatedAgenda = async (req: Request, res: Response) => {
 
       if (agenda.idprofesional !== parseInt(idprofesional)) {
         return res.status(403).json({
-        msg: 'No tienes permiso para actualizar esta agenda.'
+        msg: 'No tienes permiso para actualizar esta agenda'
          });
       }
 
@@ -107,7 +105,7 @@ export const postAgenda = async (req: Request, res: Response) => {
         const modalidad = await Modalidad.findByPk(idmodalidad);
         if (modalidad?.descripcion == 'Presencial' && idconsultorio == null){
             return res.status(400).json({
-                msg: 'Si la modadalidad es Presencial, se debe cargar un consultorio médico.'
+                msg: 'Si la modadalidad es Presencial, se debe cargar un consultorio médico'
             });
         }
 
@@ -115,21 +113,27 @@ export const postAgenda = async (req: Request, res: Response) => {
             const consultorio = await Consultorio.findByPk(idconsultorio);
             if (consultorio?.idprofesional != idprofesional){
                 return res.status(400).json({
-                    msg: 'El Consultorio Medico no pertenece al profesional informado.'
+                    msg: 'El Consultorio Medico no pertenece al profesional informado'
                 }); 
             }
         }
         
-        
-        let fechadesdeAgenda = new Date(fechadesde);
-        let fechahastaAgenda = new Date(fechahasta);
+        let fechadesdeAgenda = new Date(`${fechadesde}T00:00:00`);
+        let fechahastaAgenda = new Date(`${fechahasta}T23:59:59`);
         let fechaActual = new Date();
+
         if(fechaActual.getTime() > fechadesdeAgenda.getTime() ||
             fechaActual.getTime() > fechahastaAgenda.getTime()) {
             return res.status(400).json({
                 msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
             })
-        } 
+        }
+
+        if(fechadesdeAgenda.getTime() > fechahastaAgenda.getTime()){
+            return res.status(400).json({
+                msg: 'La fecha desde no puede ser mayor que la fecha hasta'
+            })
+        }
         
         // Obtener las agendas existentes para la fecha dada y el rango de horarios
         const agendasExistentes = await Agenda.findAll({
@@ -176,35 +180,14 @@ export const postAgenda = async (req: Request, res: Response) => {
 
         await agenda.save();
 
-        const agendaDB = Agenda.findOne({
-            where: {idagenda: agenda.idagenda},
-            include: [
-                {
-                    model: Profesional,
-                    as: 'profesional',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Modalidad,
-                    as: 'modalidad',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Consultorio,
-                    as: 'consultorio',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                }
-            ]
-        });
-
         res.json({
             msg:'agenda dada de alta',
-            agenda: agendaDB
+            agenda
         });
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo crear la agenda.'
+            msg: 'Error Interno. No se pudo crear la agenda'
         });
     }
 
@@ -215,6 +198,7 @@ export const deleteAgenda = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
+        // validar que exista la agenda
         const agenda = await Agenda.findByPk(id);
         if (!agenda) {
             return res.status(404).json({
@@ -222,17 +206,28 @@ export const deleteAgenda = async (req: Request, res: Response) => {
             });
         }
 
+        // Validar que no tenga turnos ocupados.
+        const turnos = await Turno.findAll({
+            where: {idagenda: agenda.idagenda}
+        })
+        console.log(turnos)
+        if (turnos.length > 0) {
+            return res.status(404).json({
+                msg: 'No se puede eliminar una agenda con turnos ocupados'
+            });
+        }
+
         await agenda.destroy();
 
         res.json({
-            msg: 'La agenda fué eliminado con éxito.',
+            msg: 'La agenda fué eliminado con éxito',
             agenda
         });
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo Actualizar la agenda.'
+            msg: 'Error Interno. No se pudo Actualizar la agenda'
         });
     }
 }

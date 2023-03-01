@@ -1,7 +1,9 @@
 import {Request, Response} from 'express';
 
 import Agenda from '../models/agenda';
+import Usuario from '../models/usuario';
 import Turno from '../models/turno';
+import Paciente from '../models/paciente';
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -31,50 +33,47 @@ export const getTurno = async (req: Request, res: Response) => {
 export const postTurno = async (req: Request, res: Response) => {
     // Obtiene los datos del turno
     const { 
-        idturno,
         fecha,
         horainicio,
         horafin,
         idprecio,
         idagenda,
         idpaciente,
-        idprofesional,
         idmodalidad,
         idconsultorio,
-    
     } = req.body;
+
     try { 
         // Validaciones
         let agenda : any = await Agenda.findByPk(idagenda);
         if (!agenda) {
             return res.status(400).json({
-                msg: 'La agenda no existe.'
+                msg: 'La agenda no existe'
             });
-
         }
        
-        let fechaturno = new Date(fecha);
+        let fechaturno = new Date(`${fecha}T00:00:00`);
         let fechadesdeAgenda = new Date(agenda.fechadesde);
         let fechahastaAgenda = new Date(agenda.fechahasta);
         if (fechaturno.getTime() < fechadesdeAgenda.getTime() ||
             fechaturno.getTime() > fechahastaAgenda.getTime()) {
             return res.status(400).json({
-                msg: 'La fecha no cumple con la configuración de la agenda.'
+                msg: 'La fecha no cumple con la configuración de la agenda'
             });
-            
         }
+
         let horaInicioTurno = horainicio.split(':');
         let horaInicioAgenda = agenda.horainicio.split(':');
         if (horaInicioTurno[0] < horaInicioAgenda[0]) { // horas
             return res.status(400).json({
-                msg: 'La hora inicio no cumple con la configuración de la agenda.'
+                msg: 'La hora inicio no cumple con la configuración de la agenda'
             });
-        }        
+        }
 
         if (horaInicioTurno[0] == horaInicioAgenda[0] && // horas
             horaInicioTurno[1] < horaInicioAgenda[1]) { // minutos
             return res.status(400).json({
-                msg: 'Los minutos de la hora inicio no cumple con la configuración de la agenda.'
+                msg: 'Los minutos de la hora inicio no cumple con la configuración de la agenda'
             });
         }
 
@@ -82,36 +81,39 @@ export const postTurno = async (req: Request, res: Response) => {
         let horaFinAgenda = agenda.horafin.split(':');
         if (horaFinTurno[0] > horaFinAgenda[0]) { // horas
             return res.status(400).json({
-                msg: 'La hora fin no cumple con la configuración de la agenda.'
+                msg: 'La hora fin no cumple con la configuración de la agenda'
             });
         }
 
         if (horaFinTurno[0] == horaFinAgenda[0] && // horas
             horaFinTurno[1] > horaFinAgenda[1]) { // minutos
             return res.status(400).json({
-                msg: 'Los minutos de la hora fin no cumple con la configuración de la agenda.'
+                msg: 'Los minutos de la hora fin no cumple con la configuración de la agenda'
             });
         }
+
         // validación si la fecha actual es anterior a la fecha que se intenta crear un turno
         let fechaActual = new Date();
+
         if(fechaActual.getTime() > fechaturno.getTime()) {
             return res.status(400).json({
                 msg: 'La fecha ingresada es anterior a la fecha actual, debe ingresar una fecha posterior'
             });
+        }
 
-        } 
-        if (horaInicioTurno[0] > horaFinTurno[0] )  { // horas
+        if (horaInicioTurno[0] > horaFinTurno[0])  { // horas
         return res.status(400).json({
-               msg: 'La hora de inicio no puede ser mayor a la horade fin'
+               msg: 'La hora de inicio no puede ser mayor a la hora de fin'
             });
         }
+
         if (horaInicioTurno[0] == horaFinTurno[0]  &&  // horas
             horaInicioTurno[1] > horaFinTurno[1]) { // minutos
             return res.status(400).json({
-         msg: 'Los minutos de inicio no puede ser mayor a los minutos de fin'
+                msg: 'Los minutos de inicio no puede ser mayor a los minutos de fin'
             });
         }
-          
+
         // Obtener los turnos existentes para la fecha dada y el rango de horarios
         const turnosExistentes = await Turno.findAll({
             where: {
@@ -122,14 +124,14 @@ export const postTurno = async (req: Request, res: Response) => {
                 ]
             }
         });
-          
+
         // Comprobar si existen turnos para el rango de horarios
         if (turnosExistentes.length > 0) {
             return res.status(400).json({
-                msg: 'Ya existe un turno para este rango de horarios en la fecha dada.'
+                msg: 'Ya existe un turno para este rango de horarios en la fecha dada'
                 }); 
         }
-        
+
         // Creación de instancia en la base de datos.
         const turno = Turno.build({ 
             fecha,
@@ -138,15 +140,12 @@ export const postTurno = async (req: Request, res: Response) => {
             idprecio,
             idagenda,
             idpaciente,
-            idprofesional,
             idmodalidad,
             idconsultorio 
         });
 
         await turno.save();
 
-        //TODO: Obtener turno con sus datos y mostrar
-        
         res.json({
             msg:'Turno dado de alta',
             turno
@@ -154,39 +153,63 @@ export const postTurno = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error General. No se pudo crear el turno.'
+            msg: 'Error General. No se pudo crear el turno'
         });
     }
-
 }
 
 
-export const deleteTurno = async (req: Request, res: Response) => {
+export const deleteTurno = async (req: any, res: Response) => {
     const { id } = req.params;
 
     try {
-        // Busca el turno según el id
-        const turno = await Turno.findByPk(id);
-        
         // Validar que el turno exista
+        const turno : any = await Turno.findByPk(id);
         if (!turno) {
             return res.status(404).json({
                 msg: `No existe un turno con el ID = ${id}`
             });
         }
 
+        // Validar que lo esté tratando de eliminar el paciente que lo creó.
+        const paciente = await Paciente.findOne({
+            where: { idusuario: req.idUsuarioToken}
+        });
+        if (!paciente) {
+            return res.status(404).json({
+                msg: 'Solamente el usuario paciente puede eliminar este turno'
+            });
+        }
+
+        if (turno.idpaciente != paciente.idpaciente) {
+            const usuario = await Usuario.findByPk(paciente.idusuario);
+            return res.status(404).json({
+                msg: `El turno solo puede ser eliminado por el paciente ${usuario?.nombre} ${usuario?.apellido}`
+            });
+        }
+
+        // El turno solo puede ser eliminado con un día o más de antelación.
+        const today = new Date();
+        const tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        const fechaTurno = new Date(turno.fecha);
+        if (fechaTurno.getTime() <= tomorrow.getTime()){
+            return res.status(404).json({
+                msg: ` El turno solo puede ser eliminado con un día o más de antelación`
+            }); 
+        }
+
         // Elimina el turno
         await turno.destroy();
 
         res.json({
-            msg: 'El turno fué eliminado con éxito.',
+            msg: 'El turno fué eliminado con éxito',
             turno
         });
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo actualizar el turno.'
+            msg: 'Error Interno. No se pudo actualizar el turno'
         });
     }
 }

@@ -14,17 +14,21 @@ router.get('/', getAgendas);
 router.get('/:id', getAgenda);
 
 router.post('/', [
-    // TODO: Agregar validaciones
+    check('fechadesde', 'La fecha desde es requerida').not().isEmpty(),
+    check('fechahasta', 'La fecha hasta es requerida').not().isEmpty(),
+    check('horainicio', 'La hora inicio es requerida').not().isEmpty(),
+    check('horafin', 'La hora fin es requerida').not().isEmpty(),
+    check('duracion', 'La duración es requerido').not().isEmpty(),
+    check('precio', 'El precio es requerido').not().isEmpty(),
+    check('idprofesional', 'El idprofesional es requerido').not().isEmpty(),
+    check('idmodalidad', 'La modalidad es requerida').not().isEmpty(),
+    validarCampos,
+    validarJWT
 ], postAgenda);
-
-/*router.put('/', 
-    // TODO: Agregar validaciones
-    
- updatedAgenda);
 
 router.delete('/:id', [
     validarJWT
-], deleteAgenda);*/
+], deleteAgenda);
 
 
 export default router;

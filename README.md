@@ -14,6 +14,7 @@ Previamente debe ser descargado Docker desde [Docker Desktop]( https://www.docke
 
 * Abrir una terminal y posicionarse dentro de la carpeta del proyecto.
 * Ejecutar ```docker compose up --build```. 
+  * También puede utilizar el comando ```npm run docker```.
 
 Puede tardar un poco en transpilarse, esperar hasta que indique que la base de datos fué conectada.
 
@@ -46,7 +47,12 @@ Para trabajar localmente se necesita desplegar un servidor de Postgres con anter
     * SECRETORPRIVATEKEY: Utilizada para firmar token de acceso.
        
   * Desplegar la aplicación con el comando ```npm start```.
- 
+    * También puede utilizar el comando ```npm run dev```
+
+Será notificado por consola la dirección en la cual fué servida la aplicación.
+
+  * Actualmente en http://localhost:8000
+
 ---
 ## Conectarse a la base de datos en PostgreSQL
 

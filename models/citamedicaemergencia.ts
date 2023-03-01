@@ -16,7 +16,15 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
         fechahora: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW,
+            defaultValue: DataTypes.NOW
+        },
+        idpaciente: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idprofesional: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

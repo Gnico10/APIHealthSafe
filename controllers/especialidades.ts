@@ -12,7 +12,7 @@ export const getEspecialidades = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar las especialidades.'
+            msg: 'Error Interno. No se pudo consultar las especialidades'
         });
     }
 }
@@ -38,7 +38,7 @@ export const getEspecialidad = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar la especialidad.'
+            msg: 'Error Interno. No se pudo consultar la especialidad'
         });
     }
 }

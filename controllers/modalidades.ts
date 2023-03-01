@@ -14,7 +14,7 @@ export const getModalidades = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar las modalidades.'
+            msg: 'Error Interno. No se pudo consultar las modalidades'
         });
     }
 }
@@ -39,7 +39,7 @@ export const getModalidad = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar la modalidad.'
+            msg: 'Error Interno. No se pudo consultar la modalidad'
         });
     }
 }

@@ -16,27 +16,39 @@ const agenda = sequelize.define<IAgenda>('Agenda',
         },
         fechadesde: {
             type: DataTypes.DATEONLY,
-            allowNull: true,
+            allowNull: true
         },
         fechahasta: {
             type: DataTypes.DATEONLY,
-            allowNull: true,
+            allowNull: true
         },
         horainicio: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: true
         },
         horafin: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: true
         },
         duracion: { // minutos
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: true
         },
         precio: {
             type: DataTypes.FLOAT,
-            allowNull: true,
+            allowNull: true
+        },
+        idprofesional: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        idmodalidad: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        },
+        idconsultorio: {
+            type: DataTypes.INTEGER,
+            allowNull: true
         }
     },
     {

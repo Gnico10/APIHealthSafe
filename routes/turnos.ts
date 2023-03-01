@@ -13,7 +13,15 @@ router.get('/', getTurnos);
 router.get('/:id', getTurno);
 
 router.post('/', [
-    // TODO: Agregar validaciones
+    check('fecha', 'La fecha es requerida').not().isEmpty(), 
+    check('horainicio', 'La hora inicio es requerida').not().isEmpty(), 
+    check('horafin', 'La hora fin es requerida').not().isEmpty(), 
+    check('idprecio', 'El idprecio es requerido').not().isEmpty(), 
+    check('idagenda', 'El idagenda es requerido').not().isEmpty(), 
+    check('idpaciente', 'El idpaciente es requerido').not().isEmpty(), 
+    check('idmodalidad', 'El idmodalidad es requerido').not().isEmpty(), 
+    validarCampos,
+    validarJWT
 ], postTurno);
 
 router.delete('/:id', [

@@ -15,7 +15,15 @@ const matriculaprofesional = sequelize.define<IMatriculaProfesional>('MatriculaP
         },
         numero: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: false
+        },
+        idtipomatricula: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        iduniversidad: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

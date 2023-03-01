@@ -14,7 +14,11 @@ const citamedica = sequelize.define<ICitamedica>('Citamedica',
         },
         fechayhora: {
             type: DataTypes.DATE,
-            allowNull: false,
+            allowNull: false
+        },
+        idturno: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

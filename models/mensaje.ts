@@ -20,6 +20,10 @@ const mensaje = sequelize.define<IMensaje>('Mensaje',
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
+        },
+        idmensajeria: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

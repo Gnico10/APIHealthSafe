@@ -65,7 +65,8 @@ export const postPaciente = async (req: Request, res: Response) => {
             edad: 0
         });
 
-        let paciente = Paciente.create({
+        // Creación del paciente
+        await Paciente.create({
             idusuario: idusuario,
             idhistoriaclinica: historiaclinica.idhistoriaclinica
         });
@@ -112,14 +113,14 @@ export const deletePaciente = async (req: Request, res: Response) => {
         await paciente.destroy();
 
         res.json({
-            msg: 'El paciente fué eliminado con éxito.',
+            msg: 'El paciente fué eliminado con éxito',
             paciente
         });
 
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Error Interno. No se pudo Eliminar el paciente.'
+            msg: 'Error Interno. No se pudo Eliminar el paciente'
         });
     }
 }

@@ -14,7 +14,7 @@ export const getPaises = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los paises.'
+            msg: 'Error Interno. No se pudo consultar los paises'
         });
     }
 }
@@ -39,7 +39,7 @@ export const getPais = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar el pais.'
+            msg: 'Error Interno. No se pudo consultar el pais'
         });
     }
 }

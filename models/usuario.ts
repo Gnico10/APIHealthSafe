@@ -52,7 +52,11 @@ const usuario = sequelize.define<IUsuario>('Usuario',
         imgdnidorso:{
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        idrol: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
     },
     {
         tableName: 'usuarios'
