@@ -1,6 +1,6 @@
 # APIHealthSafe
 
-Aplicación BackEndque despliega la API necesaria para servir los datos del sistema HealthSafe.
+Aplicación BackEnd que despliega la API necesaria para servir los datos del sistema HealthSafe.
 
 ## Notas:
 

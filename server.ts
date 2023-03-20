@@ -1,12 +1,11 @@
 import path from 'path';
-import express, { Application } from 'express';
 import cors from 'cors';
+import http from 'http';
+import express, { Application } from 'express';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsDoc from 'swagger-jsdoc';
-
 import sequelize from './db/connection';
 import sincronizarDB from './db/sincronizarDB';
-
 import authRoutes from './routes/auth';
 import userRoutes from './routes/usuarios';
 import profesionalRoutes from './routes/profesionales';
@@ -22,11 +21,15 @@ import tiposmatriculasRoutes from './routes/tiposmatriculas';
 import colegiosmedicosRoutes from './routes/colegiosmedicos';
 import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
+import mensajesRoutes from './routes/mensajes';
+import mensajeriaRoutes from './routes/mensajeria';
+
 
 class Server {
 
     private app : Application;
     private port : string;
+    public server: any;
     
     private apiPaths = {
         auth: '/api/auth',
@@ -44,15 +47,19 @@ class Server {
         colegiosmedicos: '/api/colegiosmedicos',
         localidades: '/api/localidades',
         modalidades: '/api/modalidades',
+        mensajes:'/api/mensajes',
+        mensajeria:'/api/mensajeria',
         // Más rutas
         default: '*'
+        
     }
-
+      
     private swaggerSpec: swaggerJsDoc.Options;
 
     constructor() {
         this.app = express();
         this.port = process.env.PORT || '8080';
+        this.server = http.createServer(this.app);
 
         // Configuración de Swagger
         this.swaggerSpec = {
@@ -76,7 +83,9 @@ class Server {
             },
             apis: [path.join(__dirname, './routes/*.js')]
         };
-
+       
+        
+       
         // Conexión a la base de datos.
         this.dbConnection();
 
@@ -86,6 +95,8 @@ class Server {
         // Define las rutas del api.
         this.routes();
     }
+  
+      
 
     async dbConnection() {
         try{
@@ -122,6 +133,7 @@ class Server {
         // Documentación Swagger;
         this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(this.swaggerSpec)));
     }
+    
 
     routes() {
         this.app.use(this.apiPaths.auth, authRoutes);
@@ -139,6 +151,9 @@ class Server {
         this.app.use(this.apiPaths.colegiosmedicos, colegiosmedicosRoutes);
         this.app.use(this.apiPaths.localidades, localidadesRoutes);
         this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
+        this.app.use(this.apiPaths.mensajes, mensajesRoutes);
+        this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
+    
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {
@@ -147,8 +162,9 @@ class Server {
     }
 
     listen() {
-        this.app.listen(this.port);
+        this.server.listen(this.port);
     }
 }
+
 
 export default Server; // Esta clase se exporta por defecto.
