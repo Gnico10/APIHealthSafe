@@ -21,8 +21,10 @@ const mensaje = sequelize.define<IMensaje>('Mensaje',
             allowNull: false,
             defaultValue: DataTypes.NOW
         },
-       
-      
+        idmensajeria: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     },
     {
         tableName: 'mensajes'

@@ -1,0 +1,865 @@
+{
+	"info": {
+		"_postman_id": "e3a7561e-ccfd-4af3-8739-5e6f7d88ff45",
+		"name": "healthSafe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20615802"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"token\", pm.response.json().token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"correo\" : \"prueba@prueba.com\",\r\n    \"contrasena\" : \"prueba\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "renewToken",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"token\", pm.response.json().token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"correo\" : \"prueba@prueba.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/renovartoken",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"renovartoken"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "postUsuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token\", pm.response.json().token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"correo\" : \"pruebaa@pruebaa.com\",\r\n    \"contrasena\" : \"prueba\",\r\n    \"dni\" : 345642347,\r\n    \"nombre\" : \"Nombre Nombre\",\r\n    \"apellido\" : \"Prueba\",\r\n    \"fechanacimiento\" : \"1990-04-23T18:25:43.511Z\",\r\n    \"sexo\" : \"M\",\r\n    \"imgperfil\" : null,\r\n    \"imgdnifrente\" : \"\",\r\n    \"imgdnidorso\" : \"\",\r\n    \"idrol\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUsuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/usuarios",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUsuario",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/usuarios/5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUsuario",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/usuarios/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pacientes",
+			"item": [
+				{
+					"name": "getPacientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/pacientes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"pacientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPaciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/pacientes/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"pacientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postPaciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idusuario\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/pacientes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"pacientes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profesionales",
+			"item": [
+				{
+					"name": "getProfesionales",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/profesionales",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profesionales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postProfesional",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idusuario\": 3,\r\n    \"profesional_matriculas\": [\r\n        {\r\n            \"idtipomatricula\": 1,\r\n            \"iduniversidad\": 1,\r\n            \"numero\": 123456,\r\n            \"titulogrado\": \"Titulo 1\",\r\n            \"aniootorgamiento\": 2010\r\n        },\r\n        {\r\n            \"idtipomatricula\": 2,\r\n            \"iduniversidad\": 2,\r\n            \"numero\": 123457,\r\n            \"titulogrado\": \"Titulo 2\",\r\n            \"aniootorgamiento\": 2013\r\n        }\r\n    ],\r\n    \"profesional_especialidades\": [\r\n        {\r\n            \"idcolegiomedico\": 1,\r\n            \"idespecialidad\": 1,\r\n            \"aniootorgamiento\": 2010\r\n        },\r\n        {\r\n            \"idcolegiomedico\": 2,\r\n            \"idespecialidad\": 2,\r\n            \"aniootorgamiento\": 2013\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profesionales",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profesionales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getProfesional",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profesionales/38",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profesionales",
+								"38"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post ProfesionalesEspecialidades",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idprofesional\" : 2,\r\n    \"idespecialidad\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profesionales_especialidades",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profesionales_especialidades"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agendas",
+			"item": [
+				{
+					"name": "postAgenda",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fechadesde\" : \"2023-03-01\",\r\n    \"fechahasta\" : \"2023-03-02\",\r\n    \"horainicio\" : \"10:00\",\r\n    \"horafin\" : \"18:00\",\r\n    \"duracion\" : 30,\r\n    \"precio\" : 100.50,\r\n    \"idprofesional\" : 1,\r\n    \"idmodalidad\" : 2,\r\n    \"idconsultorio\" : null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/agendas",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"agendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAgendas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/agendas",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"agendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAgenda",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/agendas/5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"agendas",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "putAgenda",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \r\n    \"precio\" : 100.50,\r\n    \"idprofesional\" : 1\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/agendas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"agendas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteAgenda",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/agendas/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"agendas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Turnos",
+			"item": [
+				{
+					"name": "postTurno",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fecha\" : \"2023-03-27\",\r\n    \"horainicio\" : \"12:00\",\r\n    \"horafin\" : \"17:00\",\r\n    \"idprecio\" : \"idmercadolibre\",\r\n    \"idagenda\" : 4,\r\n    \"idpaciente\" : 1,\r\n    \"idprofesional\" : 1,\r\n    \"idmodalidad\" : 2,\r\n    \"idconsultorio\" : null \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/turnos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"turnos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTurnos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/turnos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"turnos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteTurno",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/turnos/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"turnos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTurno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/turnos/1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"turnos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Miscelaneos",
+			"item": [
+				{
+					"name": "getEspecialidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/especialidades",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"especialidades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getPaises",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/paises",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"paises"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getColegiosMedicos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/colegiosmedicos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"colegiosmedicos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getRoles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/roles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getTiposMatriculas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tiposmatriculas",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tiposmatriculas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUniversidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/universidades",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"universidades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getLocalidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/localidades",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"localidades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getModalidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/modalidades",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"modalidades"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mensajería",
+			"item": [
+				{
+					"name": "postMensajeria",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idpaciente\": 2,\r\n  \"idprofesional\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/mensajeria",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"mensajeria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postMensaje",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"idmensajeria\": 13,\r\n  \"mensaje\": \"Hola, ¿cómo estás?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/mensajes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"mensajes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMensaje",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/mensajes/13",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"mensajes",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

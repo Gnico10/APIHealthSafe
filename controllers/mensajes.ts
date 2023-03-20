@@ -9,9 +9,8 @@ import Mensaje from '../models/mensaje';
 
 export const postMensaje = async (req: Request, res: Response) => {
   try {
-    const { idmensajeria, mensaje } = req.body;
-    const fechaHora = new Date();
-    const nuevoMensaje = await Mensaje.create({ idmensajeria, mensaje, fechahora: fechaHora });
+    const { mensaje, idmensajeria } = req.body;
+    const nuevoMensaje = await Mensaje.create({ mensaje, idmensajeria });
 
     // Enviamos el mensaje a través de WebSocket
     serverSocket.io.emit('mensaje', nuevoMensaje);
