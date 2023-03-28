@@ -13,7 +13,19 @@ export const getAntecedentes_Paciente = async (req: Request, res: Response) => {
             where: {
                 idpaciente: id 
             },
-            attributes: { exclude: ['createdAt', 'updatedAt'] }
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+                {
+                    model: TipoAntecedente,
+                    as: 'tipoantecedente',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Paciente,
+                    as: 'paciente',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
         }); 
 
         if (antecedentes_paciente.length == 0) {

@@ -6,6 +6,7 @@ import loadUniversidades from "./data/universidad";
 import loadColegiosMedicos from "./data/colegiomedico";
 import loadLocalidades from "./data/localidad";
 import loadModalidades from "./data/modalidad";
+import loadTipoAntecedente from "./data/tipoantecedente";
 
 const load = async() => {
     loadEspecialidades();
@@ -16,6 +17,7 @@ const load = async() => {
     loadColegiosMedicos();
     // loadLocalidades();
     loadModalidades();
+    loadTipoAntecedente();
 }
 
 export default load;

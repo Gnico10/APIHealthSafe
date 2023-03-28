@@ -24,7 +24,8 @@ export const getPaciente = async (req: Request, res: Response) => {
 }
 
 export const postPaciente = async (req: Request, res: Response) => {
-    const {idusuario} = req.body;
+    const { idusuario,
+            ocupacion} = req.body;
 
     try {
         // Validaciones
@@ -67,7 +68,8 @@ export const postPaciente = async (req: Request, res: Response) => {
 
         // Creación del paciente
         await Paciente.create({
-            idusuario: idusuario,
+            idusuario,
+            ocupacion,
             idhistoriaclinica: historiaclinica.idhistoriaclinica
         });
 
