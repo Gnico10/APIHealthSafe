@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import tipomatricula from '../models/tipomatricula';
+
 import TipoMatricula from '../models/tipomatricula';
 
 export const getTiposMatriculas = async (req: Request, res: Response) => {
@@ -15,7 +15,7 @@ export const getTiposMatriculas = async (req: Request, res: Response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los tiposmatriculas'
+            msg: 'Error Interno. No se pudo consultar los tipos matriculas'
         });
     }
 }
