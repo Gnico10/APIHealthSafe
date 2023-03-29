@@ -173,7 +173,7 @@ export const deleteTurno = async (req: any, res: Response) => {
 
         // Validar que lo esté tratando de eliminar el paciente que lo creó.
         const paciente = await Paciente.findOne({
-            where: { idusuario: req.idUsuarioToken}
+            where: { idusuario: req.idUsuarioToken }
         });
         if (!paciente) {
             return res.status(404).json({

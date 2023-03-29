@@ -12,7 +12,7 @@ export const postProfesionalEspecialidades = async (req: Request, res: Response)
         // Validate idprofesional
         const existeProfesional = await Profesional.findByPk(idprofesional);
 
-        if (! existeProfesional) {
+        if (!existeProfesional) {
             return res.status(400).json({
                 msg: `El Profesional con el ID = ${idprofesional} no existe`
             });
@@ -21,7 +21,7 @@ export const postProfesionalEspecialidades = async (req: Request, res: Response)
         // Validate idespecialidad
         const existeEspecialidad = await Especialidad.findByPk(idespecialidad);
 
-        if (! existeEspecialidad) {
+        if (!existeEspecialidad) {
             return res.status(400).json({
                 msg: `La Especialidad con el ID = ${idespecialidad} no existe`
             });

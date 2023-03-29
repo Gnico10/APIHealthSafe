@@ -17,6 +17,7 @@ const paciente = sequelize.define<IPaciente>('Paciente',
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        ocupacion: {type: DataTypes.STRING(50)},
         idhistoriaclinica: {
             type: DataTypes.INTEGER,
             allowNull: false
