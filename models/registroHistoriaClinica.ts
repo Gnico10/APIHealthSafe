@@ -27,7 +27,7 @@ const registroHistoriaClinica = sequelize.define<iRegistroHistoriaClinica>('regi
 );
 
 registroHistoriaClinica.belongsTo(diagnostico, {
-    foreignKey: 'idiagnostico',
+    foreignKey: 'idDiagnostico',
     as: 'diagnostico',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
