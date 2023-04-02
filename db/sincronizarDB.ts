@@ -5,7 +5,7 @@ import citamedicaemergencia from "../models/citamedicaemergencia";
 import consultorio from "../models/consultorio";
 import dia from "../models/dias";
 import direccion from "../models/direccion";
-import episodio from "../models/episodio";
+import episodio from "../models/registroHistoriaClinica";
 import especialidad from "../models/especialidad";
 import historiaclinica from "../models/historiaclinica";
 import indicacion from "../models/indicacion";
