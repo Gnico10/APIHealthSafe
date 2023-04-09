@@ -107,13 +107,13 @@ export const postPaciente = async (req: Request, res: Response) => {
 }
 
 export const deletePaciente = async (req: Request, res: Response) => {
-    const { idpaciente } = req.params;
+    const { idPaciente } = req.params;
 
     try {
-        const paciente = await Paciente.findByPk(idpaciente);
+        const paciente = await Paciente.findByPk(idPaciente);
         if (!paciente) {
             return res.status(404).json({
-                msg: `No existe un paciente con el ID = ${idpaciente}`
+                msg: `No existe un paciente con el ID = ${idPaciente}`
             });
         }
 

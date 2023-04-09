@@ -8,7 +8,7 @@ interface ITurno extends Model{
     fechasolicita? : Date,
     idprecio? : string,
     idagenda? : number,
-    idpaciente? : number,
+    idPaciente? : number,
     idprofesional? : number,
     idmodalidad? : number,
     idconsultorio? : number,

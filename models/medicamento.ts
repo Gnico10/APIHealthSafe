@@ -28,18 +28,27 @@ const medicamento = sequelize.define<iMedicamento>('Medicamento',
             type: DataTypes.TEXT,
             allowNull: false,
         },
+        idDiagnostico: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+
+        
     },
     {
         tableName: 'medicamentos'
     }
 );
 
-medicamento.belongsTo(indicacionMedicamento, {
-    foreignKey: 'idindicacionMedicamento',
-    as: 'indicacionMedicamento',
+medicamento.belongsTo(typeof indicacionMedicamento, {
+    foreignKey: 'idIndicacionMedicamento',
+    as: 'IndicacionMedicamento',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
+medicamento.prototype.setIndicacion = async function(indicacion: IndicacionMedicamento): Promise<void> {
+    await this.setIndicacionMedicamento(indicacion);
+};
 
 export default  medicamento;

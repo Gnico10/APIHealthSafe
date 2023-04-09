@@ -5,7 +5,7 @@ import iIndicacionMedicamento from "../interfaces/iIndicacionMedicamento";
 
 const indicacionMedicamento = sequelize.define<iIndicacionMedicamento>('indicacionMedicamento',
     {
-        idindicacionMedicamento: {
+        idIndicacionMedicamento: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true

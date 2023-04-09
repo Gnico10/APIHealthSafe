@@ -11,7 +11,7 @@ export const getAntecedentes_Paciente = async (req: Request, res: Response) => {
     try {
         const antecedentes_paciente = await Antecedente.findAll({
             where: {
-                idpaciente: id 
+                idPaciente: id 
             },
             attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [
@@ -47,7 +47,7 @@ export const getAntecedentes_Paciente = async (req: Request, res: Response) => {
 
 export const postAntecedente = async (req: any, res: Response) => {
     const { idtipoantecedente,
-            idpaciente,
+            idPaciente,
             descripcion } = req.body;
     
     try {
@@ -60,11 +60,11 @@ export const postAntecedente = async (req: any, res: Response) => {
             });
         }
 
-        // Validate idpaciente
-        const existePaciente = await Paciente.findByPk(idpaciente);
+        // Validate idPaciente
+        const existePaciente = await Paciente.findByPk(idPaciente);
         if (!existePaciente) {
             return res.status(400).json({
-                msg: `El Paciente con el ID = ${idpaciente} no existe`
+                msg: `El Paciente con el ID = ${idPaciente} no existe`
             });
         }
 
@@ -81,14 +81,14 @@ export const postAntecedente = async (req: any, res: Response) => {
         // Create antecedente
         const antecedente = await Antecedente.build({
             idtipoantecedente,
-            idpaciente,
+            idPaciente,
             descripcion
         });
 
         await antecedente.save();
         
         res.json({
-            msg: `Antecedente con ID: ${idtipoantecedente} asociado a paciente con ID: ${idpaciente}`,
+            msg: `Antecedente con ID: ${idtipoantecedente} asociado a paciente con ID: ${idPaciente}`,
             antecedente
         });
     } catch (error) {

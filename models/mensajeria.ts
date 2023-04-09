@@ -13,7 +13,7 @@ const mensajeria = sequelize.define<IMensajeria>('Mensajeria',
             primaryKey: true,
             autoIncrement: true
         },
-        idpaciente:   {
+        idPaciente:   {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -28,7 +28,7 @@ const mensajeria = sequelize.define<IMensajeria>('Mensajeria',
 );
 
 mensajeria.belongsTo(paciente, {
-    foreignKey: 'idpaciente',
+    foreignKey: 'idPaciente',
     as: 'paciente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

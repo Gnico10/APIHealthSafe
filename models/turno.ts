@@ -32,7 +32,7 @@ const turno = sequelize.define<ITurno>('turno', {
         idprecio: { // Mercado Pago.
             type: DataTypes.STRING
         },
-        idpaciente: {
+        idPaciente: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -54,7 +54,7 @@ turno.belongsTo(agenda, {
 });
 
 turno.belongsTo(paciente, {
-    foreignKey: 'idpaciente',
+    foreignKey: 'idPaciente',
     as: 'paciente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

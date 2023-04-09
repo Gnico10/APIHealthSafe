@@ -34,7 +34,7 @@ const diagnostico = sequelize.define<Idiagnostico>('Diagnostico',
 );
 
 diagnostico.belongsTo(medicamento, {
-    foreignKey: 'idmedicamento',
+    foreignKey: 'idMedicamento',
     as: 'medicamento',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
@@ -42,7 +42,7 @@ diagnostico.belongsTo(medicamento, {
 
 
 diagnostico.belongsTo(indicacionGeneral, {
-    foreignKey: 'idindicacionGeneral',
+    foreignKey: 'idIndicacionGeneral',
     as: 'indicacionGeneral',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

@@ -8,7 +8,7 @@ import historiaclinica from "./historiaclinica";
 
 const paciente = sequelize.define<IPaciente>('Paciente',
     {
-        idpaciente: {
+        idPaciente: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true

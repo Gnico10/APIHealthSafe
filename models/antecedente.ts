@@ -17,7 +17,7 @@ const antecedente = sequelize.define<IAntecedente>('Antecedente',
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        idpaciente: {
+        idPaciente: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -39,7 +39,7 @@ antecedente.belongsTo(tipoantecedente, {
 });
 
 antecedente.belongsTo(paciente, {
-    foreignKey: 'idpaciente',
+    foreignKey: 'idPaciente',
     as:'paciente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

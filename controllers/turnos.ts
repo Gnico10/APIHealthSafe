@@ -76,9 +76,10 @@ export const postTurno = async (req: Request, res: Response) => {
         horafin,
         idprecio,
         idagenda,
-        idpaciente
+        idPaciente,
+        idmodalidad,
+        idconsultorio,
     } = req.body;
-
     try { 
         // Validaciones
         let agenda : any = await Agenda.findByPk(idagenda);
@@ -175,7 +176,9 @@ export const postTurno = async (req: Request, res: Response) => {
             horafin,
             idprecio,
             idagenda,
-            idpaciente
+            idPaciente,
+            idmodalidad,
+            idconsultorio 
         });
 
         await turno.save();
@@ -215,7 +218,7 @@ export const deleteTurno = async (req: any, res: Response) => {
             });
         }
 
-        if (turno.idpaciente != paciente.idpaciente) {
+        if (turno.idPaciente != paciente.idPaciente) {
             const usuario = await Usuario.findByPk(paciente.idusuario);
             return res.status(404).json({
                 msg: `El turno solo puede ser eliminado por el paciente ${usuario?.nombre} ${usuario?.apellido}`

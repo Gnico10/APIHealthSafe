@@ -1,4 +1,5 @@
 import { Model } from "sequelize/types";
+import iIndicacionMedicamento from "./iIndicacionMedicamento";
 
 interface iMedicamento extends Model{
     idMedicamento: number,
@@ -7,7 +8,8 @@ interface iMedicamento extends Model{
     monodroga?: string,
     presentacion?: string,
     cantidad?: string,
-    idindicacionMedicamento?: number,
+     Indicacion?: iIndicacionMedicamento,
+  setIndicacion?: (Indicacion: iIndicacionMedicamento) => Promise<void>;
 
 };
 

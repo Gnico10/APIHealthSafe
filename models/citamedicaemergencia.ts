@@ -18,7 +18,7 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
             allowNull: false,
             defaultValue: DataTypes.NOW
         },
-        idpaciente: {
+        idPaciente: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -33,7 +33,7 @@ const citamedicaemergencia = sequelize.define<ICitamedicaemergencia>('Citamedica
 );
 
 citamedicaemergencia.belongsTo(paciente, {
-    foreignKey: 'idpaciente',
+    foreignKey: 'idPaciente',
     as: 'paciente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

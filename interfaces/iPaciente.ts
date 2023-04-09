@@ -1,7 +1,7 @@
 import { Model } from "sequelize/types";
 
 interface IPaciente extends Model{
-    idpaciente? : number,
+    idPaciente? : number,
     idusuario? : number,
     idhistoriaclinica? : number,
 };

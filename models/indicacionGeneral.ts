@@ -5,7 +5,7 @@ import iIndicacionGeneral from '../interfaces/iIndicacionGeneral';
 
 const indicacionGeneral = sequelize.define<iIndicacionGeneral>('indicacionGeneral',
     {
-        idindicacion: {
+        idIndicacionGeneral: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true

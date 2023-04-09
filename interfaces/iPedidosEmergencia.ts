@@ -6,7 +6,7 @@ interface IPedidoEmergencia extends Model{
     fechahora? : Date,
     estado? : string,
     idespecialidad? : number,
-    idpaciente? : number, 
+    idPaciente? : number, 
 };
 
 export default IPedidoEmergencia;
