@@ -239,8 +239,6 @@ export const postProfesional = async (req: Request, res: Response) => {
             }); 
         }
 
-        if (profesional_matriculas)
-
         for (let especialidad of profesional_especialidades){
             let existeEspecialidad = await Especialidad.findByPk(especialidad.idespecialidad);
             if (!existeEspecialidad) {
@@ -259,6 +257,7 @@ export const postProfesional = async (req: Request, res: Response) => {
 
         // DB
         let profesional = await Profesional.create({idusuario, descripcion});
+
         for (const matriculas of profesional_matriculas){
             let matriculaprofesional = await MatriculaProfesional.create({
                 numero : matriculas.numero,

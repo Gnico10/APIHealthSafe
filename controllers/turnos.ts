@@ -4,6 +4,8 @@ import Agenda from '../models/agenda';
 import Usuario from '../models/usuario';
 import Turno from '../models/turno';
 import Paciente from '../models/paciente';
+import Modalidad from '../models/modalidad';
+import Consultorio from '../models/consultorio';
 
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -12,6 +14,53 @@ const Op = Sequelize.Op;
 export const getTurnos = async (req: Request, res: Response) => {
     const turnos = await Turno.findAll();
     res.json({turnos});
+}
+
+export const getTurnos_Paciente = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const turnos = await Turno.findAll({
+            where: {
+                idpaciente: id 
+            },
+            include: [
+                {
+                    model: Agenda,
+                    as: 'agenda',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Paciente,
+                    as: 'paciente',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Modalidad,
+                    as: 'modalidad',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Consultorio,
+                    as: 'consultorio',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
+        });
+        
+        if (turnos.length == 0) {
+            return res.status(400).json({
+                msg: `El paciente con ID: ${id} no tiene turnos cargadas`
+            });
+        }
+
+        res.json({turnos});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar los turnos del paciente'
+        });
+    }
 }
 
 //get: un solo turno por id

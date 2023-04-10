@@ -40,7 +40,7 @@ class Server {
         profesional: '/api/profesionales',
         pacientes: '/api/pacientes',
         tipoantecedente: '/api/tipoantecedente',
-        antecedente: '/api/antecedente',
+        antecedente: '/api/antecedentes',
         agendas: '/api/agendas',
         especialidades: '/api/especialidades',
         profesionales_especialidades: '/api/profesionales_especialidades',
