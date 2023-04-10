@@ -1,4 +1,5 @@
 import {Request, Response} from 'express';
+import { Op } from 'sequelize';
 
 import Agenda from '../models/agenda';
 import Usuario from '../models/usuario';
@@ -8,7 +9,6 @@ import Modalidad from '../models/modalidad';
 import Consultorio from '../models/consultorio';
 
 const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
 
 //get: all turnos
 export const getTurnos = async (req: Request, res: Response) => {
@@ -18,11 +18,14 @@ export const getTurnos = async (req: Request, res: Response) => {
 
 export const getTurnos_Paciente = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const { fecha } = req.query;
 
     try {
+        const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
         const turnos = await Turno.findAll({
             where: {
-                idpaciente: id 
+                idpaciente: id,
+                fecha: { [Op.gte]: fechaturno }
             },
             include: [
                 {

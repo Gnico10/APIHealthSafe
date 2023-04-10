@@ -8,7 +8,7 @@ import { getProfesionales, getProfesional, postProfesional } from '../controller
 
 const router = Router();
 
-router.get('/', getProfesionales);
+router.get('/', getProfesionales); // query params: idespecialidad, codpostal, idmodalidad
 router.get('/:id', getProfesional);
 
 router.post('/', [

@@ -31,9 +31,9 @@ export const getAgendas = async (req: Request, res: Response) => {
     res.json({agendas});
 }
 
-//get: all agendas
 export const getAgendas_Profesional = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const { fecha } = req.query;
 
     try {
         const agendas = await Agenda.findAll({
@@ -65,10 +65,14 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
             });
         }
 
+        const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
         const agendasWithTurnos = await Promise.all(
             agendas.map(async (agenda) => {
                 const turnos = await Turno.findAll({
-                    where: { idagenda: agenda.idagenda },
+                    where: { 
+                        idagenda: agenda.idagenda,
+                        fecha: { [Op.gte]: fechaturno }
+                    },
                     attributes: { exclude: ['createdAt', 'updatedAt'] }
                 });
 
