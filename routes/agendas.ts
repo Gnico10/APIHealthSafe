@@ -4,14 +4,18 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getAgendas, getAgenda, postAgenda, deleteAgenda} from '../controllers/agendas';
+import { getAgendas,
+         getAgendas_Profesional,
+         getAgenda,
+         postAgenda,
+         deleteAgenda } from '../controllers/agendas';
 
 
 const router = Router();
 
 router.get('/', getAgendas);
-
 router.get('/:id', getAgenda);
+router.get('/profesional/:id', getAgendas_Profesional);
 
 router.post('/', [
     check('fechadesde', 'La fecha desde es requerida').not().isEmpty(),

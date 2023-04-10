@@ -31,6 +31,65 @@ export const getAgendas = async (req: Request, res: Response) => {
     res.json({agendas});
 }
 
+//get: all agendas
+export const getAgendas_Profesional = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const agendas = await Agenda.findAll({
+            where: {
+                idprofesional: id 
+            },
+            include: [
+                {
+                    model: Profesional,
+                    as: 'profesional',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Modalidad,
+                    as: 'modalidad',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Consultorio,
+                    as: 'consultorio',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
+        });
+
+        if (agendas.length == 0) {
+            return res.status(400).json({
+                msg: `El profesional con ID: ${id} no tiene agendas cargadas`
+            });
+        }
+
+        const agendasWithTurnos = await Promise.all(
+            agendas.map(async (agenda) => {
+                const turnos = await Turno.findAll({
+                    where: { idagenda: agenda.idagenda },
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                });
+
+                // agrega los turnos como un atributo de cada agenda
+                return {
+                ...agenda.toJSON(),
+                turnos: turnos,
+                };
+            })
+        );
+
+        res.json({agendas: agendasWithTurnos});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar las agendas del profesional'
+        });
+    }
+    
+}
+
 //get: una sola agenda por id
 export const getAgenda = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -62,6 +121,7 @@ export const getAgenda = async (req: Request, res: Response) => {
         });
     }
 }
+
 /*
 export const updatedAgenda = async (req: Request, res: Response) => {
     const { precio } = req.params;
