@@ -9,7 +9,7 @@ interface iMedicamento extends Model{
     presentacion?: string,
     cantidad?: string,
      Indicacion?: iIndicacionMedicamento,
-  setIndicacion?: (Indicacion: iIndicacionMedicamento) => Promise<void>;
+  setIndicacion: (Indicacion: iIndicacionMedicamento) => Promise<void>;
 
 };
 

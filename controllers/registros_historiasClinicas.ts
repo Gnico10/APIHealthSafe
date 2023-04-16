@@ -105,28 +105,36 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
             if (diag.medicamentos && diag.medicamentos.length > 0) {
               const medicamentosCreados = await Promise.all(
                 diag.medicamentos.map(async (med: any) => {
-                  // Crear el medicamento
-                  const nuevoMedicamento = await Medicamento.create(
-                    { nombre: med.nombre, idDiagnostico: nuevoDiagnostico.idDiagnostico },
-                    { fields: ['nombre', 'idDiagnostico'] }
-                  );
+                  try {
+                    // Crear el medicamento
+                    const nuevoMedicamento = await Medicamento.create(
+                      { nombre: med.nombre, idDiagnostico: nuevoDiagnostico.idDiagnostico },
+                      { fields: ['nombre', 'idDiagnostico'] }
+                    );
   
-                  // Crear la indicación y vincularla al medicamento
-                  const nuevaIndicacion = await IndicacionMedicamento.create(
-                    { dosis: med.dosis, frecuencia: med.frecuencia, idMedicamento: nuevoMedicamento.idMedicamento },
-                    { fields: ['dosis', 'frecuencia', 'idMedicamento'] }
-                  );
+                    // Crear la indicación y vincularla al medicamento
+                    const nuevaIndicacion = await IndicacionMedicamento.create(
+                      { dosis: med.dosis, frecuencia: med.frecuencia, idMedicamento: nuevoMedicamento.idMedicamento },
+                      { fields: ['dosis', 'frecuencia', 'idMedicamento'] }
+                    );
   
-                  // Vincular la indicación y el medicamento al diagnóstico
-                  await nuevoMedicamento.setIndicacion(nuevaIndicacion);
-                  await nuevoDiagnostico.addMedicamento(nuevoMedicamento);
+                    // Vincular la indicación y el medicamento al diagnóstico
+                    if (nuevoMedicamento) {
+                      await nuevoMedicamento?.setIndicacion(nuevaIndicacion);
+                      await nuevoDiagnostico.addMedicamento(nuevoMedicamento);
+                    }
   
-                  return nuevoMedicamento;
+                    return nuevoMedicamento;
+                  } catch (error) {
+                    console.log('Error al crear el medicamento:', error);
+                    return null;
+                  }
                 })
               );
   
               // Vincular los medicamentos al diagnóstico
-              await nuevoDiagnostico.addMedicamento(medicamentosCreados);
+              const medicamentosValidos = medicamentosCreados.filter((med: any) => med !== null);
+              await nuevoDiagnostico.addMedicamento(medicamentosValidos);
             }
   
             // Si hay indicaciones generales en el diagnóstico, crearlas y vincularlas al diagnóstico
@@ -134,7 +142,10 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
               const indicacionesCreadas = await Promise.all(
                 diag.indicacionesGenerales.map(async (ind: any) => {
                   const nuevaIndicacion = await IndicacionMedicamento.create(
-                    { dosis: ind.dosis, frecuencia: ind.frecuencia, idDiagnostico: nuevoDiagnostico.idDiagnostico },
+                    { dosis: ind.dosis
+  
+  
+  , frecuencia: ind.frecuencia, idDiagnostico: nuevoDiagnostico.idDiagnostico },
                     { fields: ['dosis', 'frecuencia', 'idDiagnostico'] }
   
                             );
