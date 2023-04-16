@@ -6,6 +6,8 @@ import Paciente from '../models/paciente';
 import Medicamento from '../models/medicamento';
 import IndicacionGeneral from '../models/indicacionGeneral';
 import IndicacionMedicamento from '../models/indicacionMedicamento';
+import iMedicameento from '../interfaces/iMedicamento';
+import iIndicacionMedicamento from '../interfaces/iIndicacionMedicamento';
 
 export const getRegistrosHistoriaClinica = async (req: Request, res: Response) => {
     try {
@@ -120,8 +122,8 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
   
                     // Vincular la indicación y el medicamento al diagnóstico
                     if (nuevoMedicamento) {
-                      await nuevoMedicamento?.setIndicacion(nuevaIndicacion);
-                      await nuevoDiagnostico.addMedicamento(nuevoMedicamento);
+                      await nuevoMedicamento.setIndicacion(nuevaIndicacion);
+                            nuevoDiagnostico.addMedicamento(nuevoMedicamento);
                     }
   
                     return nuevoMedicamento;
@@ -133,8 +135,12 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
               );
   
               // Vincular los medicamentos al diagnóstico
-              const medicamentosValidos = medicamentosCreados.filter((med: any) => med !== null);
-              await nuevoDiagnostico.addMedicamento(medicamentosValidos);
+              const medicamentosValidos = medicamentosCreados.filter((med: any) => med !== null && typeof med === 'object') as iIndicacionMedicamento[];
+              for (const medicamento of medicamentosValidos) {
+                await nuevoDiagnostico.addMedicamento(medicamento);
+              }
+              
+
             }
   
             // Si hay indicaciones generales en el diagnóstico, crearlas y vincularlas al diagnóstico
@@ -142,10 +148,7 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
               const indicacionesCreadas = await Promise.all(
                 diag.indicacionesGenerales.map(async (ind: any) => {
                   const nuevaIndicacion = await IndicacionMedicamento.create(
-                    { dosis: ind.dosis
-  
-  
-  , frecuencia: ind.frecuencia, idDiagnostico: nuevoDiagnostico.idDiagnostico },
+                    { dosis: ind.dosis, frecuencia: ind.frecuencia, idDiagnostico: nuevoDiagnostico.idDiagnostico },
                     { fields: ['dosis', 'frecuencia', 'idDiagnostico'] }
   
                             );
