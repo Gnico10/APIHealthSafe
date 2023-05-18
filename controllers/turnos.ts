@@ -5,10 +5,6 @@ import Agenda from '../models/agenda';
 import Usuario from '../models/usuario';
 import Turno from '../models/turno';
 import Paciente from '../models/paciente';
-import Modalidad from '../models/modalidad';
-import Consultorio from '../models/consultorio';
-
-const Sequelize = require('sequelize');
 
 //get: all turnos
 export const getTurnos = async (req: Request, res: Response) => {
@@ -36,16 +32,6 @@ export const getTurnos_Paciente = async (req: Request, res: Response) => {
                 {
                     model: Paciente,
                     as: 'paciente',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Modalidad,
-                    as: 'modalidad',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Consultorio,
-                    as: 'consultorio',
                     attributes: { exclude: ['createdAt', 'updatedAt'] }
                 }
             ]
@@ -90,9 +76,7 @@ export const postTurno = async (req: Request, res: Response) => {
         horafin,
         idprecio,
         idagenda,
-        idpaciente,
-        idmodalidad,
-        idconsultorio,
+        idpaciente
     } = req.body;
 
     try { 
@@ -191,9 +175,7 @@ export const postTurno = async (req: Request, res: Response) => {
             horafin,
             idprecio,
             idagenda,
-            idpaciente,
-            idmodalidad,
-            idconsultorio 
+            idpaciente
         });
 
         await turno.save();

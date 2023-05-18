@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { Op } from 'sequelize';
+import { generarJWT } from '../helpers/generarJWT'
 
 import Profesional from '../models/profesional';
 import Especialidad from '../models/especialidad';
@@ -306,9 +307,12 @@ export const postProfesional = async (req: Request, res: Response) => {
             ]
         });
 
+        const token = await generarJWT(idusuario);
+
         res.json({
             msg:'Profesional dado de alta',
-            profesional: profesionalDB
+            profesional: profesionalDB,
+            token
         });
     } catch (error) {
         console.log(error)

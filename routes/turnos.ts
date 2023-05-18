@@ -23,7 +23,6 @@ router.post('/', [
     check('idprecio', 'El idprecio es requerido').not().isEmpty(), 
     check('idagenda', 'El idagenda es requerido').not().isEmpty(), 
     check('idpaciente', 'El idpaciente es requerido').not().isEmpty(), 
-    check('idmodalidad', 'El idmodalidad es requerido').not().isEmpty(), 
     validarCampos,
     validarJWT
 ], postTurno);

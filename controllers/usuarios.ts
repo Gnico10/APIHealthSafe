@@ -1,5 +1,4 @@
 import {Request, Response} from 'express';
-import { generarJWT } from '../helpers/generarJWT';
 import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
 
@@ -39,6 +38,14 @@ export const postUsuario = async (req: Request, res: Response) => {
 
     try {
         // Validaciones
+        const regex_email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!regex_email.test(body.correo)) {
+            return res.status(400).json({
+                msg: `El Correo = ${body.correo} no es válido.`
+            });
+        }
+
         const existeUsuario = await Usuario.findOne({
             where: {
                 correo: body.correo
@@ -67,14 +74,10 @@ export const postUsuario = async (req: Request, res: Response) => {
                 as: 'rol'
             }]
         });
-
-        // Generar JWT.
-        const token = await generarJWT(usuario.idusuario);
         
         res.json({
             msg:'Usuario dado de alta',
-            usuario,
-            token
+            usuario
         });
     } catch (error) {
         console.log(error);

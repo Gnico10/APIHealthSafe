@@ -1,4 +1,6 @@
 import {Request, Response} from 'express';
+import { generarJWT } from '../helpers/generarJWT';
+
 import Paciente from '../models/paciente';
 
 import HistoriaClinica from '../models/historiaclinica';
@@ -89,9 +91,12 @@ export const postPaciente = async (req: Request, res: Response) => {
             ],
         });
 
+        const token = await generarJWT(idusuario);
+
         res.json({
             msg:'Paciente dado de alta',
-            paciente: pacienteDB
+            paciente: pacienteDB,
+            token
         });
     } catch (error) {
         console.log(error);

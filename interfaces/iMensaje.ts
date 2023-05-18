@@ -5,6 +5,7 @@ interface IMensaje extends Model{
     mensaje? : string,
     fechahora? : Date,
     idmensajeria? : number,
+    idusuarioemisor? : number
 };
 
 export default IMensaje;
