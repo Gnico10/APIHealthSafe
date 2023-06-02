@@ -5,6 +5,7 @@ Aplicación BackEnd que despliega la API necesaria para servir los datos del sis
 ## Notas:
 
 * La aplicación fué dockerizada para realizar su despliegue de una manera sencilla.
+* Documentación actualizada: https://documenter.getpostman.com/view/20615764/2s93CSqBZX
 
 ## Despliegue con Docker
 
