@@ -8,7 +8,8 @@ import direccion from "../models/direccion";
 import episodio from "../models/registroHistoriaClinica";
 import especialidad from "../models/especialidad";
 import historiaclinica from "../models/historiaclinica";
-import indicacion from "../models/indicacion";
+import indicacionGeneral from "../models/indicacionGeneral";
+import indicacionMedicamento from "../models/indicacionMedicamento";
 import localidad from "../models/localidad";
 import mensaje from "../models/mensaje";
 import mensajeria from "../models/mensajeria";
@@ -31,6 +32,7 @@ import profesionales_matriculasprofesionales from "../models/profesionales_matri
 import colegiomedico from "../models/colegiomedico";
 
 import load from "./load";
+
 
 const sincronizarDB = async() =>  {
     // Sync all models that aren't already in the database
@@ -63,7 +65,8 @@ const sincronizarDB = async() =>  {
     await pedidoemergencia.sync({force: false});
     await citamedicaemergencia.sync({force: false});
     await prescripcion.sync({force: false});
-    await indicacion.sync({force: false});
+    await indicacionGeneral.sync({force: false});
+    await indicacionMedicamento.sync({force: false});
     await episodio.sync({force: false});
     await mensajeria.sync({force: false});
     await mensaje.sync({force: false});

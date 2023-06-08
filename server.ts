@@ -25,6 +25,7 @@ import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
 import mensajesRoutes from './routes/mensajes';
 import mensajeriaRoutes from './routes/mensajeria';
+import prescripcionMedicaRoutes from './routes/registros_medicos';
 
 
 class Server {
@@ -53,6 +54,7 @@ class Server {
         modalidades: '/api/modalidades',
         mensajes:'/api/mensajes',
         mensajeria:'/api/mensajeria',
+        prescripciones_medicas: '/api/registros_medicos',
         // Más rutas
         default: '*'
         
@@ -159,6 +161,7 @@ class Server {
         this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
         this.app.use(this.apiPaths.mensajes, mensajesRoutes);
         this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
+        this.app.use(this.apiPaths.prescripciones_medicas, prescripcionMedicaRoutes);
     
 
         // Ruta por defecto.

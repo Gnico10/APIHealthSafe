@@ -14,7 +14,6 @@ const indicacionMedicamento = sequelize.define<iIndicacionMedicamento>('indicaci
         dosis: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true
         },
 
         periodicidad: {

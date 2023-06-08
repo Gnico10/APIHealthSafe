@@ -12,7 +12,7 @@ router.get('/:idPaciente', getRegistroHistoriaClinica);
 router.get('/',getRegistrosHistoriaClinica);
 
 router.post('/', [
-  // middlewares a validar
-], validarCampos, postRegistroHistoriaClinica);
+ 
+],postRegistroHistoriaClinica);
 
 export default router;

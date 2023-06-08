@@ -74,7 +74,6 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
       });
     }
   };
-  
 
   export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
     const { idPaciente, fechahora, diagnostico } = req.body;
@@ -133,14 +132,12 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
                   }
                 })
               );
-  
               // Vincular los medicamentos al diagnóstico
               const medicamentosValidos = medicamentosCreados.filter((med: any) => med !== null && typeof med === 'object') as iIndicacionMedicamento[];
               for (const medicamento of medicamentosValidos) {
                 await nuevoDiagnostico.addMedicamento(medicamento);
               }
               
-
             }
   
             // Si hay indicaciones generales en el diagnóstico, crearlas y vincularlas al diagnóstico
@@ -165,7 +162,6 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
 
         
     }
-      
       res.json({
         msg: 'Registro de historia clínica creado correctamente',
         registroHistoriaClinica,

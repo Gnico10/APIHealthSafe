@@ -19,7 +19,6 @@ const diagnostico = sequelize.define<Idiagnostico>('Diagnostico',
         descripcion: {
             type: DataTypes.TEXT,
             primaryKey: true,
-            autoIncrement: true
         },
 
         nombre: {
