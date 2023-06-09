@@ -1,14 +1,14 @@
 import { DataTypes } from 'sequelize';
 import sequelize from "../db/connection";
 
-import Idiagnostico from "../interfaces/idiagnostico";
+import IDiagnostico from "../interfaces/;
 
 import indicacionGeneral from './indicacionGeneral';
 import medicamento from './medicamento';
 import citamedicaemergencia from './citamedicaemergencia';
 
 
-const diagnostico = sequelize.define<Idiagnostico>('Diagnostico',
+const diagnostico = sequelize.define<IDiagnostico>('diagnostico',
     {
         idDiagnostico: {
             type: DataTypes.INTEGER,

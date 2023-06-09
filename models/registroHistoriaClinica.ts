@@ -17,8 +17,8 @@ const registroHistoriaClinica = sequelize.define<iRegistroHistoriaClinica>('regi
             autoIncrement: true
         },
         fechahora: {
-            type: DataTypes.DATE,
-            allowNull: false
+            type: DataTypes.DATEONLY,
+            allowNull: true
         },
       
     },
