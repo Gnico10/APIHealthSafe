@@ -2,7 +2,8 @@ import {Request, Response} from 'express';
 import { generarJWT } from '../helpers/generarJWT';
 import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
-
+import multer  from '../middlewares/multer';
+import cloudinary from 'cloudinary';
 import Rol from '../models/rol'
 
 export const getUsuarios = async (req: Request, res: Response) => {
