@@ -2,9 +2,11 @@ import {Request, Response} from 'express';
 import { generarJWT } from '../helpers/generarJWT';
 import Usuario from '../models/usuario';
 import bcryptjs  from 'bcryptjs';
-import multer  from '../middlewares/multer';
 import cloudinary from 'cloudinary';
 import Rol from '../models/rol'
+import multer from 'multer';
+
+// Resto del código...
 
 export const getUsuarios = async (req: Request, res: Response) => {
     const usuarios = await Usuario.findAll({
@@ -36,54 +38,81 @@ export const getUsuario = async (req: Request, res: Response) => {
 }
 
 export const postUsuario = async (req: Request, res: Response) => {
-    const {body} = req;
-
+    const { body, files } = req;
+  
     try {
-        // Validaciones
-        const existeUsuario = await Usuario.findOne({
-            where: {
-                correo: body.correo
-            }
+      // Validaciones
+      const existeUsuario = await Usuario.findOne({
+        where: {
+          correo: body.correo,
+        },
+      });
+  
+      if (existeUsuario) {
+        return res.status(400).json({
+          msg: `El usuario con el Correo = ${body.correo} ya existe`,
         });
+      }
+  
+      // Creación de instancia en la base de datos.
+      const newusuario = Usuario.build(body);
+  
+      const salt = await bcryptjs.genSalt();
+      newusuario.contrasena = bcryptjs.hashSync(body.contrasena, salt);
 
-        if (existeUsuario) {
-            return res.status(400).json({
-                msg: `El usuario con el Correo = ${body.correo} ya existe`
-            });
+      // Verificar si se proporcionaron archivos
+      if (files && Array.isArray(files) && files.length > 0) {
+        const imgPerfil = files.find((file: Express.Multer.File) => file.fieldname === 'imgperfil');
+        const imgDniFrente = files.find((file: Express.Multer.File) => file.fieldname === 'imgdnifrente');
+        const imgDniDorso = files.find((file: Express.Multer.File) => file.fieldname === 'imgdnidorso');
+  
+  
+        if (imgPerfil) {
+          const imgPerfilUrl = await cargarImagen(imgPerfil);
+          newusuario.imgperfil = imgPerfilUrl;
         }
-
-        // Creación de instancia en la base de datos.
-        const newusuario = Usuario.build(body);
-
-        const salt = await bcryptjs.genSalt();
-        newusuario.contrasena = bcryptjs.hashSync(body.contrasena, salt);
-        await newusuario.save();
-        
-        const usuario : any = await Usuario.findOne({
-            where: {
-                correo: body.correo
-            },
-            include: [{
-                model: Rol,
-                as: 'rol'
-            }]
-        });
-
-        // Generar JWT.
-        const token = await generarJWT(usuario.idusuario);
-        
-        res.json({
-            msg:'Usuario dado de alta',
-            usuario,
-            token
-        });
+  
+        if (imgDniFrente) {
+          const imgDniFrenteUrl = await cargarImagen(imgDniFrente);
+          newusuario.imgdnifrente = imgDniFrenteUrl;
+        }
+  
+        if (imgDniDorso) {
+          const imgDniDorsoUrl = await cargarImagen(imgDniDorso);
+          newusuario.imgdnidorso = imgDniDorsoUrl;
+        }
+      }
+      await newusuario.save();
+  
+      const usuario: any = await Usuario.findOne({
+        where: {
+          correo: body.correo,
+        },
+        include: [
+          {
+            model: Rol,
+            as: 'rol',
+          },
+        ],
+      });
+  
+      // Generar JWT.
+      const token = await generarJWT(usuario.idusuario);
+  
+      res.json({
+        msg: 'Usuario dado de alta',
+        usuario,
+        token,
+      });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            msg: 'Error Interno. No se pudo crear el usuario'
-        });
+      console.log(error);
+      res.status(500).json({
+        msg: 'Error Interno. No se pudo crear el usuario',
+      });
     }
-}
+  };
+  
+  
 
 export const putUsuario = async (req: Request, res: Response) => {
     const { correo, contrasena } = req.body;
@@ -142,4 +171,24 @@ export const deleteUsuario = async (req: Request, res: Response) => {
             msg: 'Error Interno. No se pudo eliminar el usuario'
         });
     }
+
+  
 }
+
+const cargarImagen = async (file: Express.Multer.File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      cloudinary.v2.uploader.upload(file.path, { folder: 'uploads' }, (error, result) => {
+        if (error) {
+          console.log(error);
+          reject('Error al cargar la imagen');
+        } else {
+          if (result && result.secure_url) {
+            resolve(result.secure_url);
+          } else {
+            reject('Error al cargar la imagen');
+          }
+        }
+      });
+    });
+  };
+  
