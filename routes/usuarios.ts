@@ -3,8 +3,10 @@ import { check } from 'express-validator';
 
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
+import  upload  from '../middlewares/multer';
 
 import { getUsuarios, getUsuario, postUsuario, putUsuario, deleteUsuario } from '../controllers/usuarios';
+
 
 
 const router = Router();
@@ -58,18 +60,21 @@ router.get('/:id', [
  *        '400':
  *          description: Error en el request
  */
-router.post('/', [
-    check('correo', 'El correo es obligatorio').not().isEmpty(),
-    check('contrasena', 'La contraseña es obligatoria').not().isEmpty(),
-    check('contrasena', 'La contraseña debe tener, al menos, 6 caracteres.').isLength({min: 6}),
-    check('dni', 'El DNI es obligatorio').not().isEmpty(),
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('apellido', 'El apellido es obligatorio').not().isEmpty(),
-    check('fechanacimiento', 'La fecha de nacimiento es obligatoria').not().isEmpty(),
-    check('sexo', 'El sexo es obligatorio').not().isEmpty(),
-    check('idrol', 'El rol es obligatorio').not().isEmpty(),
+/*router.post('/', [
+    upload.fields([
+        { name: 'imgperfil', maxCount: 1 },
+        { name: 'imgdnifrente', maxCount: 1 },
+        { name: 'imgdnidorso', maxCount: 1 },
+      ]), // Middleware de Multer para procesar las imágenes adjuntas
     validarCampos
 ], postUsuario);
+*/
+
+router.post('/', upload.fields([
+    { name: 'imgperfil', maxCount: 1 },
+    { name: 'imgdnifrente', maxCount: 1 },
+    { name: 'imgdnidorso', maxCount: 1 },
+  ]), postUsuario);
 
 router.put('/:id', putUsuario);
 
