@@ -15,7 +15,7 @@ const load = async() => {
     loadTipoMatricula();
     loadUniversidades();
     loadColegiosMedicos();
-    // loadLocalidades();
+    loadLocalidades();
     loadModalidades();
     loadTipoAntecedente();
 }

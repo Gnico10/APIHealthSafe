@@ -1,7 +1,6 @@
 import {Router} from 'express';
 import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
-import validarJWT from '../middlewares/validarJWT';
 
 import { login, renovarToken } from '../controllers/auth';
 

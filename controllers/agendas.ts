@@ -31,6 +31,69 @@ export const getAgendas = async (req: Request, res: Response) => {
     res.json({agendas});
 }
 
+export const getAgendas_Profesional = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { fecha } = req.query;
+
+    try {
+        const agendas = await Agenda.findAll({
+            where: {
+                idprofesional: id 
+            },
+            include: [
+                {
+                    model: Profesional,
+                    as: 'profesional',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Modalidad,
+                    as: 'modalidad',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Consultorio,
+                    as: 'consultorio',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
+        });
+
+        if (agendas.length == 0) {
+            return res.status(400).json({
+                msg: `El profesional con ID: ${id} no tiene agendas cargadas`
+            });
+        }
+
+        const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
+        const agendasWithTurnos = await Promise.all(
+            agendas.map(async (agenda) => {
+                const turnos = await Turno.findAll({
+                    where: { 
+                        idagenda: agenda.idagenda,
+                        fecha: { [Op.gte]: fechaturno }
+                    },
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                });
+
+                // agrega los turnos como un atributo de cada agenda
+                return {
+                ...agenda.toJSON(),
+                turnos: turnos,
+                };
+            })
+        );
+
+        res.json({agendas: agendasWithTurnos});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar las agendas del profesional'
+        });
+    }
+    
+}
+
 //get: una sola agenda por id
 export const getAgenda = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -62,6 +125,7 @@ export const getAgenda = async (req: Request, res: Response) => {
         });
     }
 }
+
 /*
 export const updatedAgenda = async (req: Request, res: Response) => {
     const { precio } = req.params;

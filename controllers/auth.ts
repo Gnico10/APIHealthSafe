@@ -4,6 +4,8 @@ import { generarJWT } from '../helpers/generarJWT';
 
 import Usuario from '../models/usuario';
 import Rol from '../models/rol';
+import Paciente from "../models/paciente";
+import Profesional from "../models/profesional";
 
 export const login = async (req : Request, res : Response) => {
     const {correo, contrasena} = req.body;
@@ -22,6 +24,32 @@ export const login = async (req : Request, res : Response) => {
             return res.status(400).json({
                 msg: 'Usuario no encontrado'
             });
+        }
+
+        // Validar que el usuario tenga un Pacienta signado
+        if (usuario.rol.descripcion == 'Paciente'){
+            const pacienteDB = await Paciente.findOne({
+                where: {idusuario: usuario.idusuario}
+            })
+
+            if (!pacienteDB) {
+                return res.status(400).json({
+                    msg: 'El registro del paciente no finalizó'
+                });
+            }
+        }
+
+        // Validar que el usuario tenga un profesional asignado
+        if (usuario.rol.descripcion == 'Profesional'){
+            const profesionalDB = await Profesional.findOne({
+                where: {idusuario: usuario.idusuario}
+            })
+
+            if (!profesionalDB) {
+                return res.status(400).json({
+                    msg: 'El registro del profesional no finalizó'
+                });
+            }
         }
 
         // Verificar contrasena.
@@ -67,7 +95,7 @@ export const renovarToken = async (req : Request, res : Response) => {
         }
 
         // La contraseña no es requerida porque esta ruta está 
-        // controlada por un token anterior y
+        // controlada por un token anterior
 
         // Generar JWT.
         const token = await generarJWT(usuario.idusuario);

@@ -80,10 +80,31 @@ export const postUsuario = async (req: Request, res: Response) => {
               } else {
                 reject(error);
               }
-            }
-          });
+
+    try {
+        // Validaciones
+        const regex_email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!regex_email.test(body.correo)) {
+            return res.status(400).json({
+                msg: `El Correo = ${body.correo} no es válido.`
+            });
+        }
+      
+      const existeUsuario = await Usuario.findOne({
+        where: {
+          correo: correo,
+        },
+      });
+  
+      if (existeUsuario) {
+        return res.status(400).json({
+          msg: `El usuario con el correo "${correo}" ya existe`,
         });
       };
+      
+      const salt = await bcryptjs.genSalt();
+      const contrasena = bcryptjs.hashSync(body.contrasena, salt);      
       
       const newUsuario = Usuario.build({
         correo: correo,
@@ -136,24 +157,8 @@ export const postUsuario = async (req: Request, res: Response) => {
             });
           }
       }
-
-    try {
-      // Validaciones
-      const existeUsuario = await Usuario.findOne({
-        where: {
-          correo: correo,
-        },
-      });
   
-      if (existeUsuario) {
-        return res.status(400).json({
-          msg: `El usuario con el correo "${correo}" ya existe`,
-        });
-      }
-  
-      // Creación de instancia en la base de datos
-      
-  
+      // Creación de instancia en la base de datos  
       await newUsuario.save();
   
       const usuario = await Usuario.findOne({

@@ -4,13 +4,17 @@ import { check } from 'express-validator';
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
 
-import { getTurnos, getTurno, postTurno, deleteTurno } from '../controllers/turnos';
+import { getTurnos,
+         getTurnos_Paciente,
+         getTurno,
+         postTurno,
+         deleteTurno } from '../controllers/turnos';
 
 const router = Router();
 
 router.get('/', getTurnos);
-
 router.get('/:id', getTurno);
+router.get('/paciente/:id', getTurnos_Paciente);
 
 router.post('/', [
     check('fecha', 'La fecha es requerida').not().isEmpty(), 
@@ -19,7 +23,6 @@ router.post('/', [
     check('idprecio', 'El idprecio es requerido').not().isEmpty(), 
     check('idagenda', 'El idagenda es requerido').not().isEmpty(), 
     check('idpaciente', 'El idpaciente es requerido').not().isEmpty(), 
-    check('idmodalidad', 'El idmodalidad es requerido').not().isEmpty(), 
     validarCampos,
     validarJWT
 ], postTurno);

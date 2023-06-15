@@ -1,8 +1,18 @@
 import { isJSDocUnknownTag } from "typescript";
 import jwt, { Secret } from 'jsonwebtoken';
 
+import Usuario from "../models/usuario";
+
 export const generarJWT = ( idusuario : number ) => {
-    return new Promise((Resolve : any, Reject : any) => {
+    return new Promise(async (Resolve : any, Reject : any) => {
+        const usuarioDB = await Usuario.findOne({
+            where: {idusuario}
+        })
+
+        if (!usuarioDB){
+            Reject('Usuario no encontrado');
+        }
+
         const payload = { idusuario };
         const secretOrPrivateKey : Secret = process.env.SECRETORPRIVATEKEY!;
 

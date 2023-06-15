@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { Op } from 'sequelize';
+import { generarJWT } from '../helpers/generarJWT'
 
 import Profesional from '../models/profesional';
 import Especialidad from '../models/especialidad';
@@ -239,8 +240,6 @@ export const postProfesional = async (req: Request, res: Response) => {
             }); 
         }
 
-        if (profesional_matriculas)
-
         for (let especialidad of profesional_especialidades){
             let existeEspecialidad = await Especialidad.findByPk(especialidad.idespecialidad);
             if (!existeEspecialidad) {
@@ -259,6 +258,7 @@ export const postProfesional = async (req: Request, res: Response) => {
 
         // DB
         let profesional = await Profesional.create({idusuario, descripcion});
+
         for (const matriculas of profesional_matriculas){
             let matriculaprofesional = await MatriculaProfesional.create({
                 numero : matriculas.numero,
@@ -307,9 +307,12 @@ export const postProfesional = async (req: Request, res: Response) => {
             ]
         });
 
+        const token = await generarJWT(idusuario);
+
         res.json({
             msg:'Profesional dado de alta',
-            profesional: profesionalDB
+            profesional: profesionalDB,
+            token
         });
     } catch (error) {
         console.log(error)

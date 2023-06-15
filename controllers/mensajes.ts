@@ -7,10 +7,31 @@ import Mensaje from '../models/mensaje';
 
 
 
-export const postMensaje = async (req: Request, res: Response) => {
+export const postMensaje = async (req: any, res: Response) => {
   try {
     const { mensaje, idmensajeria } = req.body;
-    const nuevoMensaje = await Mensaje.create({ mensaje, idmensajeria });
+
+    // Validaciones
+    const mensajeriaDB = await Mensajeria.findByPk(idmensajeria);
+
+    if (!mensajeriaDB){
+      return res.status(400).json({
+          msg: `La Mensajeria con id ${idmensajeria} no existe`
+      });
+    }
+
+    const idusuarioemisor = req.idUsuarioToken
+    if (mensajeriaDB.idpaciente != idusuarioemisor && mensajeriaDB.idprofesional != idusuarioemisor){
+      return res.status(400).json({
+          msg: `El remitente con id ${idusuarioemisor} no pertenece a la mensajeria.`
+      });
+    }
+
+    const nuevoMensaje = await Mensaje.create({ 
+      mensaje, 
+      idmensajeria,
+      idusuarioemisor
+    });
 
     // Enviamos el mensaje a través de WebSocket
     serverSocket.io.emit('mensaje', nuevoMensaje);
@@ -18,7 +39,7 @@ export const postMensaje = async (req: Request, res: Response) => {
     return res.status(201).json(nuevoMensaje);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Ocurrió un error al enviar el mensaje.' });
+    return res.status(400).json({ msg: 'Ocurrió un error al enviar el mensaje.' });
   }
 };
 
@@ -27,12 +48,12 @@ export const getMensajes = async (req: Request, res: Response) => {
     const { idmensajeria } = req.params;
     const mensajes = await Mensaje.findAll({
       where: { idmensajeria },
-      include: [{ model: Mensajeria, as: 'mensajeria' }],
+      // include: [{ model: Mensajeria, as: 'mensajeria' }],
     });
 
     return res.status(200).json(mensajes);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Ocurrió un error al obtener los mensajes.' });
+    return res.status(400).json({ msg: 'Ocurrió un error al obtener los mensajes.' });
   }
 };

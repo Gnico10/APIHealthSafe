@@ -1,17 +1,55 @@
 import {Request, Response} from 'express';
+import { Op } from 'sequelize';
 
 import Agenda from '../models/agenda';
 import Usuario from '../models/usuario';
 import Turno from '../models/turno';
 import Paciente from '../models/paciente';
 
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-
 //get: all turnos
 export const getTurnos = async (req: Request, res: Response) => {
     const turnos = await Turno.findAll();
     res.json({turnos});
+}
+
+export const getTurnos_Paciente = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { fecha } = req.query;
+
+    try {
+        const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
+        const turnos = await Turno.findAll({
+            where: {
+                idpaciente: id,
+                fecha: { [Op.gte]: fechaturno }
+            },
+            include: [
+                {
+                    model: Agenda,
+                    as: 'agenda',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                    model: Paciente,
+                    as: 'paciente',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
+        });
+        
+        if (turnos.length == 0) {
+            return res.status(400).json({
+                msg: `El paciente con ID: ${id} no tiene turnos cargadas`
+            });
+        }
+
+        res.json({turnos});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar los turnos del paciente'
+        });
+    }
 }
 
 //get: un solo turno por id
@@ -38,9 +76,7 @@ export const postTurno = async (req: Request, res: Response) => {
         horafin,
         idprecio,
         idagenda,
-        idpaciente,
-        idmodalidad,
-        idconsultorio,
+        idpaciente
     } = req.body;
 
     try { 
@@ -139,9 +175,7 @@ export const postTurno = async (req: Request, res: Response) => {
             horafin,
             idprecio,
             idagenda,
-            idpaciente,
-            idmodalidad,
-            idconsultorio 
+            idpaciente
         });
 
         await turno.save();
