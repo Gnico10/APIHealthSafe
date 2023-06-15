@@ -132,7 +132,7 @@ class Server {
         this.app.use(express.json());
 
         // Carpeta publica
-        this.app.use(express.static('public'));
+        this.app.use('/uploads', express.static('uploads'));
 
         // Documentación Swagger;
         this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(this.swaggerSpec)));

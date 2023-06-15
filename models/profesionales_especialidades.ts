@@ -20,6 +20,18 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
             validate:{
                 len: [4, 4] // number of 4 digits
             }
+        },
+        idcolegiomedico: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idprofesional: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idespecialidad: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {

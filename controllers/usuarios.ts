@@ -58,7 +58,6 @@ export const postUsuario = async (req: Request, res: Response) => {
     const { body, files } = req;
     // Acceder a los atributos necesarios desde req.body
     const correo = body.correo;
-    const contrasena = body.contrasena;
     const dni = body.dni;
     const nombre = body.nombre;
     const apellido = body.apellido;
@@ -67,7 +66,7 @@ export const postUsuario = async (req: Request, res: Response) => {
     const sexo = body.sexo;
     const imagenes = files ? files.values : {}
     // ... otros atributos
-  
+    console.log(files)
     const cargarImagen = (file: Express.Multer.File) => {
         return new Promise<string>((resolve, reject) => {
           cloudinary.uploader.upload(file.path, (error, result) => {
@@ -80,6 +79,10 @@ export const postUsuario = async (req: Request, res: Response) => {
               } else {
                 reject(error);
               }
+            }
+          })
+        });
+    };
 
     try {
         // Validaciones
@@ -114,7 +117,7 @@ export const postUsuario = async (req: Request, res: Response) => {
         apellido:apellido,
         idrol: idrol,
         fechanacimiento:fechanacimiento,
-           sexo:sexo,
+        sexo:sexo,
         // ... otros atributos
       });
 
@@ -242,6 +245,3 @@ export const deleteUsuario = async (req: Request, res: Response) => {
     });
   }
 };
-
-
-  
