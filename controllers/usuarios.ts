@@ -72,12 +72,12 @@ export const postUsuario = async (req: Request, res: Response) => {
           cloudinary.uploader.upload(file.path, (error, result) => {
             if (error) {
               console.error(error);
-              reject('Error al cargar la imagen');
+              reject(error);
             } else {
               if (result && result.secure_url) {
                 resolve(result.secure_url);
               } else {
-                reject(error);
+                reject(new Error('Error al cargar la imagen'));
               }
             }
           })
@@ -132,34 +132,41 @@ export const postUsuario = async (req: Request, res: Response) => {
             break;
           case 'imgdnidorso':
             newUsuario.imgdnidorso = image;
+            break;
           default:
             break;
         }
       };
 
+      const promesasCargaImagenes: any[] = [];
+
       if (files) {
         if (Array.isArray(files)) {
-            files.forEach((file) => {
+          files.forEach((file) => {
+            console.log(file.fieldname);
+            try {
+              const promesaCargaImagen = procesarArchivo(file);
+              promesasCargaImagenes.push(promesaCargaImagen);
+            } catch (error) {
+              console.error(error);
+            }
+          });
+        } else {
+          Object.values(files).forEach((fileArray) => {
+            fileArray.forEach((file) => {
               console.log(file.fieldname);
               try {
-                procesarArchivo(file);
+                const promesaCargaImagen = procesarArchivo(file);
+                promesasCargaImagenes.push(promesaCargaImagen);
               } catch (error) {
                 console.error(error);
               }
             });
-          } else {
-            Object.values(files).forEach((fileArray) => {
-              fileArray.forEach((file) => {
-                console.log(file.fieldname);
-                try {
-                    procesarArchivo(file);
-                } catch (error) {
-                  console.error(error);
-                }
-              });
-            });
-          }
+          });
+        }
       }
+      // Creación de instancia en la base de datos
+      await Promise.all(promesasCargaImagenes);
   
       // Creación de instancia en la base de datos  
       await newUsuario.save();
