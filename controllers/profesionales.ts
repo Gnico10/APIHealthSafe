@@ -15,6 +15,9 @@ import Consultorio from '../models/consultorio';
 import Direccion from '../models/direccion';
 import Agenda from '../models/agenda';
 import Modalidad from '../models/modalidad';
+import TipoMatricula from '../models/tipomatricula';
+import Pais from '../models/pais';
+import Universidad from '../models/universidad';
 
 
 export const getProfesionales = async (req: Request, res: Response) => {
@@ -161,6 +164,8 @@ export const getProfesionales = async (req: Request, res: Response) => {
     }
 }
 
+// Importaciones omitidas por brevedad
+
 export const getProfesional = async (req: Request, res: Response) => {
     const { id } = req.params;
   
@@ -183,9 +188,28 @@ export const getProfesional = async (req: Request, res: Response) => {
           {
             model: MatriculaProfesional,
             as: 'PM_matriculas_profesionales',
-            through: {
-              attributes: ['titulogrado', 'aniootorgamiento'],
-            }
+            include: [
+              {
+                model: MatriculaProfesional,
+                as: 'matricula',
+                include: [
+                  {
+                    model: TipoMatricula,
+                    as: 'tipomatricula'
+                  },
+                  {
+                    model: Universidad,
+                    as: 'universidad',
+                    include: [
+                      {
+                        model: Pais,
+                        as: 'pais'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             model: Especialidad,
@@ -211,6 +235,7 @@ export const getProfesional = async (req: Request, res: Response) => {
       });
     }
   };
+  
   
 
 
