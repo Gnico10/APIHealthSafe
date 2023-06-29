@@ -163,42 +163,55 @@ export const getProfesionales = async (req: Request, res: Response) => {
 
 export const getProfesional = async (req: Request, res: Response) => {
     const { id } = req.params;
- 
-    const profesional = await Profesional.findOne({
+  
+    try {
+      const profesional = await Profesional.findOne({
         where: {
-            idprofesional: id
+          idprofesional: id
         },
         include: [
-            {
-                model: Usuario,
-                as: 'usuario'
+          {
+            model: Usuario,
+            as: 'usuario',
+            include: [
+              {
+                model: Rol,
+                as: 'rol'
+              }
+            ]
+          },
+          {
+            model: MatriculaProfesional,
+            as: 'PM_matriculas_profesionales',
+            through: {
+              attributes: ['titulogrado', 'aniootorgamiento'],
+            }
+          },
+          {
+            model: Especialidad,
+            as: 'PE_especialidades',
+            through: {
+              attributes: ['idcolegiomedico', 'aniootorgamiento'],
             },
-            {
-                model: MatriculaProfesional,
-                as: 'PM_matriculas_profesionales',
-                through: {
-                    attributes: ['titulogrado', 'aniootorgamiento'],
-                }
-            },
-            {
-                model: Especialidad,
-                as: 'PE_especialidades',
-                through: {
-                    attributes: ['idcolegiomedico', 'aniootorgamiento'],
-                },
-            },
+          },
         ],
         logging: console.log,
-    });
-
-    if (profesional){
+      });
+  
+      if (profesional) {
         res.json(profesional);
-    } else {
+      } else {
         res.status(404).json({
-            msg: `No existe un profesional con id = ${id}`
+          msg: `No existe un profesional con id = ${id}`
         });
+      }
+    } catch (error) {
+      res.status(500).json({
+        msg: 'Ocurrió un error en el servidor'
+      });
     }
-}
+  };
+  
 
 
 export const postProfesional = async (req: Request, res: Response) => {
