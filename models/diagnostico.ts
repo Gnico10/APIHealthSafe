@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from "../db/connection";
 
-import IDiagnostico from "../interfaces/;
+import IDiagnostico from "../interfaces/idiagnostico";
 
 import indicacionGeneral from './indicacionGeneral';
 import medicamento from './medicamento';
