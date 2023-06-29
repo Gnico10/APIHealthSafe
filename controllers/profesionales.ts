@@ -190,22 +190,16 @@ export const getProfesional = async (req: Request, res: Response) => {
             as: 'PM_matriculas_profesionales',
             include: [
               {
-                model: MatriculaProfesional,
-                as: 'matricula',
+                model: TipoMatricula,
+                as: 'tipomatricula'
+              },
+              {
+                model: Universidad,
+                as: 'universidad',
                 include: [
                   {
-                    model: TipoMatricula,
-                    as: 'tipomatricula'
-                  },
-                  {
-                    model: Universidad,
-                    as: 'universidad',
-                    include: [
-                      {
-                        model: Pais,
-                        as: 'pais'
-                      }
-                    ]
+                    model: Pais,
+                    as: 'pais'
                   }
                 ]
               }
