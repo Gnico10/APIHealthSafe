@@ -134,7 +134,11 @@ export const getProfesionales = async (req: Request, res: Response) => {
             include: [
                 {
                     model: Usuario,
-                    as: 'usuario'
+                    as: 'usuario',
+                    include: [{
+                        model: Rol,
+                        as: 'rol'
+                    }]
                 },
                 {
                     model: Especialidad,
@@ -148,7 +152,23 @@ export const getProfesionales = async (req: Request, res: Response) => {
                     as: 'PM_matriculas_profesionales',
                     through: {
                         attributes: ['titulogrado', 'aniootorgamiento']
-                    }
+                    },
+                    include: [
+                        {
+                          model: TipoMatricula,
+                          as: 'tipomatricula'
+                        },
+                        {
+                          model: Universidad,
+                          as: 'universidad',
+                          include: [
+                            {
+                              model: Pais,
+                              as: 'pais'
+                            }
+                          ]
+                        }
+                      ]
                 }
             ]
         });
