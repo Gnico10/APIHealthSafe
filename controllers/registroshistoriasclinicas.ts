@@ -94,8 +94,8 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
       const registroHistoriaClinica = await RegistroHistoriaClinica.create({fechahora, idpaciente})
   
       // Si hay diagnósticos en el request, crearlos y vincularlos al registro
-if (Array.isArray(diagnostico)) {
-  const diagnosticoPromises = diagnostico.map(async (diagno_item) => {
+    if (Array.isArray(diagnostico)) {
+    const diagnosticoPromises = diagnostico.map(async (diagno_item) => {
     const newDiagnostico = await Diagnostico.create({
       nombre: diagno_item.nombre,
       descripcion: diagno_item.descripcion,
@@ -122,13 +122,44 @@ if (Array.isArray(diagnostico)) {
           observaciones: medicamento.observaciones,
           idmedicamento: newMedicamento.idmedicamento
         });
+      
+        newMedicamento.dataValues.indicacionesMedicamento = [{
+          dosis: medicamento.dosis,
+          periodicidad: medicamento.periodicidad,
+          duraciontratamiento: medicamento.duraciontratamiento,
+          observaciones: medicamento.observaciones,
+          idmedicamento: newMedicamento.idmedicamento
+        }];
+        
+        return newMedicamento;
       });
 
-      await Promise.all(medicamentoPromises);
+      const medicamentosCreados = await Promise.all(medicamentoPromises);
+      newDiagnostico.dataValues.medicamentos = medicamentosCreados;
     }
+
+    // Si hay indicaciones generales en el diagnóstico, crearlas y vincularlas al diagnóstico
+    if (Array.isArray(diagno_item.indicacionesGenerales)) {
+      const indicacionesPromises = diagno_item.indicacionesGenerales.map(async (indicacion: { dosis: any; frecuencia: any; }) => {
+        const nuevaIndicacion = await IndicacionMedicamento.create({
+          dosis: indicacion.dosis,
+          frecuencia: indicacion.frecuencia,
+          idDiagnostico: newDiagnostico.iddiagnostico
+        });
+
+        return nuevaIndicacion;
+      });
+
+      const indicacionesCreadas = await Promise.all(indicacionesPromises);
+      newDiagnostico.dataValues.indicacionesGenerales = indicacionesCreadas;
+    }
+
+    return newDiagnostico;
   });
 
-} 
+  const diagnosticosCreados = await Promise.all(diagnosticoPromises);
+  registroHistoriaClinica.dataValues.diagnosticos = diagnosticosCreados;
+}
       res.json({
         msg: 'Registro de historia clínica creado correctamente',
         registroHistoriaClinica,
@@ -140,48 +171,7 @@ if (Array.isArray(diagnostico)) {
       });
     }
   };
-  /*
-      if (diagnostico && diagnostico.length > 0) {
-              // Vincular los medicamentos al diagnóstico
-              const medicamentosValidos = medicamentosCreados.filter((med: any) => med !== null && typeof med === 'object') as iIndicacionMedicamento[];
-              for (const medicamento of medicamentosValidos) {
-                await nuevoDiagnostico.addMedicamento(medicamento);
-              }
-              
-            }
   
-            // Si hay indicaciones generales en el diagnóstico, crearlas y vincularlas al diagnóstico
-            if (diag.indicacionesGenerales && diag.indicacionesGenerales.length > 0) {
-              const indicacionesCreadas = await Promise.all(
-                diag.indicacionesGenerales.map(async (ind: any) => {
-                  const nuevaIndicacion = await IndicacionMedicamento.create(
-                    { dosis: ind.dosis, frecuencia: ind.frecuencia, idDiagnostico: nuevoDiagnostico.idDiagnostico },
-                    { fields: ['dosis', 'frecuencia', 'idDiagnostico'] }
+     
+   
   
-                            );
-                            return nuevaIndicacion;
-                        })
-                    );
-                    nuevoDiagnostico.set(indicacionesCreadas);
-                }
-
-                return nuevoDiagnostico;
-            })
-        );
-        registroHistoriaClinica.set(diagnosticosCreados);
-
-        
-    }
-      res.json({
-        msg: 'Registro de historia clínica creado correctamente',
-        registroHistoriaClinica,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        msg: 'Error interno. No se pudo crear el registro de historia clínica',
-      });
-    }
-  };
-
-  */
