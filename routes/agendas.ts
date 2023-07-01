@@ -27,7 +27,7 @@ router.post('/', [
     check('idprofesional', 'El idprofesional es requerido').not().isEmpty(),
     check('idmodalidad', 'La modalidad es requerida').not().isEmpty(),
     validarCampos,
-    validarJWT
+    //validarJWT
 ], postAgenda);
 
 router.delete('/:id', [

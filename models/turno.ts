@@ -29,8 +29,8 @@ const turno = sequelize.define<ITurno>('turno', {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
-        idprecio: { // Mercado Pago.
-            type: DataTypes.STRING
+        precio: { // Mercado Pago.
+            type: DataTypes.DOUBLE
         },
         idpaciente: {
             type: DataTypes.INTEGER,
