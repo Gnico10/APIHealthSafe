@@ -3,7 +3,9 @@ import { check } from 'express-validator';
 
 import validarCampos from '../middlewares/validarCampos';
 
-import { getRegistrosHistoriaClinica, getRegistroHistoriaClinica, postRegistroHistoriaClinica } from '../controllers/registros_historiasClinicas';
+import { getRegistrosHistoriaClinica,
+    getRegistroHistoriaClinica,
+    postRegistroHistoriaClinica } from '../controllers/registroshistoriasclinicas';
 
 const router = Router();
 

@@ -11,6 +11,7 @@ export const getRegistrosHistoriaClinica = async (req: Request, res: Response) =
     try {
       const registrosHistoriaClinica = await RegistroHistoriaClinica.findAll({
         attributes: { exclude: ['createdAt', 'updatedAt'] },
+        /*
         include: [
           {
             model: Diagnostico,
@@ -32,7 +33,7 @@ export const getRegistrosHistoriaClinica = async (req: Request, res: Response) =
               },
             ],
           },
-        ],
+        ],*/
       });
   
       if (registrosHistoriaClinica.length === 0) {

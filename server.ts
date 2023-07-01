@@ -25,8 +25,7 @@ import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
 import mensajesRoutes from './routes/mensajes';
 import mensajeriaRoutes from './routes/mensajeria';
-import registrosMedicosRoutes from './routes/registros_medicos';
-
+import registroshistoriasclinicasRoutes from './routes/registroshistoriasclinicas';
 
 class Server {
 
@@ -54,7 +53,7 @@ class Server {
         modalidades: '/api/modalidades',
         mensajes:'/api/mensajes',
         mensajeria:'/api/mensajeria',
-        registros_medicos: '/api/registros_medicos',
+        registroshistoriasclinicas: '/api/registroshistoriasclinicas',
         // Más rutas
         default: '*'
         
@@ -101,8 +100,6 @@ class Server {
         // Define las rutas del api.
         this.routes();
     }
-  
-      
 
     async dbConnection() {
         try{
@@ -139,7 +136,6 @@ class Server {
         // Documentación Swagger;
         this.app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(this.swaggerSpec)));
     }
-    
 
     routes() {
         this.app.use(this.apiPaths.auth, authRoutes);
@@ -161,7 +157,7 @@ class Server {
         this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
         this.app.use(this.apiPaths.mensajes, mensajesRoutes);
         this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
-        this.app.use(this.apiPaths.registros_medicos, registrosMedicosRoutes);
+        this.app.use(this.apiPaths.registroshistoriasclinicas, registroshistoriasclinicasRoutes);
     
 
         // Ruta por defecto.
