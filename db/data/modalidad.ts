@@ -8,9 +8,13 @@ const loadModalidades = async() => {
     ];
 
     // Create modalidades in database
-    descrmodalidades.map(async (desc) => {
+    descrmodalidades.map(async (desc, index) => {
         await Modalidad.findOrCreate({
-            where: { descripcion: desc }
+            where: { descripcion: desc },
+            defaults: {
+                idmodalidad: index + 1,
+                descripcion: desc
+            }
         });
     });
 }

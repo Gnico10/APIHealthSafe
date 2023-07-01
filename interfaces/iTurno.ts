@@ -6,12 +6,11 @@ interface ITurno extends Model{
     horainicio? : string,
     horafin? : string,
     fechasolicita? : Date,
-    idprecio? : string,
+    precio? : number,
+    idpagomercadopago? : string,
+    idespecialidad? : number,
     idagenda? : number,
     idpaciente? : number,
-    idprofesional? : number,
-    idmodalidad? : number,
-    idconsultorio? : number,
 };
 
 export default ITurno;
