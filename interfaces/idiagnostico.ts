@@ -1,15 +1,9 @@
 import { Model } from "sequelize/types";
-import IMedicamento from "./iIndicacionMedicamento";
-
 
 interface IDiagnostico extends Model{
-    idDiagnostico?: number,
+    iddiagnostico?: number,
     nombre? : string,
-    descripcion? : string,
-    idmedicamento?: number,
-    idindicacionGeneral?: number,
-    medicamentos: IMedicamento[];
-    addMedicamento(medicamento: IMedicamento): void;
+    descripcion? : string
 };
 
 export default IDiagnostico;

@@ -1,13 +1,11 @@
 import {Request, Response} from 'express';
 
-import RegistroHistoriaClinica from '../models/registroHistoriaClinica';
+import RegistroHistoriaClinica from '../models/registrohistoriaclinica';
 import Diagnostico from '../models/diagnostico';
 import Paciente from '../models/paciente';
 import Medicamento from '../models/medicamento';
-import IndicacionGeneral from '../models/indicacionGeneral';
-import IndicacionMedicamento from '../models/indicacionMedicamento';
-import iMedicameento from '../interfaces/iMedicamento';
-import iIndicacionMedicamento from '../interfaces/iIndicacionMedicamento';
+import IndicacionGeneral from '../models/indicaciongeneral';
+import IndicacionMedicamento from '../models/indicacionmedicamento';
 
 export const getRegistrosHistoriaClinica = async (req: Request, res: Response) => {
     try {
@@ -24,7 +22,7 @@ export const getRegistrosHistoriaClinica = async (req: Request, res: Response) =
                 include: [
                   {
                     model: IndicacionMedicamento,
-                    as: 'indicacion',
+                    as: 'indicacionmedicamento',
                   },
                 ],
               },
@@ -75,8 +73,11 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
     }
   };
 
-  export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
-    const { idPaciente, fechahora, diagnostico } = req.body;
+export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
+  /*
+    const { idPaciente,
+            fechahora,
+            diagnostico } = req.body;
   
     try {
       // Validar que el paciente exista
@@ -88,50 +89,41 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
       }
   
       // Crear el registro de historia clínica
-      const registroHistoriaClinica = await RegistroHistoriaClinica.create(
-        { fechaHora: fechahora, idPaciente },
-        { fields: ['fechaHora', 'idPaciente'] }
-      );
+      const registroHistoriaClinica = await RegistroHistoriaClinica.create({fechahora, idPaciente})
   
       // Si hay diagnósticos en el request, crearlos y vincularlos al registro
+      for (let diagno_item of diagnostico){
+        const newDiagnostico = await Diagnostico.create(
+          { 
+            nombre: diagno_item.nombre,
+            descripcion: diagno_item.descripcion,
+            idRegistroHistoriaClinica: registroHistoriaClinica.idRegistroHistoriaClinica
+          }
+        );
+
+        // Si hay medicamentos en el diagnóstico, crearlos y vincularlos al diagnóstico
+        for (let medicamento of diagno_item.medicamentos){
+          let newMedicamento = await Medicamento.create(
+            {
+              nombre: medicamento.nombre,
+              idDiagnostico: newDiagnostico.idDiagnostico
+            }
+          );
+           
+          // Crear la indicación y vincularla al medicamento
+          await IndicacionMedicamento.create(
+            {
+              dosis: medicamento.dosis,
+              periodicidad: medicamento.frecuencia,
+              duraciontratamiento: medicamento.duraciontratamiento,
+              observaciones: medicamento.observaciones,
+              idMedicamento: newMedicamento.idMedicamento
+            }
+          );
+        }
+      }
+      
       if (diagnostico && diagnostico.length > 0) {
-        const diagnosticosCreados = await Promise.all(
-          diagnostico.map(async (diag: any) => {
-            const nuevoDiagnostico = await Diagnostico.create(
-              { nombre: diag.nombre, descripcion: diag.descripcion, idRegistroHistoriaClinica: registroHistoriaClinica.idRegistroHistoriaClinica },
-              { fields: ['nombre', 'descripcion', 'idRegistroHistoriaClinica'] }
-            );
-  
-            // Si hay medicamentos en el diagnóstico, crearlos y vincularlos al diagnóstico
-            if (diag.medicamentos && diag.medicamentos.length > 0) {
-              const medicamentosCreados = await Promise.all(
-                diag.medicamentos.map(async (med: any) => {
-                  try {
-                    // Crear el medicamento
-                    const nuevoMedicamento = await Medicamento.create(
-                      { nombre: med.nombre, idDiagnostico: nuevoDiagnostico.idDiagnostico },
-                      { fields: ['nombre', 'idDiagnostico'] }
-                    );
-  
-                    // Crear la indicación y vincularla al medicamento
-                    const nuevaIndicacion = await IndicacionMedicamento.create(
-                      { dosis: med.dosis, frecuencia: med.frecuencia, idMedicamento: nuevoMedicamento.idMedicamento },
-                      { fields: ['dosis', 'frecuencia', 'idMedicamento'] }
-                    );
-  
-                    // Vincular la indicación y el medicamento al diagnóstico
-                    if (nuevoMedicamento) {
-                      await nuevoMedicamento.setIndicacion(nuevaIndicacion);
-                            nuevoDiagnostico.addMedicamento(nuevoMedicamento);
-                    }
-  
-                    return nuevoMedicamento;
-                  } catch (error) {
-                    console.log('Error al crear el medicamento:', error);
-                    return null;
-                  }
-                })
-              );
               // Vincular los medicamentos al diagnóstico
               const medicamentosValidos = medicamentosCreados.filter((med: any) => med !== null && typeof med === 'object') as iIndicacionMedicamento[];
               for (const medicamento of medicamentosValidos) {
@@ -171,7 +163,7 @@ export const getRegistroHistoriaClinica = async (req: Request, res: Response) =>
       res.status(500).json({
         msg: 'Error interno. No se pudo crear el registro de historia clínica',
       });
-    }
+    }*/
   };
 
   

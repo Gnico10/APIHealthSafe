@@ -1,40 +1,34 @@
 import { DataTypes } from 'sequelize';
 import sequelize from "../db/connection";
 
-import iIndicacionMedicamento from "../interfaces/iIndicacionMedicamento";
+import iIndicacionmedicamento from "../interfaces/iIndicacionmedicamento";
 
-const indicacionMedicamento = sequelize.define<iIndicacionMedicamento>('indicacionMedicamento',
+const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicacionmedicamento',
     {
-        idIndicacionMedicamento: {
+        idindicacionmedicamento: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-     
         dosis: {
             type: DataTypes.INTEGER,
             primaryKey: true,
         },
-
         periodicidad: {
             type: DataTypes.TEXT,
             allowNull: false
         },
-
-        duracionTratamiento: {
+        duraciontratamiento: {
             type: DataTypes.TEXT,
             allowNull: false
         },
-
         observaciones: {
-            type: DataTypes.TEXT,
-            allowNull: false
+            type: DataTypes.TEXT
         },
-      
     },
     {
-        tableName: 'indicacionMedicamentos'
+        tableName: 'indicacionesmedicamentos'
     }
 );
 
-export default  indicacionMedicamento;
+export default  indicacionmedicamento;

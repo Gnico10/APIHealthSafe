@@ -5,11 +5,7 @@ import citamedicaemergencia from "../models/citamedicaemergencia";
 import consultorio from "../models/consultorio";
 import dia from "../models/dias";
 import direccion from "../models/direccion";
-import episodio from "../models/registroHistoriaClinica";
 import especialidad from "../models/especialidad";
-import historiaclinica from "../models/historiaclinica";
-import indicacionGeneral from "../models/indicacionGeneral";
-import indicacionMedicamento from "../models/indicacionMedicamento";
 import localidad from "../models/localidad";
 import mensaje from "../models/mensaje";
 import mensajeria from "../models/mensajeria";
@@ -30,7 +26,11 @@ import universidad from "../models/universidad";
 import matriculaprofesional from "../models/matriculaprofesional";
 import profesionales_matriculasprofesionales from "../models/profesionales_matriculasprofesionales";
 import colegiomedico from "../models/colegiomedico";
-import registroHistoriaClinica from "../models/registroHistoriaClinica"
+import registrohistoriaclinica from "../models/registrohistoriaclinica"
+import indicacionGeneral from "../models/indicaciongeneral";
+import indicacionmedicamento from "../models/indicacionmedicamento";
+import diagnostico from "../models/diagnostico";
+import medicamento from "../models/medicamento";
 
 import load from "./load";
 
@@ -53,7 +53,11 @@ const sincronizarDB = async() =>  {
     await universidad.sync({force: false});
     await matriculaprofesional.sync({force: false});
     await profesionales_matriculasprofesionales.sync({force: false});
-    await historiaclinica.sync({force: false});
+    await registrohistoriaclinica.sync({force: false});
+    await diagnostico.sync({force: false});
+    await medicamento.sync({force: false});
+    await indicacionmedicamento.sync({force: false});
+    await indicacionGeneral.sync({force: false});    
     await paciente.sync({force: false});
     await tipoantecedente.sync({force: false});
     await antecedente.sync({force: false});
@@ -67,12 +71,9 @@ const sincronizarDB = async() =>  {
     await citamedicaemergencia.sync({force: false});
     await prescripcion.sync({force: false});
     await indicacionGeneral.sync({force: false});
-    await indicacionMedicamento.sync({force: false});
-    await episodio.sync({force: false});
+    await indicacionmedicamento.sync({force: false});
     await mensajeria.sync({force: false});
     await mensaje.sync({force: false});
-    await registroHistoriaClinica.sync({force: false});
-
     // load default data for DB
     load();
 }

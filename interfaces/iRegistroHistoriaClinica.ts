@@ -1,10 +1,9 @@
 import { Model } from 'sequelize/types';
 
-interface iRegistroHistoriaClinica extends Model{
-    idRegistroHistoriaClinica? : number,
+interface iRegistrohistoriaclinica extends Model{
+    idregistrohistoriaclinica? : number,
     fechahora? : Date,
-    idDiagnostico?: number,
-    
+    idpaciente? : number
 };
 
-export default iRegistroHistoriaClinica;
+export default iRegistrohistoriaclinica;

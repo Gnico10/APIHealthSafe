@@ -1,15 +1,13 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
-import { Model, Optional } from "sequelize/types";
+
 import iMedicamento from '../interfaces/iMedicamento';
+import indicacionmedicamento from "./indicacionmedicamento";
+import diagnostico from "./diagnostico";
 
-import indicacionMedicamento from '../models/indicacionMedicamento';
-
-
-
-const medicamento = sequelize.define<iMedicamento>('Medicamento',
+const medicamento = sequelize.define<iMedicamento>('medicamento',
     {
-        idMedicamento: {
+        idmedicamento: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -30,35 +28,32 @@ const medicamento = sequelize.define<iMedicamento>('Medicamento',
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        idDiagnostico: {
+        iddiagnostico: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-
-        
+        idindicacionmedicamento: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        }
     },
     {
         tableName: 'medicamentos'
     }
 );
 
-medicamento.belongsTo(indicacionMedicamento, {
-    foreignKey: 'idIndicacionMedicamento',
-    as: 'indicacionMedicamento',
+medicamento.belongsTo(diagnostico, {
+    foreignKey: 'iddiagnostico',
+    as: 'diagnostico',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+})
+
+medicamento.belongsTo(indicacionmedicamento, {
+    foreignKey: 'idindicacionmedicamento',
+    as: 'indicacionmedicamento',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
-
-medicamento.prototype.setIndicacion = async function(indicacion: typeof indicacionMedicamento): Promise<void> {
-
-     // Aquí deberías implementar la lógica para asociar la indicación al medicamento
-    // Puedes utilizar los métodos de Sequelize para crear la indicación y asociarla al medicamento
-    // Por ejemplo:
- const nuevaIndicacion = await indicacionMedicamento.create({  dosis: indicacion, frecuencia: indicacion });
-     await this.addIndicacion(nuevaIndicacion);
-    // o
-    await this.createIndicacion({ dosis: indicacion, frecuencia: indicacion });
-    await this.setIndicacionMedicamento(indicacion);
-};
 
 export default  medicamento;

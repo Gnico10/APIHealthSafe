@@ -1,12 +1,11 @@
 import { Model } from "sequelize/types";
 
-interface iIndicacionMedicamento extends Model{
-    idindicacionMedicamento? : number,
+interface iIndicacionmedicamento extends Model{
+    idindicacionmedicamento? : number,
     dosis? : string,
     periodicidad? : string,
-    duracionTratamiento?: string,
+    duraciontratamiento?: string,
     observaciones?: string,
-
 };
 
-export default iIndicacionMedicamento;
+export default iIndicacionmedicamento;

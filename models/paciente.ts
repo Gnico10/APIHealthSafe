@@ -4,11 +4,10 @@ import sequelize from "../db/connection";
 import IPaciente from '../interfaces/iPaciente';
 
 import usuario from "./usuario";
-import historiaclinica from "./historiaclinica";
 
-const paciente = sequelize.define<IPaciente>('Paciente',
+const paciente = sequelize.define<IPaciente>('paciente',
     {
-        idPaciente: {
+        idpaciente: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -17,11 +16,7 @@ const paciente = sequelize.define<IPaciente>('Paciente',
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        ocupacion: {type: DataTypes.STRING(50)},
-        idhistoriaclinica: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        }
+        ocupacion: {type: DataTypes.STRING(50)}
     },
     {
         tableName: 'pacientes'
@@ -31,13 +26,6 @@ const paciente = sequelize.define<IPaciente>('Paciente',
 paciente.belongsTo(usuario, {
     foreignKey: 'idusuario',
     as: 'usuario',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
-
-paciente.belongsTo(historiaclinica, {
-    foreignKey: 'idhistoriaclinica',
-    as: 'historiaclinica',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

@@ -1,50 +1,39 @@
 import { DataTypes } from 'sequelize';
 import sequelize from "../db/connection";
 
-import IDiagnostico from "../interfaces/idiagnostico";
-
-import indicacionGeneral from './indicacionGeneral';
-import medicamento from './medicamento';
-import citamedicaemergencia from './citamedicaemergencia';
-
+import IDiagnostico from '../interfaces/iDiagnostico';
+import RegistroHistoriaClinica from './registrohistoriaclinica';
 
 const diagnostico = sequelize.define<IDiagnostico>('diagnostico',
     {
-        idDiagnostico: {
+        iddiagnostico: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-     
         descripcion: {
             type: DataTypes.TEXT,
             primaryKey: true,
         },
-
         nombre: {
             type: DataTypes.TEXT,
             allowNull: false
         },
-      
+        idregistrohistoriaclinica: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     },
     {
         tableName: 'diagnosticos'
     }
 );
 
-diagnostico.belongsTo(medicamento, {
-    foreignKey: 'idMedicamento',
-    as: 'medicamento',
+diagnostico.belongsTo(RegistroHistoriaClinica, {
+    foreignKey: 'idregistrohistoriaclinica',
+    as: 'registrohistoriaclinica',
     onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
-
-
-diagnostico.belongsTo(indicacionGeneral, {
-    foreignKey: 'idIndicacionGeneral',
-    as: 'indicacionGeneral',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
+    onDelete: 'RESTRICT'
 });
 
 export default  diagnostico;
