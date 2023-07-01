@@ -33,7 +33,7 @@ diagnostico.belongsTo(RegistroHistoriaClinica, {
     foreignKey: 'idregistrohistoriaclinica',
     as: 'registrohistoriaclinica',
     onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT'
-});
+    onDelete: 'RESTRICT',
+  });  
 
 export default  diagnostico;
