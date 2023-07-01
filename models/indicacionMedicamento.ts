@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from "../db/connection";
 
-import iIndicacionmedicamento from "../interfaces/iIndicacionmedicamento";
+import iIndicacionmedicamento from "../interfaces/iIndicacionMedicamento";
 
 const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicacionmedicamento',
     {
