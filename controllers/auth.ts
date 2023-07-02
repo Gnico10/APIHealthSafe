@@ -26,10 +26,21 @@ export const login = async (req : Request, res : Response) => {
             });
         }
 
+        let pacienteDB;
+        let profesionalDB;
+
         // Validar que el usuario tenga un Pacienta signado
         if (usuario.rol.descripcion == 'Paciente'){
-            const pacienteDB = await Paciente.findOne({
-                where: {idusuario: usuario.idusuario}
+            pacienteDB = await Paciente.findOne({
+                where: {idusuario: usuario.idusuario},
+                include: [{
+                    model: Usuario,
+                    as: 'usuario',
+                    include: [{
+                        model: Rol,
+                        as: 'rol'
+                    }]
+                }]
             })
 
             if (!pacienteDB) {
@@ -41,8 +52,16 @@ export const login = async (req : Request, res : Response) => {
 
         // Validar que el usuario tenga un profesional asignado
         if (usuario.rol.descripcion == 'Profesional'){
-            const profesionalDB = await Profesional.findOne({
-                where: {idusuario: usuario.idusuario}
+            profesionalDB = await Profesional.findOne({
+                where: {idusuario: usuario.idusuario},
+                include: [{
+                    model: Usuario,
+                    as: 'usuario',
+                    include: [{
+                        model: Rol,
+                        as: 'rol'
+                    }]
+                }]
             })
 
             if (!profesionalDB) {
@@ -63,10 +82,20 @@ export const login = async (req : Request, res : Response) => {
         // Generar JWT.
         const token = await generarJWT(usuario.idusuario);
 
-        res.json({
-            usuario,
-            token
-        });
+        // Fallaría el servicio si es un rol diferente a Profesional o Paciente
+        if (usuario.rol.descripcion == 'Profesional') {
+            return res.json({
+                profesional: profesionalDB,
+                token
+            });
+        } 
+
+        if (usuario.rol.descripcion == "Paciente") {
+            return res.json({
+                paciente: pacienteDB,
+                token
+            });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({

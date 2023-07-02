@@ -13,6 +13,7 @@ interface IUsuario extends Model {
     imgdnifrente? : string,
     imgdnidorso? : string,
     idrol? : number,
-}
+
+  }
 
 export default IUsuario;

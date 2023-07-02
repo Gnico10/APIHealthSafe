@@ -26,4 +26,5 @@ profesional.belongsTo(usuario, {
     onDelete: 'RESTRICT',
 });
 
+
 export default profesional;

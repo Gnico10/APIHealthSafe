@@ -6,6 +6,8 @@ import Consultorio from '../models/consultorio';
 import Modalidad from '../models/modalidad';
 import Profesional from '../models/profesional';
 import Turno from '../models/turno';
+import Direccion from '../models/direccion';
+import Localidad from '../models/localidad';
 
 //get: all agendas
 export const getAgendas = async (req: Request, res: Response) => {
@@ -54,7 +56,16 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
                 {
                     model: Consultorio,
                     as: 'consultorio',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    required: false,
+                    include: [{
+                        model: Direccion,
+                        as: 'direccion',
+                        include: [{
+                            model: Localidad,
+                            as: 'localidad'
+                        }]
+                    }]
                 }
             ]
         });

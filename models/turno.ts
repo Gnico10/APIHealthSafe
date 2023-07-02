@@ -6,6 +6,7 @@ import ITurno from "../interfaces/iTurno";
 
 import agenda from "./agenda";
 import paciente from "./paciente";
+import especialidad from "./especialidad";
 
 const turno = sequelize.define<ITurno>('turno', {
         idturno: {
@@ -29,8 +30,13 @@ const turno = sequelize.define<ITurno>('turno', {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
-        idprecio: { // Mercado Pago.
-            type: DataTypes.STRING
+        idespecialidad: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        idpagomercadopago: { // Mercado Pago.
+            type: DataTypes.STRING,
+            allowNull: false
         },
         idpaciente: {
             type: DataTypes.INTEGER,
@@ -59,5 +65,12 @@ turno.belongsTo(paciente, {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
+
+turno.belongsTo(especialidad, {
+    foreignKey: 'idespecialidad',
+    as: 'especialidad',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+})
 
 export default turno;
