@@ -29,7 +29,7 @@ const medicamento = sequelize.define<iMedicamento>('medicamento',
             allowNull: false,
         },
         iddiagnostico: {
-            type: DataTypes.TEXT,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         idindicacionmedicamento: {
@@ -49,6 +49,12 @@ medicamento.belongsTo(diagnostico, {
     onDelete: 'RESTRICT'
 });
 
+medicamento.belongsTo(indicacionmedicamento, {
+    foreignKey: 'idindicacionmedicamento',
+    as: 'indicacionmedicamento',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+});
 
 
 export default  medicamento;

@@ -4,8 +4,7 @@ interface IDiagnostico extends Model{
     iddiagnostico?: number,
     nombre? : string,
     descripcion? : string,
-    idregistrohistoriaclinica?: number
-
+    idregistrohistoriaclinica?: number,
 };
 
 export default IDiagnostico;

@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
-import iIndicaciongeneral from "../interfaces/iIndicacionGeneral";
-import diagnostico from "./diagnostico";
+import iIndicaciongeneral from "../interfaces/iIndicaciongeneral";
+import Diagnostico from "./diagnostico";
 
 const indicaciongeneral = sequelize.define<iIndicaciongeneral>('indicaciongeneral',
     {
@@ -20,7 +20,7 @@ const indicaciongeneral = sequelize.define<iIndicaciongeneral>('indicaciongenera
             allowNull: false,
         },
         iddiagnostico: {
-            type: DataTypes.TEXT,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
     },
@@ -29,7 +29,7 @@ const indicaciongeneral = sequelize.define<iIndicaciongeneral>('indicaciongenera
     }
 );
 
-indicaciongeneral.belongsTo(diagnostico, {
+indicaciongeneral.belongsTo(Diagnostico, {
     foreignKey: 'iddiagnostico',
     as: 'diagnostico',
     onUpdate: 'CASCADE',

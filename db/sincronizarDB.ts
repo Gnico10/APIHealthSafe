@@ -27,7 +27,7 @@ import matriculaprofesional from "../models/matriculaprofesional";
 import profesionales_matriculasprofesionales from "../models/profesionales_matriculasprofesionales";
 import colegiomedico from "../models/colegiomedico";
 import registrohistoriaclinica from "../models/registrohistoriaclinica"
-import indicacionGeneral from "../models/indicaciongeneral";
+import indicaciongeneral from "../models/indicaciongeneral";
 import indicacionmedicamento from "../models/indicacionmedicamento";
 import diagnostico from "../models/diagnostico";
 import medicamento from "../models/medicamento";
@@ -53,12 +53,12 @@ const sincronizarDB = async() =>  {
     await universidad.sync({force: false});
     await matriculaprofesional.sync({force: false});
     await profesionales_matriculasprofesionales.sync({force: false});
+    await paciente.sync({force: false});
     await registrohistoriaclinica.sync({force: false});
     await diagnostico.sync({force: false});
-    await medicamento.sync({force: false});
     await indicacionmedicamento.sync({force: false});
-    await indicacionGeneral.sync({force: false});    
-    await paciente.sync({force: false});
+    await medicamento.sync({force: false});
+    await indicaciongeneral.sync({force: false});    
     await tipoantecedente.sync({force: false});
     await antecedente.sync({force: false});
     await modalidad.sync({force: false});
@@ -70,8 +70,6 @@ const sincronizarDB = async() =>  {
     await pedidoemergencia.sync({force: false});
     await citamedicaemergencia.sync({force: false});
     await prescripcion.sync({force: false});
-    await indicacionGeneral.sync({force: false});
-    await indicacionmedicamento.sync({force: false});
     await mensajeria.sync({force: false});
     await mensaje.sync({force: false});
     // load default data for DB

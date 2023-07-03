@@ -1,11 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
-import iMedicamento from '../interfaces/iMedicamento';
-
-import diagnostico from "./diagnostico";
-import medicamento from "./medicamento";
-import iIndicacionmedicamento from "../interfaces/iIndicacionMedicamento";
+import iIndicacionmedicamento from "../interfaces/iIndicacionmedicamento";
 
 const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicacionmedicamento',
     {
@@ -29,22 +25,11 @@ const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicaci
         observaciones: {
             type: DataTypes.TEXT,
             allowNull: false,
-        },
-        idmedicamento: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
+        }
     },
     {
         tableName: 'indicacionesmedicamentos'
     }
 );
-
-indicacionmedicamento.belongsTo(medicamento, {
-    foreignKey: 'idmedicamento',
-    as: 'medicamento',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT'
-})
 
 export default  indicacionmedicamento;

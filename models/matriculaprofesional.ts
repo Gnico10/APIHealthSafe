@@ -1,12 +1,12 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
 
-import IMatriculaProfesional from '../interfaces/IMatriculaProfesional';
+import IMatriculaprofesional from '../interfaces/iMatriculaprofesional';
 
 import tipomatricula from './tipomatricula';
 import universidad from './universidad';
 
-const matriculaprofesional = sequelize.define<IMatriculaProfesional>('MatriculaProfesional',
+const matriculaprofesional = sequelize.define<IMatriculaprofesional>('MatriculaProfesional',
     { 
         idmatriculaprofesional: {
             type: DataTypes.INTEGER,
