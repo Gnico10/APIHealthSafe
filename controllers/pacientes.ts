@@ -80,10 +80,6 @@ export const postPaciente = async (req: Request, res: Response) => {
                         model: Rol,
                         as: 'rol'
                     }]
-                },
-                {
-                    model: HistoriaClinica,
-                    as: 'historiaclinica'
                 }
             ],
         });
