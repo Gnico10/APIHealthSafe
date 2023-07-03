@@ -75,7 +75,15 @@ export const postPaciente = async (req: Request, res: Response) => {
             include: [
                 {
                     model: Usuario,
-                    as: 'usuario'
+                    as: 'usuario',
+                    include: [{
+                        model: Rol,
+                        as: 'rol'
+                    }]
+                },
+                {
+                    model: HistoriaClinica,
+                    as: 'historiaclinica'
                 }
             ],
         });

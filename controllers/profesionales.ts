@@ -15,6 +15,9 @@ import Consultorio from '../models/consultorio';
 import Direccion from '../models/direccion';
 import Agenda from '../models/agenda';
 import Modalidad from '../models/modalidad';
+import TipoMatricula from '../models/tipomatricula';
+import Pais from '../models/pais';
+import Universidad from '../models/universidad';
 
 
 export const getProfesionales = async (req: Request, res: Response) => {
@@ -131,7 +134,11 @@ export const getProfesionales = async (req: Request, res: Response) => {
             include: [
                 {
                     model: Usuario,
-                    as: 'usuario'
+                    as: 'usuario',
+                    include: [{
+                        model: Rol,
+                        as: 'rol'
+                    }]
                 },
                 {
                     model: Especialidad,
@@ -145,7 +152,23 @@ export const getProfesionales = async (req: Request, res: Response) => {
                     as: 'PM_matriculas_profesionales',
                     through: {
                         attributes: ['titulogrado', 'aniootorgamiento']
-                    }
+                    },
+                    include: [
+                        {
+                          model: TipoMatricula,
+                          as: 'tipomatricula'
+                        },
+                        {
+                          model: Universidad,
+                          as: 'universidad',
+                          include: [
+                            {
+                              model: Pais,
+                              as: 'pais'
+                            }
+                          ]
+                        }
+                      ]
                 }
             ]
         });
@@ -161,44 +184,73 @@ export const getProfesionales = async (req: Request, res: Response) => {
     }
 }
 
+// Importaciones omitidas por brevedad
+
 export const getProfesional = async (req: Request, res: Response) => {
     const { id } = req.params;
- 
-    const profesional = await Profesional.findOne({
+  
+    try {
+      const profesional = await Profesional.findOne({
         where: {
-            idprofesional: id
+          idprofesional: id
         },
         include: [
-            {
-                model: Usuario,
-                as: 'usuario'
+          {
+            model: Usuario,
+            as: 'usuario',
+            include: [
+              {
+                model: Rol,
+                as: 'rol'
+              }
+            ]
+          },
+          {
+            model: MatriculaProfesional,
+            as: 'PM_matriculas_profesionales',
+            include: [
+              {
+                model: TipoMatricula,
+                as: 'tipomatricula'
+              },
+              {
+                model: Universidad,
+                as: 'universidad',
+                include: [
+                  {
+                    model: Pais,
+                    as: 'pais'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            model: Especialidad,
+            as: 'PE_especialidades',
+            through: {
+              attributes: ['idcolegiomedico', 'aniootorgamiento'],
             },
-            {
-                model: MatriculaProfesional,
-                as: 'PM_matriculas_profesionales',
-                through: {
-                    attributes: ['titulogrado', 'aniootorgamiento'],
-                }
-            },
-            {
-                model: Especialidad,
-                as: 'PE_especialidades',
-                through: {
-                    attributes: ['idcolegiomedico', 'aniootorgamiento'],
-                },
-            },
+          },
         ],
         logging: console.log,
-    });
-
-    if (profesional){
+      });
+  
+      if (profesional) {
         res.json(profesional);
-    } else {
+      } else {
         res.status(404).json({
-            msg: `No existe un profesional con id = ${id}`
+          msg: `No existe un profesional con id = ${id}`
         });
+      }
+    } catch (error) {
+      res.status(500).json({
+        msg: 'Ocurrió un error en el servidor'
+      });
     }
-}
+  };
+  
+  
 
 
 export const postProfesional = async (req: Request, res: Response) => {

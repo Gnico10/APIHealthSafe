@@ -20,7 +20,7 @@ router.post('/', [
     check('fecha', 'La fecha es requerida').not().isEmpty(), 
     check('horainicio', 'La hora inicio es requerida').not().isEmpty(), 
     check('horafin', 'La hora fin es requerida').not().isEmpty(), 
-    check('idprecio', 'El idprecio es requerido').not().isEmpty(), 
+    check('idpagomercadopago', 'El idpagomercadopago es requerido').not().isEmpty(), 
     check('idagenda', 'El idagenda es requerido').not().isEmpty(), 
     check('idPaciente', 'El idPaciente es requerido').not().isEmpty(), 
     check('idmodalidad', 'El idmodalidad es requerido').not().isEmpty(), 

@@ -8,9 +8,13 @@ const loadRoles = async() => {
     ];
 
     // Create Roles in database
-    descroles.map(async (desc) => {
+    descroles.map(async (desc, index) => {
         await Rol.findOrCreate({
             where: {
+                descripcion: desc
+            },
+            defaults: {
+                idrol: index + 1,
                 descripcion: desc
             }
         });
