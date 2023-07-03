@@ -115,9 +115,8 @@ export const postTurno = async (req: Request, res: Response) => {
         idpagomercadopago,
         idagenda,
         idpaciente,
-        idespecialidad,
+        idespecialidad
     } = req.body;
-
     try { 
         // Validaciones
         let especialidad: any = await Especialidad.findByPk(idespecialidad);
@@ -262,7 +261,7 @@ export const deleteTurno = async (req: any, res: Response) => {
             });
         }
 
-        if (turno.idpaciente != paciente.idpaciente) {
+        if (turno.idPaciente != paciente.idpaciente) {
             const usuario = await Usuario.findByPk(paciente.idusuario);
             return res.status(404).json({
                 msg: `El turno solo puede ser eliminado por el paciente ${usuario?.nombre} ${usuario?.apellido}`

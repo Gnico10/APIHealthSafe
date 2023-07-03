@@ -12,7 +12,7 @@ router.get('/paciente/:id', getAntecedentes_Paciente);
 
 router.post('/', [
     check('idtipoantecedente', 'El idtipoantecedente es requerido.').not().isEmpty(),
-    check('idpaciente', 'El idpaciente es requerido.').not().isEmpty(),
+    check('idPaciente', 'El idPaciente es requerido.').not().isEmpty(),
     check('descripcion', 'La descripcion es requerida.').not().isEmpty(),
     validarCampos,
     validarJWT

@@ -3,7 +3,7 @@ import { generarJWT } from '../helpers/generarJWT';
 
 import Paciente from '../models/paciente';
 
-import HistoriaClinica from '../models/historiaclinica';
+import RegistroHistoriaClinica from '../models/registrohistoriaclinica';
 import Usuario from '../models/usuario';
 import Rol from '../models/rol';
 
@@ -62,17 +62,10 @@ export const postPaciente = async (req: Request, res: Response) => {
             }); 
         }
 
-        // Creación de instancia en la base de datos.
-        let historiaclinica = await HistoriaClinica.create({
-            peso: 0,
-            edad: 0
-        });
-
         // Creación del paciente
         await Paciente.create({
             idusuario,
-            ocupacion,
-            idhistoriaclinica: historiaclinica.idhistoriaclinica
+            ocupacion
         });
 
         let pacienteDB = await Paciente.findOne({
@@ -111,13 +104,13 @@ export const postPaciente = async (req: Request, res: Response) => {
 }
 
 export const deletePaciente = async (req: Request, res: Response) => {
-    const { idpaciente } = req.params;
+    const { idPaciente } = req.params;
 
     try {
-        const paciente = await Paciente.findByPk(idpaciente);
+        const paciente = await Paciente.findByPk(idPaciente);
         if (!paciente) {
             return res.status(404).json({
-                msg: `No existe un paciente con el ID = ${idpaciente}`
+                msg: `No existe un paciente con el ID = ${idPaciente}`
             });
         }
 

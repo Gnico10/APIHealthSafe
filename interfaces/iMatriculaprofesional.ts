@@ -1,10 +1,10 @@
 import { Model } from 'sequelize/types';
 
-interface IMatriculaProfesional extends Model{
+interface IMatriculaprofesional extends Model{
     idmatriculaprofesional? : number,
     numero? : number,
     idtipomatricula? : number,
     iduniversidad? : number,
 };
 
-export default IMatriculaProfesional;
+export default IMatriculaprofesional;

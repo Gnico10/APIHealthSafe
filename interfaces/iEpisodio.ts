@@ -1,6 +1,6 @@
 import { Model } from 'sequelize/types';
 
-interface IEpisodio extends Model{
+interface iEpisodio extends Model{
     idepisodio? : number,
     descripcion? : string,
     fechahora? : Date,
@@ -11,4 +11,4 @@ interface IEpisodio extends Model{
     idcitamedicaemergencia? : number,
 };
 
-export default IEpisodio;
+export default iEpisodio;
