@@ -6,6 +6,7 @@ import Paciente from '../models/paciente';
 import Medicamento from '../models/medicamento';
 import IndicacionGeneral from '../models/indicaciongeneral';
 import IndicacionMedicamento from '../models/indicacionmedicamento';
+import Turno from '../models/turno';
 
 // Definir tipos de datos
 interface Datos {
@@ -129,6 +130,7 @@ export const getRegistrosHistoriaClinicaPorPaciente = async (req: Request, res: 
 
 export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
     const { idpaciente,
+            idturno,
             fechahora,
             diagnosticos } = req.body;
   
@@ -147,9 +149,23 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
           msg: `El paciente con id ${idpaciente} no existe`,
         });
       }
-  
+
+      //Validar turno
+      const turno = await Turno.findByPk(idturno);
+      if (!turno) {
+        return res.status(404).json({
+          msg: `El turno con id ${idturno} no existe`,
+        });
+      }
+
+      if (turno.idpaciente != paciente.idpaciente) {
+        return res.status(404).json({
+            msg: `El turno con id ${turno.idturno} no pertenece al paciente con id ${paciente.idpaciente}`
+        });
+      }
+
       // Crear el registro de historia clínica
-      const registroHistoriaClinica = await RegistroHistoriaClinica.create({fechahora, idpaciente});
+      const registroHistoriaClinica = await RegistroHistoriaClinica.create({fechahora, idpaciente, idturno});
       
       // Si hay diagnósticos en el request, crearlos y vincularlos al registro
       for (let diagnostico of diagnosticos){

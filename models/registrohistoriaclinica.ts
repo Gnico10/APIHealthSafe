@@ -3,6 +3,7 @@ import sequelize from "../db/connection";
 
 import iRegistrohistoriaclinica from "../interfaces/iRegistrohistoriaclinica";
 import paciente from './paciente';
+import turno from './turno';
 
 const registrohistoriaclinica = sequelize.define<iRegistrohistoriaclinica>('registrohistoriaclinica',
     {
@@ -18,6 +19,10 @@ const registrohistoriaclinica = sequelize.define<iRegistrohistoriaclinica>('regi
         idpaciente: {
             type: DataTypes.INTEGER,
             allowNull: true,
+        },
+        idturno: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
         }
     },
     {
@@ -26,6 +31,13 @@ const registrohistoriaclinica = sequelize.define<iRegistrohistoriaclinica>('regi
 );
 
 registrohistoriaclinica.belongsTo(paciente, {
+    foreignKey: 'idpaciente',
+    as: 'paciente',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+});
+
+registrohistoriaclinica.belongsTo(turno, {
     foreignKey: 'idpaciente',
     as: 'paciente',
     onUpdate: 'CASCADE',

@@ -261,7 +261,7 @@ export const deleteTurno = async (req: any, res: Response) => {
             });
         }
 
-        if (turno.idPaciente != paciente.idpaciente) {
+        if (turno.idpaciente != paciente.idpaciente) {
             const usuario = await Usuario.findByPk(paciente.idusuario);
             return res.status(404).json({
                 msg: `El turno solo puede ser eliminado por el paciente ${usuario?.nombre} ${usuario?.apellido}`
