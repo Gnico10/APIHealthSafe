@@ -8,10 +8,8 @@ import { getRegistrosHistoriaClinica,getRegistrosHistoriaClinicaPorPaciente,
 
 const router = Router();
 
-router.get('/:idpaciente', getRegistrosHistoriaClinicaPorPaciente);
-
 router.get('/',getRegistrosHistoriaClinica);
-
+router.get('/paciente/:idpaciente', getRegistrosHistoriaClinicaPorPaciente);
 router.post('/', [
     check('idpaciente', 'El idpaciente es requerido.').not().isEmpty(),
     check('fechahora', 'La fechahora es requerido.'). not().isEmpty(),

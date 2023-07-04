@@ -38,8 +38,8 @@ registrohistoriaclinica.belongsTo(paciente, {
 });
 
 registrohistoriaclinica.belongsTo(turno, {
-    foreignKey: 'idpaciente',
-    as: 'paciente',
+    foreignKey: 'idturno',
+    as: 'turno',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
 });

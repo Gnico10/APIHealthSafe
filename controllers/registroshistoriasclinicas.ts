@@ -21,6 +21,12 @@ interface Datos {
 async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
   const registroHistoriaClinicaDB = await RegistroHistoriaClinica.findByPk(
     idregistrohistoriaclinica,{
+      include: [
+        {
+          model: Turno,
+          as: 'turno'
+        }
+      ],
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     }
   );
