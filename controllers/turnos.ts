@@ -13,71 +13,84 @@ import Consultorio from '../models/consultorio';
 import Direccion from '../models/direccion';
 import Localidad from '../models/localidad';
 
+const include_turno = [
+    {
+        model: Agenda,
+        as: 'agenda',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+            {
+                model: Profesional,
+                as: 'profesional',
+                include: [{
+                    model: Usuario,
+                    as: 'usuario',
+                    include: [{
+                        model: Rol,
+                        as: 'rol'
+                    }]
+                }]
+            }, 
+            {
+                model: Modalidad,
+                as: 'modalidad'
+            }, 
+            {
+                model: Consultorio,
+                as: 'consultorio',
+                required: false,
+                include: [{
+                    model: Direccion,
+                    as: 'direccion',
+                    include: [{
+                        model: Localidad,
+                        as: 'localidad'
+                    }]
+                }]
+            }
+        ]
+    },
+    {
+      model: Especialidad,
+      as: 'especialidad'  
+    },
+    {
+        model: Paciente,
+        as: 'paciente',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [{
+            model: Usuario,
+            as: 'usuario',
+            include: [{
+                model: Rol,
+                as: 'rol'
+            }]
+        }]
+    }
+]
+
 //get: all turnos
 export const getTurnos = async (req: Request, res: Response) => {
-    const turnos = await Turno.findAll();
+    const turnos = await Turno.findAll({
+        include: include_turno
+    });
     res.json({turnos});
 }
 
 export const getTurnos_Paciente = async (req: Request, res: Response) => {
-    const { id } = req.params;
-
+    const { idpaciente } = req.params;
+    const { fecha } = req.query;
     try {
+        let whereCondition: any = {idpaciente: idpaciente};
+        if (fecha) {
+            whereCondition.fecha = {
+                [Op.gt]: new Date(`${fecha}T00:00:00`)
+            }
+        } 
+
         const turnos = await Turno.findAll({
-            where: {
-                idpaciente: id,
-            },
-            include: [
-                {
-                    model: Agenda,
-                    as: 'agenda',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
-                    include: [{
-                        model: Profesional,
-                        as: 'profesional',
-                        include: [{
-                            model: Usuario,
-                            as: 'usuario',
-                            include: [{
-                                model: Rol,
-                                as: 'rol'
-                            }]
-                        }]
-                    }, {
-                        model: Modalidad,
-                        as: 'modalidad'
-                    }, {
-                        model: Consultorio,
-                        as: 'consultorio',
-                        required: false,
-                        include: [{
-                            model: Direccion,
-                            as: 'direccion',
-                            include: [{
-                                model: Localidad,
-                                as: 'localidad'
-                            }]
-                        }]
-                    }]
-                },
-                {
-                  model: Especialidad,
-                  as: 'especialidad'  
-                },
-                {
-                    model: Paciente,
-                    as: 'paciente',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
-                    include: [{
-                        model: Usuario,
-                        as: 'usuario',
-                        include: [{
-                            model: Rol,
-                            as: 'rol'
-                        }]
-                    }]
-                }
-            ]
+            where: whereCondition,
+            include: include_turno
         });
         
 
@@ -92,16 +105,18 @@ export const getTurnos_Paciente = async (req: Request, res: Response) => {
 
 //get: un solo turno por id
 export const getTurno = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { idturno } = req.params;
     // Busca el turno según el id
-    const turno = await Turno.findByPk(id);
+    const turno = await Turno.findByPk(idturno, {
+        include: include_turno
+    });
 
     // Si el turno existe, lo devuelve
     if (turno){
         res.json(turno);
     } else {
         res.status(404).json({
-            msg: `No existe un turno con id = ${id}`
+            msg: `No existe un turno con id = ${idturno}`
         });
     }
 }
@@ -226,9 +241,13 @@ export const postTurno = async (req: Request, res: Response) => {
 
         await turno.save();
 
+        const turnoDB = await Turno.findByPk(turno.idturno, {
+            include: include_turno
+        });
+
         res.json({
             msg:'Turno dado de alta',
-            turno
+            turno: turnoDB
         });
     } catch (error) {
         console.log(error);

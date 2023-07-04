@@ -13,8 +13,8 @@ import { getTurnos,
 const router = Router();
 
 router.get('/', getTurnos);
-router.get('/:id', getTurno);
-router.get('/paciente/:id', getTurnos_Paciente);
+router.get('/:idturno', getTurno);
+router.get('/paciente/:idpaciente', getTurnos_Paciente);
 
 router.post('/', [
     check('fecha', 'La fecha es requerida').not().isEmpty(), 
