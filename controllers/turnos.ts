@@ -128,6 +128,7 @@ export const postTurno = async (req: Request, res: Response) => {
         horainicio,
         horafin,
         idpagomercadopago,
+        padecimiento,
         idagenda,
         idpaciente,
         idespecialidad
@@ -234,6 +235,7 @@ export const postTurno = async (req: Request, res: Response) => {
             horainicio,
             horafin,
             idpagomercadopago,
+            padecimiento,
             idagenda,
             idpaciente,
             idespecialidad
