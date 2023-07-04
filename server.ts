@@ -26,6 +26,7 @@ import modalidadesRoutes from './routes/modalidades';
 import mensajesRoutes from './routes/mensajes';
 import mensajeriaRoutes from './routes/mensajeria';
 import registroshistoriasclinicasRoutes from './routes/registroshistoriasclinicas';
+import consultorioRoutes from './routes/consultorio';
 
 class Server {
 
@@ -54,9 +55,9 @@ class Server {
         mensajes:'/api/mensajes',
         mensajeria:'/api/mensajeria',
         registroshistoriasclinicas: '/api/registroshistoriasclinicas',
+        consultorios: '/api/consultorios',
         // Más rutas
         default: '*'
-        
     }
       
     private swaggerSpec: swaggerJsDoc.Options;
@@ -158,7 +159,7 @@ class Server {
         this.app.use(this.apiPaths.mensajes, mensajesRoutes);
         this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
         this.app.use(this.apiPaths.registroshistoriasclinicas, registroshistoriasclinicasRoutes);
-    
+        this.app.use(this.apiPaths.consultorios, consultorioRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {

@@ -34,7 +34,7 @@ const medicamento = sequelize.define<iMedicamento>('medicamento',
         },
         idindicacionmedicamento: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
         }
     },
     {

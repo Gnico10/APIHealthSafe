@@ -14,15 +14,15 @@ const registrohistoriaclinica = sequelize.define<iRegistrohistoriaclinica>('regi
         },
         fechahora: {
             type: DataTypes.DATEONLY,
-            allowNull: true,
+            allowNull: false,
         },
         idpaciente: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
         },
         idturno: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
         }
     },
     {

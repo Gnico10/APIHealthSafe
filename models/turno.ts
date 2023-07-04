@@ -38,9 +38,7 @@ const turno = sequelize.define<ITurno>('turno', {
             type: DataTypes.STRING,
             allowNull: false
         },
-        padecimiento: {
-            type: DataTypes.STRING,
-        },
+        padecimiento: DataTypes.STRING,
         idpaciente: {
             type: DataTypes.INTEGER,
             allowNull: false
