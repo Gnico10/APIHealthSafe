@@ -21,7 +21,7 @@ export const postMensaje = async (req: any, res: Response) => {
     }
 
     const idusuarioemisor = req.idUsuarioToken
-    if (mensajeriaDB.idPaciente != idusuarioemisor && mensajeriaDB.idprofesional != idusuarioemisor){
+    if (mensajeriaDB.idpaciente != idusuarioemisor && mensajeriaDB.idprofesional != idusuarioemisor){
       return res.status(400).json({
           msg: `El remitente con id ${idusuarioemisor} no pertenece a la mensajeria.`
       });

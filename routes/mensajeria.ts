@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/', getMensajerias);
 router.post('/',[
-    check('idPaciente', 'El paciente es requerido.').not().isEmpty(),
+    check('idpaciente', 'El paciente es requerido.').not().isEmpty(),
     check('idprofesional', 'El profesional es requerido.').not().isEmpty(),
     validarCampos
 ], postMensajeria);

@@ -538,7 +538,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"fecha\" : \"2023-03-27\",\r\n    \"horainicio\" : \"12:00\",\r\n    \"horafin\" : \"17:00\",\r\n    \"idprecio\" : \"idmercadolibre\",\r\n    \"idagenda\" : 4,\r\n    \"idPaciente\" : 1,\r\n    \"idprofesional\" : 1,\r\n    \"idmodalidad\" : 2,\r\n    \"idconsultorio\" : null \r\n}",
+							"raw": "{\r\n    \"fecha\" : \"2023-03-27\",\r\n    \"horainicio\" : \"12:00\",\r\n    \"horafin\" : \"17:00\",\r\n    \"idprecio\" : \"idmercadolibre\",\r\n    \"idagenda\" : 4,\r\n    \"idpaciente\" : 1,\r\n    \"idprofesional\" : 1,\r\n    \"idmodalidad\" : 2,\r\n    \"idconsultorio\" : null \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -793,7 +793,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"idPaciente\": 2,\r\n  \"idprofesional\": 2\r\n}\r\n",
+							"raw": "{\r\n  \"idpaciente\": 2,\r\n  \"idprofesional\": 2\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"

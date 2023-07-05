@@ -2,7 +2,7 @@ import { Model } from "sequelize/types";
 
 interface IMensajeria extends Model{
     idmensajeria? : number,
-    idPaciente? : number,
+    idpaciente? : number,
     idprofesional? : number,
 };
 

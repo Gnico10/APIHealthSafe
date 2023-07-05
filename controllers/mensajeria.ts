@@ -4,8 +4,8 @@ import Mensajeria from '../models/mensajeria';
 
 export const postMensajeria = async (req: Request, res: Response) => {
     try {
-      const { idPaciente, idprofesional } = req.body;
-      const mensajeria = await Mensajeria.create({ idPaciente, idprofesional });
+      const { idpaciente, idprofesional } = req.body;
+      const mensajeria = await Mensajeria.create({ idpaciente, idprofesional });
   
       return res.status(201).json(mensajeria);
     } catch (error) {
