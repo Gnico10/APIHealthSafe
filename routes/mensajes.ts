@@ -14,7 +14,7 @@ router.post('/',[
     check('mensaje', 'El mensaje es requerido.').not().isEmpty(),
     check('idmensajeria', 'EL idmensajeria es requerido.').not().isEmpty(),
     validarCampos,
-    validarJWT
+   // validarJWT
 ],
 postMensaje);
 
