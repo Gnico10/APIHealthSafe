@@ -48,7 +48,7 @@ export const getMensajes = async (req: Request, res: Response) => {
     const { idmensajeria } = req.params;
     const mensajes = await Mensaje.findAll({
       where: { idmensajeria },
-      // include: [{ model: Mensajeria, as: 'mensajeria' }],
+       include: [{ model: Mensajeria, as: 'mensajeria' }],
     });
 
     return res.status(200).json(mensajes);

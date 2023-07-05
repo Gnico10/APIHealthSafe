@@ -27,4 +27,32 @@ export const getMensajerias = async (req: Request, res: Response) => {
       return res.status(500).json({ message: 'Ocurrió un error al obtener las mensajerías.' });
     }
   };
+
+  export const getMensajeriasPorPaciente = async (req: Request, res: Response) => {
+    try {
+        const { idpaciente } = req.params;
+        const mensajerias = await Mensajeria.findAll({
+            where: { idpaciente },
+        });
+
+        return res.status(200).json(mensajerias);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Ocurrió un error al obtener las mensajerías.' });
+    }
+};
+
+export const getMensajeriasPorProfesional = async (req: Request, res: Response) => {
+    try {
+        const { idprofesional } = req.params;
+        const mensajerias = await Mensajeria.findAll({
+            where: { idprofesional },
+        });
+
+        return res.status(200).json(mensajerias);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ msg: 'Ocurrió un error al obtener las mensajerías.' });
+    }
+};
   
