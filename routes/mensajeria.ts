@@ -8,8 +8,8 @@ import {  postMensajeria, getMensajerias, getMensajeriasPorPaciente,getMensajeri
 const router = Router();
 
 router.get('/', getMensajerias);
-router.get('/paciente/:idpaciente', getMensajerias);
-router.get('/profesional/idprofesional', getMensajerias);
+router.get('/paciente/:idpaciente', getMensajeriasPorPaciente);
+router.get('/profesional/:idprofesional', getMensajeriasPorProfesional);
 router.post('/',[
     check('idpaciente', 'El paciente es requerido.').not().isEmpty(),
     check('idprofesional', 'El profesional es requerido.').not().isEmpty(),

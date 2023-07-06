@@ -1,6 +1,19 @@
 import { Request, Response } from 'express';
 
 import Mensajeria from '../models/mensajeria';
+import Mensaje from '../models/mensaje';
+
+async function getMensajeFromMensajeria(idmensajeria: any){
+  const mensajes = await Mensaje.findAll({
+    where: {
+      idmensajeria
+    },
+    order: [['createdAt', 'DESC']],
+    limit: 10
+  });
+  
+  return mensajes
+}
 
 export const postMensajeria = async (req: Request, res: Response) => {
     try {
@@ -29,13 +42,22 @@ export const getMensajerias = async (req: Request, res: Response) => {
   };
 
   export const getMensajeriasPorPaciente = async (req: Request, res: Response) => {
+    const { idpaciente } = req.params;
+
     try {
-        const { idpaciente } = req.params;
+        const mensajeriaData: any = []
         const mensajerias = await Mensajeria.findAll({
-            where: { idpaciente },
+            where: { idpaciente }
         });
 
-        return res.status(200).json(mensajerias);
+        for (let mensajeria of mensajerias) {
+          mensajeriaData.push({
+            mensajeria,
+            mensajes: await getMensajeFromMensajeria(mensajeria.idmensajeria)
+          });
+        }
+
+        return res.status(200).json(mensajeriaData);
     } catch (error) {
         console.log(error);
         return res.status(400).json({ msg: 'Ocurrió un error al obtener las mensajerías.' });
