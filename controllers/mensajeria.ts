@@ -11,13 +11,25 @@ async function getMensajeFromMensajeria(idmensajeria: any){
     order: [['createdAt', 'DESC']],
     limit: 10
   });
-  
+
   return mensajes
 }
 
 export const postMensajeria = async (req: Request, res: Response) => {
     try {
       const { idpaciente, idprofesional } = req.body;
+
+      const mensajerias = await Mensajeria.findAll({
+        where: {
+          idpaciente,
+          idprofesional
+        },
+      });
+
+      if(mensajerias.length != 0){
+        return res.status(400).json({ message: 'Ya existe estamensajeria.' });
+      }
+
       const mensajeria = await Mensajeria.create({ idpaciente, idprofesional });
   
       return res.status(201).json(mensajeria);
@@ -65,13 +77,19 @@ export const getMensajerias = async (req: Request, res: Response) => {
 };
 
 export const getMensajeriasPorProfesional = async (req: Request, res: Response) => {
-    try {
-        const { idprofesional } = req.params;
-        const mensajerias = await Mensajeria.findAll({
-            where: { idprofesional },
-        });
-
-        return res.status(200).json(mensajerias);
+  const { idprofesional } = req.params;
+    try {      
+          const mensajeriaData: any = []
+          const mensajerias = await Mensajeria.findAll({
+              where: { idprofesional }
+          });
+          for (let mensajeria of mensajerias) {
+            mensajeriaData.push({
+              mensajeria,
+              mensajes: await getMensajeFromMensajeria(mensajeria.idmensajeria)
+            });
+          }
+        return res.status(200).json(mensajeriaData);
     } catch (error) {
         console.log(error);
         return res.status(400).json({ msg: 'Ocurrió un error al obtener las mensajerías.' });
