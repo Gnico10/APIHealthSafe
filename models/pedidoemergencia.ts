@@ -27,7 +27,7 @@ const pedidoemergencia = sequelize.define<IPedidoEmergencia>('Pedidoemergencia',
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        idPaciente:  {
+        idpaciente:  {
             type: DataTypes.INTEGER,
             allowNull: false
         }
@@ -45,7 +45,7 @@ pedidoemergencia.belongsTo(especialidad, {
 });
 
 pedidoemergencia.belongsTo(paciente, {
-    foreignKey: 'idPaciente',
+    foreignKey: 'idpaciente',
     as: 'paciente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

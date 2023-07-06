@@ -20,17 +20,17 @@ export const postMensaje = async (req: any, res: Response) => {
       });
     }
 
-    const idusuarioemisor = req.idUsuarioToken
-    if (mensajeriaDB.idPaciente != idusuarioemisor && mensajeriaDB.idprofesional != idusuarioemisor){
+    /*const idusuarioemisor = req.idUsuarioToken
+    if (mensajeriaDB.idpaciente != idusuarioemisor && mensajeriaDB.idprofesional != idusuarioemisor){
       return res.status(400).json({
           msg: `El remitente con id ${idusuarioemisor} no pertenece a la mensajeria.`
       });
-    }
+    }*/
 
     const nuevoMensaje = await Mensaje.create({ 
       mensaje, 
       idmensajeria,
-      idusuarioemisor
+      idusuarioemisor:1
     });
 
     // Enviamos el mensaje a través de WebSocket
@@ -48,7 +48,7 @@ export const getMensajes = async (req: Request, res: Response) => {
     const { idmensajeria } = req.params;
     const mensajes = await Mensaje.findAll({
       where: { idmensajeria },
-      // include: [{ model: Mensajeria, as: 'mensajeria' }],
+       include: [{ model: Mensajeria, as: 'mensajeria' }],
     });
 
     return res.status(200).json(mensajes);

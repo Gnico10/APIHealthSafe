@@ -3,13 +3,15 @@ import { check } from 'express-validator';
 
 import validarCampos from '../middlewares/validarCampos';
 
-import {  postMensajeria, getMensajerias } from '../controllers/mensajeria';
+import {  postMensajeria, getMensajerias, getMensajeriasPorPaciente,getMensajeriasPorProfesional } from '../controllers/mensajeria';
 
 const router = Router();
 
 router.get('/', getMensajerias);
+router.get('/paciente/:idpaciente', getMensajeriasPorPaciente);
+router.get('/profesional/:idprofesional', getMensajeriasPorProfesional);
 router.post('/',[
-    check('idPaciente', 'El paciente es requerido.').not().isEmpty(),
+    check('idpaciente', 'El paciente es requerido.').not().isEmpty(),
     check('idprofesional', 'El profesional es requerido.').not().isEmpty(),
     validarCampos
 ], postMensajeria);

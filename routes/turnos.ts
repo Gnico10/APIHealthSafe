@@ -22,7 +22,7 @@ router.post('/', [
     check('horafin', 'La hora fin es requerida').not().isEmpty(), 
     check('idpagomercadopago', 'El idpagomercadopago es requerido').not().isEmpty(), 
     check('idagenda', 'El idagenda es requerido').not().isEmpty(), 
-    check('idpaciente', 'El idPaciente es requerido').not().isEmpty(), 
+    check('idpaciente', 'El idpaciente es requerido').not().isEmpty(), 
     check('idmodalidad', 'El idmodalidad es requerido').not().isEmpty(), 
     validarCampos,
     validarJWT

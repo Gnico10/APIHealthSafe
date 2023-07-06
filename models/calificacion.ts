@@ -18,7 +18,7 @@ const calificacion = sequelize.define<ICalificacion>('calificacion',
             allowNull: false
         },
         comentario: DataTypes.TEXT,
-        idPaciente: {
+        idpaciente: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
@@ -33,7 +33,7 @@ const calificacion = sequelize.define<ICalificacion>('calificacion',
 );
 
 calificacion.belongsTo(paciente, {
-    foreignKey: 'idPaciente',
+    foreignKey: 'idpaciente',
     as: 'paciente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',

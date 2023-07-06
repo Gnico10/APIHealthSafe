@@ -4,7 +4,7 @@ interface ICalificacion extends Model{
     idcalificacion? : number,
     numcalificacion? : number,
     comentario? : string,
-    idPaciente? : number,
+    idpaciente? : number,
     idprofesional? : number,
 };
 
