@@ -4,6 +4,8 @@ import  serverSocket  from '../app';
 
 import Mensajeria from '../models/mensajeria';
 import Mensaje from '../models/mensaje';
+import Paciente from '../models/paciente';
+import Profesional from '../models/profesional';
 
 
 
@@ -20,21 +22,34 @@ export const postMensaje = async (req: any, res: Response) => {
       });
     }
 
-    /*const idusuarioemisor = req.idUsuarioToken
-    if (mensajeriaDB.idpaciente != idusuarioemisor && mensajeriaDB.idprofesional != idusuarioemisor){
+    const idusuarioemisor = req.idUsuarioToken 
+    const pacienteDB = await Paciente.findOne({
+      where: {
+        idusuario: idusuarioemisor
+      }
+    });
+
+    const profesionalDB = await Profesional.findOne({
+      where: {
+        idusuario: idusuarioemisor
+      }
+    });
+
+    if (pacienteDB?.idusuario != idusuarioemisor && 
+      profesionalDB?.idusuario != idusuarioemisor){
       return res.status(400).json({
-          msg: `El remitente con id ${idusuarioemisor} no pertenece a la mensajeria.`
+          msg: `El remitente con idusuario: ${idusuarioemisor} no pertenece a la mensajeria.`
       });
-    }*/
+    }
 
     const nuevoMensaje = await Mensaje.create({ 
       mensaje, 
       idmensajeria,
-      idusuarioemisor:1
+      idusuarioemisor
     });
 
     // Enviamos el mensaje a través de WebSocket
-    serverSocket.io.emit('mensaje', nuevoMensaje);
+    serverSocket.io.emit(`mensajeria${mensajeriaDB.idmensajeria}`, nuevoMensaje);
 
     return res.status(201).json(nuevoMensaje);
   } catch (error) {

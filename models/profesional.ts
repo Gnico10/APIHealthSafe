@@ -12,7 +12,11 @@ const profesional = sequelize.define<IProfesional>('Profesional',
             primaryKey: true,
             autoIncrement: true
         },
-        descripcion: DataTypes.TEXT
+        descripcion: DataTypes.TEXT,
+        idusuario: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        }
     },
     {
         tableName: 'profesionales'
