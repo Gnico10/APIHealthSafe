@@ -25,10 +25,18 @@ const mensaje = sequelize.define<IMensaje>('Mensaje',
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        idusuarioemisor: {
+        rolemisor: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        idemisor: {
             type: DataTypes.INTEGER,
             allowNull: false
-        }
+        },
+        tipomensaje: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
     },
     {
         tableName: 'mensajes'

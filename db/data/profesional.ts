@@ -4,7 +4,7 @@ import Profesional from "../../models/profesional";
 import Profesionales_especialidades from "../../models/profesionales_especialidades";
 import Profesionales_matriculasprofesionales from "../../models/profesionales_matriculasprofesionales";
 import Usuario from "../../models/usuario";
-
+ 
 const loadProfesional = async() => {
     await Usuario.findOrCreate(
         {
@@ -18,9 +18,9 @@ const loadProfesional = async() => {
         apellido: "Juarez",
         fechanacimiento: "1970-05-28",
         sexo: "F",
-        imgperfil: "",
-        imgdnifrente: "",
-        imgdnidorso: "",
+        imgperfil: "https://res.cloudinary.com/healthsafeapp/image/upload/v1688521045/fuh79r6yje1gcakegytn.jpg",
+        imgdnifrente: "https://res.cloudinary.com/healthsafeapp/image/upload/v1688521045/fuh79r6yje1gcakegytn.jpg",
+        imgdnidorso: "https://res.cloudinary.com/healthsafeapp/image/upload/v1688521045/fuh79r6yje1gcakegytn.jpg",
         idrol: 2
     }})
 
@@ -32,7 +32,7 @@ const loadProfesional = async() => {
         descripcion: ""
     }})
 
-    await Matriculaprofesional.create({
+    await Matriculaprofesional.findOrCreate({
         where: {idmatriculaprofesional: 1},
         defaults: {
             idmatriculaprofesional: 1,
@@ -42,7 +42,7 @@ const loadProfesional = async() => {
         }
     })
 
-    await Profesionales_especialidades.create({
+    await Profesionales_especialidades.findOrCreate({
         where: {idprofesionalesespecialidades: 1},
         defaults: {
         idprofesionalesespecialidades: 1,
@@ -52,21 +52,21 @@ const loadProfesional = async() => {
         idespecialidad: 1
     }})
 
-    await Profesionales_matriculasprofesionales.create({
+    await Profesionales_matriculasprofesionales.findOrCreate({
         where: {idprofesionalesmatriculasprofesionales: 1},
         defaults: {
         idprofesionalesmatriculasprofesionales: 1,
         titulogrado: "Medico General",
         aniootorgamiento: 2009,
         idprofesional: 99,
-        matriculaprofesional: 1
+        idmatriculaprofesional: 1
     }})
 
-    await Agenda.create({
+    await Agenda.findOrCreate({
         where: {idagenda: 1},
         defaults: {
         idagenda: 1,
-        fechadesde: "2023-07-02",
+        fechadesde: "2023-07-10",
         fechahasta: null,
         horainicio: "10:00",
         horafin: "11:00",

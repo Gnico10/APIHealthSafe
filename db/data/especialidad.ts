@@ -25,9 +25,13 @@ const loadEspecialidades = async() => {
     ];
 
     // Create Especialidades in database
-    descespe.map(async (desc) => {
+    descespe.map(async (desc, index) => {
         await Especialidad.findOrCreate({
             where:{
+                descripcion: desc
+            },
+            defaults: {
+                idespecialidad: index + 1,
                 descripcion: desc
             }
         });
