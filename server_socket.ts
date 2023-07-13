@@ -18,10 +18,9 @@ class ServerSocket {
             
             // Manejar la recepción de mensajes de un usuario
             socket.on('mensaje', async (data) => {
-            const { idmensajeria, mensaje } = data;
+            const { idmensajeria, mensaje, rolemisor, idemisor, tipomensaje, fechahora } = data;
             
-            // Guardar el mensaje en la base de datos
-            const nuevoMensaje = await Mensaje.create({ idmensajeria, mensaje });
+            const nuevoMensaje = await Mensaje.create({ idmensajeria, mensaje, rolemisor, idemisor,  tipomensaje, fechahora });
             
             // Enviar el mensaje a todos los usuarios conectados a la misma mensajería
             this.io.to(`mensajeria-${idmensajeria}`).emit('mensaje', nuevoMensaje);
