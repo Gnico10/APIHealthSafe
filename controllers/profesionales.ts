@@ -150,9 +150,6 @@ export const getProfesionales = async (req: Request, res: Response) => {
                 {
                     model: MatriculaProfesional,
                     as: 'PM_matriculas_profesionales',
-                    through: {
-                        attributes: ['titulogrado', 'aniootorgamiento']
-                    },
                     include: [
                         {
                           model: TipoMatricula,
@@ -315,12 +312,12 @@ export const postProfesional = async (req: Request, res: Response) => {
             let matriculaprofesional = await MatriculaProfesional.create({
                 numero : matriculas.numero,
                 idtipomatricula : matriculas.idtipomatricula,
-                iduniversidad : matriculas.iduniversidad
+                iduniversidad : matriculas.iduniversidad,
+                idtitulogrado : matriculas.idtitulogrado,
+                aniootorgamiento : matriculas.aniootorgamiento
             });
 
             await Profesionales_MatriculasProfesionales.create({
-                titulogrado : matriculas.titulogrado,
-                aniootorgamiento : matriculas.aniootorgamiento,
                 idmatriculaprofesional : matriculaprofesional.idmatriculaprofesional,
                 idprofesional : profesional.idprofesional
             });
@@ -351,10 +348,7 @@ export const postProfesional = async (req: Request, res: Response) => {
                 },
                 {
                     model: MatriculaProfesional,
-                    as: 'PM_matriculas_profesionales',
-                    through: {
-                        attributes: ['titulogrado', 'aniootorgamiento']
-                    }
+                    as: 'PM_matriculas_profesionales'
                 }
             ]
         });

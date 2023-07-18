@@ -3,8 +3,9 @@ import sequelize from '../db/connection';
 
 import IProfesionales_MatriculasProfesionales from '../interfaces/iProfesionales_MatriculasProfesionales';
 
-import matriculaprofesional from './matriculaprofesional';
-import profesional from './profesional';
+import MatriculaProfesional from './matriculaprofesional';
+import Profesional from './profesional';
+import TituloGrado from './titulogrado';
 
 const profesionales_matriculasprofesionales = sequelize.define<IProfesionales_MatriculasProfesionales>('Profesionales_MatriculasProfesionales',
     { 
@@ -12,17 +13,6 @@ const profesionales_matriculasprofesionales = sequelize.define<IProfesionales_Ma
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
-        },
-        titulogrado: {
-            type: DataTypes.STRING(50),
-            allowNull: false
-        },
-        aniootorgamiento: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            validate:{
-                len: [4, 4] // number of 4 digits
-            }
         }
     },
     {
@@ -30,7 +20,7 @@ const profesionales_matriculasprofesionales = sequelize.define<IProfesionales_Ma
     }
 );
 
-profesional.belongsToMany(matriculaprofesional, {
+Profesional.belongsToMany(MatriculaProfesional, {
     through: profesionales_matriculasprofesionales,
     as: 'PM_matriculas_profesionales',
     foreignKey: 'idprofesional',
@@ -38,7 +28,7 @@ profesional.belongsToMany(matriculaprofesional, {
     onDelete: 'RESTRICT',
 });
 
-matriculaprofesional.belongsToMany(profesional, {
+MatriculaProfesional.belongsToMany(Profesional, {
     through: profesionales_matriculasprofesionales,
     as: 'PM_profesionales',
     foreignKey: 'idmatriculaprofesional',

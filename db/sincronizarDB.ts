@@ -23,6 +23,7 @@ import rol from "../models/rol";
 import pais from "../models/pais";
 import tipomatricula from "../models/tipomatricula";
 import universidad from "../models/universidad";
+import titulogrado from "../models/titulogrado";
 import matriculaprofesional from "../models/matriculaprofesional";
 import profesionales_matriculasprofesionales from "../models/profesionales_matriculasprofesionales";
 import colegiomedico from "../models/colegiomedico";
@@ -51,6 +52,7 @@ const sincronizarDB = async() =>  {
     await profesionales_especialidades.sync({force: false});
     await tipomatricula.sync({force: false});
     await universidad.sync({force: false});
+    await titulogrado.sync({force: false});
     await matriculaprofesional.sync({force: false});
     await profesionales_matriculasprofesionales.sync({force: false});
     await paciente.sync({force: false});    

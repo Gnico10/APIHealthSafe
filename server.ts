@@ -23,6 +23,7 @@ import tiposmatriculasRoutes from './routes/tiposmatriculas';
 import colegiosmedicosRoutes from './routes/colegiosmedicos';
 import localidadesRoutes from './routes/localidades';
 import modalidadesRoutes from './routes/modalidades';
+import titulosgradosRoutes from './routes/titulosgrados';
 import mensajesRoutes from './routes/mensajes';
 import mensajeriaRoutes from './routes/mensajeria';
 import registroshistoriasclinicasRoutes from './routes/registroshistoriasclinicas';
@@ -52,6 +53,7 @@ class Server {
         colegiosmedicos: '/api/colegiosmedicos',
         localidades: '/api/localidades',
         modalidades: '/api/modalidades',
+        titulosgrados: '/api/titulosgrados',
         mensajes:'/api/mensajes',
         mensajeria:'/api/mensajeria',
         registroshistoriasclinicas: '/api/registroshistoriasclinicas',
@@ -156,6 +158,7 @@ class Server {
         this.app.use(this.apiPaths.colegiosmedicos, colegiosmedicosRoutes);
         this.app.use(this.apiPaths.localidades, localidadesRoutes);
         this.app.use(this.apiPaths.modalidades, modalidadesRoutes);
+        this.app.use(this.apiPaths.titulosgrados, titulosgradosRoutes);
         this.app.use(this.apiPaths.mensajes, mensajesRoutes);
         this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
         this.app.use(this.apiPaths.registroshistoriasclinicas, registroshistoriasclinicasRoutes);
