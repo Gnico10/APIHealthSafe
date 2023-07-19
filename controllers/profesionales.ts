@@ -8,7 +8,6 @@ import Especialidad from '../models/especialidad';
 import Rol from '../models/rol';
 import Usuario from '../models/usuario';
 import MatriculaProfesional from '../models/matriculaprofesional';
-import Profesionales_MatriculasProfesionales from '../models/profesionales_matriculasprofesionales';
 import Profesionales_Especialidades from '../models/profesionales_especialidades';
 import ColegioMedico from '../models/colegiomedico';
 import Consultorio from '../models/consultorio';
@@ -18,10 +17,82 @@ import Modalidad from '../models/modalidad';
 import TipoMatricula from '../models/tipomatricula';
 import Pais from '../models/pais';
 import Universidad from '../models/universidad';
+import TituloGrado from '../models/titulogrado';
+
+// Definir tipos de datos
+interface Datos {
+    profesional: any;
+    matriculas_profesional: any[];
+}
+  
+async function profesionalData(idprofesional: any){
+    const profesionalDB = await Profesional.findByPk(
+        idprofesional, {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+            {
+                model: Usuario,
+                as: 'usuario',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Especialidad,
+                as: 'PE_especialidades',
+                through: {
+                    attributes: ['aniootorgamiento']
+                },
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            }
+        ],
+        }
+    );
+
+    if (!profesionalDB) {
+        console.log('Profesional no encontrado');
+        return;
+    }
+
+    // Buscar las matriculas del profesional
+    const matriculaprofesional = await MatriculaProfesional.findAll({
+        where: { idprofesional: profesionalDB.idprofesional },
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+        {
+            model: TipoMatricula,
+            as: 'tipomatricula',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+        },
+        {
+            model: Universidad,
+            as: 'universidad',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+            {
+                model: Pais,
+                as: 'pais',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+            }
+            ]
+        },
+        {
+            model: TituloGrado,
+            as: 'titulogrado',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+        }
+        ]
+    });
+
+    // Construir el objeto JSON con todos los datos
+    const datos: Datos = {
+        profesional: profesionalDB,
+        matriculas_profesional: matriculaprofesional
+    };
+
+    return datos;
+}
 
 
 export const getProfesionales = async (req: Request, res: Response) => {
-   
     const { idespecialidad, codpostal, idmodalidad } = req.query;
  
     try {
@@ -49,14 +120,14 @@ export const getProfesionales = async (req: Request, res: Response) => {
             
             let idProfesionalesEspecialidadesList: number[] = [];
             for (let especialidad_item of profesionales_especialidades){
-                idProfesionalesEspecialidadesList.push(Number(especialidad_item.idprofesional))
+                idProfesionalesEspecialidadesList.push(Number(especialidad_item.idprofesional));
             }
 
             if (idProfesionalesList.length == 0) {
-                idProfesionalesList = idProfesionalesEspecialidadesList
+                idProfesionalesList = idProfesionalesEspecialidadesList;
             } else {
                 idProfesionalesList = idProfesionalesList
-                    .filter(item => idProfesionalesEspecialidadesList.includes(item))
+                    .filter(item => idProfesionalesEspecialidadesList.includes(item));
             }
         }
 
@@ -80,14 +151,14 @@ export const getProfesionales = async (req: Request, res: Response) => {
             // Agregamos los profesionales de los consultorios a la lista.
             let idProfesionalesConsultoriosList: number[] = [];
             for (let consultorio_item of consultorios){
-                idProfesionalesConsultoriosList.push(Number(consultorio_item.idprofesional))
+                idProfesionalesConsultoriosList.push(Number(consultorio_item.idprofesional));
             }
 
             if (idProfesionalesList.length == 0) {
-                idProfesionalesList = idProfesionalesConsultoriosList
+                idProfesionalesList = idProfesionalesConsultoriosList;
             } else {
                 idProfesionalesList = idProfesionalesList
-                    .filter(item => idProfesionalesConsultoriosList.includes(item))
+                    .filter(item => idProfesionalesConsultoriosList.includes(item));
             }
         }
 
@@ -118,57 +189,22 @@ export const getProfesionales = async (req: Request, res: Response) => {
             // Agregar los idprofesionales de las agendas a la lista.
             let idProfesionalesModalidadsList: number[] = [];
             for (let agenda_item of agendas){
-                idProfesionalesModalidadsList.push(Number(agenda_item.idprofesional))
+                idProfesionalesModalidadsList.push(Number(agenda_item.idprofesional));
             }
 
             if (idProfesionalesList.length == 0) {
-                idProfesionalesList = idProfesionalesModalidadsList
+                idProfesionalesList = idProfesionalesModalidadsList;
             } else {
                 idProfesionalesList = idProfesionalesList
-                    .filter(item => idProfesionalesModalidadsList.includes(item))
+                    .filter(item => idProfesionalesModalidadsList.includes(item));
             }
         }
 
-        const profesionales = await Profesional.findAll({
-            where: { idprofesional: idProfesionalesList },
-            include: [
-                {
-                    model: Usuario,
-                    as: 'usuario',
-                    include: [{
-                        model: Rol,
-                        as: 'rol'
-                    }]
-                },
-                {
-                    model: Especialidad,
-                    as: 'PE_especialidades',
-                    through: {
-                        attributes: ['aniootorgamiento']
-                    }
-                },
-                {
-                    model: MatriculaProfesional,
-                    as: 'PM_matriculas_profesionales',
-                    include: [
-                        {
-                          model: TipoMatricula,
-                          as: 'tipomatricula'
-                        },
-                        {
-                          model: Universidad,
-                          as: 'universidad',
-                          include: [
-                            {
-                              model: Pais,
-                              as: 'pais'
-                            }
-                          ]
-                        }
-                      ]
-                }
-            ]
-        });
+        const profesionales = [];
+        for (let idprofesional of idProfesionalesList){
+            const profesional = await profesionalData(idprofesional);
+            profesionales.push(profesional);
+        }
 
         res.json({
             profesionales
@@ -181,69 +217,23 @@ export const getProfesionales = async (req: Request, res: Response) => {
     }
 }
 
-// Importaciones omitidas por brevedad
-
 export const getProfesional = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { idprofesional } = req.params;
   
     try {
-      const profesional = await Profesional.findOne({
-        where: {
-          idprofesional: id
-        },
-        include: [
-          {
-            model: Usuario,
-            as: 'usuario',
-            include: [
-              {
-                model: Rol,
-                as: 'rol'
-              }
-            ]
-          },
-          {
-            model: MatriculaProfesional,
-            as: 'PM_matriculas_profesionales',
-            include: [
-              {
-                model: TipoMatricula,
-                as: 'tipomatricula'
-              },
-              {
-                model: Universidad,
-                as: 'universidad',
-                include: [
-                  {
-                    model: Pais,
-                    as: 'pais'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            model: Especialidad,
-            as: 'PE_especialidades',
-            through: {
-              attributes: ['idcolegiomedico', 'aniootorgamiento'],
-            },
-          },
-        ],
-        logging: console.log,
-      });
-  
-      if (profesional) {
+        const profesional = await profesionalData(idprofesional);
+    
+        if (! profesional) {
+            res.status(404).json({
+                msg: `No existe un profesional con id = ${idprofesional}`
+            });
+        }
+
         res.json(profesional);
-      } else {
-        res.status(404).json({
-          msg: `No existe un profesional con id = ${id}`
-        });
-      }
     } catch (error) {
-      res.status(500).json({
-        msg: 'Ocurrió un error en el servidor'
-      });
+        res.status(500).json({
+            msg: 'Ocurrió un error en el servidor'
+        });
     }
   };
   
@@ -306,20 +296,16 @@ export const postProfesional = async (req: Request, res: Response) => {
         }
 
         // DB
-        let profesional = await Profesional.create({idusuario, descripcion});
+        let profesionalDB = await Profesional.create({idusuario, descripcion});
 
         for (const matriculas of profesional_matriculas){
-            let matriculaprofesional = await MatriculaProfesional.create({
+            await MatriculaProfesional.create({
                 numero : matriculas.numero,
                 idtipomatricula : matriculas.idtipomatricula,
                 iduniversidad : matriculas.iduniversidad,
                 idtitulogrado : matriculas.idtitulogrado,
-                aniootorgamiento : matriculas.aniootorgamiento
-            });
-
-            await Profesionales_MatriculasProfesionales.create({
-                idmatriculaprofesional : matriculaprofesional.idmatriculaprofesional,
-                idprofesional : profesional.idprofesional
+                aniootorgamiento : matriculas.aniootorgamiento,
+                idprofesional : profesionalDB.idprofesional
             });
         }
 
@@ -328,36 +314,15 @@ export const postProfesional = async (req: Request, res: Response) => {
                 idcolegiomedico : especialidad.idcolegiomedico,
                 idespecialidad : especialidad.idespecialidad,
                 aniootorgamiento : especialidad.aniootorgamiento,
-                idprofesional : profesional.idprofesional
+                idprofesional : profesionalDB.idprofesional
             });
         }
         
-        const profesionalDB = await Profesional.findOne({
-            where: {idusuario},
-            include: [
-                {
-                    model: Usuario,
-                    as: 'usuario'
-                },
-                {
-                    model: Especialidad,
-                    as: 'PE_especialidades',
-                    through: {
-                        attributes: ['aniootorgamiento']
-                    }
-                },
-                {
-                    model: MatriculaProfesional,
-                    as: 'PM_matriculas_profesionales'
-                }
-            ]
-        });
-
+        const profesional = await profesionalData(profesionalDB.idprofesional)
         const token = await generarJWT(idusuario);
-
         res.json({
             msg:'Profesional dado de alta',
-            profesional: profesionalDB,
+            profesional,
             token
         });
     } catch (error) {

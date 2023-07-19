@@ -25,7 +25,6 @@ import tipomatricula from "../models/tipomatricula";
 import universidad from "../models/universidad";
 import titulogrado from "../models/titulogrado";
 import matriculaprofesional from "../models/matriculaprofesional";
-import profesionales_matriculasprofesionales from "../models/profesionales_matriculasprofesionales";
 import colegiomedico from "../models/colegiomedico";
 import registrohistoriaclinica from "../models/registrohistoriaclinica"
 import indicaciongeneral from "../models/indicaciongeneral";
@@ -54,7 +53,6 @@ const sincronizarDB = async() =>  {
     await universidad.sync({force: false});
     await titulogrado.sync({force: false});
     await matriculaprofesional.sync({force: false});
-    await profesionales_matriculasprofesionales.sync({force: false});
     await paciente.sync({force: false});    
     await tipoantecedente.sync({force: false});
     await antecedente.sync({force: false});

@@ -6,6 +6,7 @@ import IMatriculaprofesional from '../interfaces/iMatriculaprofesional';
 import TipoMatricula from './tipomatricula';
 import Universidad from './universidad';
 import TituloGrado from './titulogrado';
+import Profesional from './profesional';
 
 const matriculaprofesional = sequelize.define<IMatriculaprofesional>('MatriculaProfesional',
     { 
@@ -25,6 +26,10 @@ const matriculaprofesional = sequelize.define<IMatriculaprofesional>('MatriculaP
                 len: [4, 4] // number of 4 digits
             }
         },
+        idprofesional: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         idtipomatricula: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -42,6 +47,13 @@ const matriculaprofesional = sequelize.define<IMatriculaprofesional>('MatriculaP
         tableName: 'matriculasprofesionales'
     }
 );
+
+matriculaprofesional.belongsTo(Profesional, {
+    foreignKey: 'idprofesional',
+    as: 'profesional',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
 
 matriculaprofesional.belongsTo(TipoMatricula, {
     foreignKey: 'idtipomatricula',
