@@ -8,12 +8,13 @@ import { getAntecedentes_Paciente, postAntecedente } from '../controllers/antece
 
 const router = Router();
 
-router.get('/paciente/:id', getAntecedentes_Paciente);
+router.get('/paciente/:idpaciente', getAntecedentes_Paciente);
 
 router.post('/', [
+    check('descripcion', 'La descripcion es requerida.').not().isEmpty(),
+    check('nombre', 'El nombre es requerida.').not().isEmpty(),
     check('idtipoantecedente', 'El idtipoantecedente es requerido.').not().isEmpty(),
     check('idpaciente', 'El idpaciente es requerido.').not().isEmpty(),
-    check('descripcion', 'La descripcion es requerida.').not().isEmpty(),
     validarCampos,
     validarJWT
 ], postAntecedente);

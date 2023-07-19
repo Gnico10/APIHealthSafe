@@ -3,8 +3,9 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
 import IAntecedente from "../interfaces/iAntecedente";
-import paciente from "./paciente";
-import tipoantecedente from "./tipoantecedente";
+import Paciente from "./paciente";
+import TipoAntecedente from "./tipoantecedente";
+import Profesional from "./profesional";
 
 const antecedente = sequelize.define<IAntecedente>('Antecedente',
     {
@@ -13,16 +14,20 @@ const antecedente = sequelize.define<IAntecedente>('Antecedente',
             primaryKey: true,
             autoIncrement: true
         },
+        descripcion: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+        nombre: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+        },
         idtipoantecedente: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
         idpaciente: {
             type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        descripcion: {
-            type: DataTypes.STRING(50),
             allowNull: false,
         }
     },
@@ -31,16 +36,23 @@ const antecedente = sequelize.define<IAntecedente>('Antecedente',
     }
 );
 
-antecedente.belongsTo(tipoantecedente, {
+antecedente.belongsTo(TipoAntecedente, {
     foreignKey: 'idtipoantecedente',
     as:'tipoantecedente',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
-antecedente.belongsTo(paciente, {
+antecedente.belongsTo(Paciente, {
     foreignKey: 'idpaciente',
     as:'paciente',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+});
+
+antecedente.belongsTo(Profesional, {
+    foreignKey: 'idprofesional',
+    as:'profesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });

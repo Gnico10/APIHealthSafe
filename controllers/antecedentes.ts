@@ -5,50 +5,72 @@ import Paciente from '../models/paciente';
 import Antecedente from '../models/antecedente';
 import Profesional from '../models/profesional';
 
+async function antecedenteData(idantecedente: any){
+    const antecedentesDB = await Antecedente.findByPk(
+        idantecedente, {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+            {
+                model: TipoAntecedente,
+                as: 'tipoantecedente',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Paciente,
+                as: 'paciente',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            },
+            {
+                model: Profesional,
+                as: 'profesional',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            }
+        ]}
+    ); 
+
+    if (!antecedentesDB) {
+        console.log('Antecendete no encontrado');
+        return;
+    }
+
+    return antecedentesDB;
+}
+
 export const getAntecedentes_Paciente = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { idpaciente } = req.params;
 
     try {
-        const antecedentes_paciente = await Antecedente.findAll({
-            where: {
-                idpaciente: id 
-            },
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-            include: [
-                {
-                    model: TipoAntecedente,
-                    as: 'tipoantecedente',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Paciente,
-                    as: 'paciente',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                }
-            ]
-        }); 
+        const antecedentes_paciente = await Antecedente.findAll({where: {idpaciente}}); 
 
         if (antecedentes_paciente.length == 0) {
             return res.status(400).json({
-                msg: `El paciente con ID: ${id} no tiene antecedentes cargados`
+                msg: `El paciente con ID: ${idpaciente} no tiene antecedentes cargados`
             });
         }
 
+        const antecedentes = [];
+        for (let antecedente of antecedentes_paciente){
+            const antecedenteDB = await antecedenteData(antecedente.idantecedente);
+            antecedentes.push(antecedenteDB);
+        }
+
         res.json({
-            antecedentes_paciente
+            antecedentes_paciente: antecedentes
         });
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg: 'Error Interno. No se pudo consultar los antecedentes del paciente'
+            msg: 'Error Interno. No se pudo consultar los antecedentes del paciente.'
         });
     }
 }
 
 export const postAntecedente = async (req: any, res: Response) => {
-    const { idtipoantecedente,
-            idpaciente,
-            descripcion } = req.body;
+    const { descripcion,
+            nombre,
+            idtipoantecedente,
+            idpaciente} = req.body;
+        // El idprofeional es obtenido por medio del idUsuarioToken
     
     try {
         // Validations
@@ -79,17 +101,19 @@ export const postAntecedente = async (req: any, res: Response) => {
         }
 
         // Create antecedente
-        const antecedente = await Antecedente.build({
+        const antecedente = await Antecedente.create({
+            descripcion,
+            nombre,
             idtipoantecedente,
             idpaciente,
-            descripcion
+            idprofesional: profesional.idprofesional
         });
 
-        await antecedente.save();
-        
+        const antecendeDB = await antecedenteData(antecedente.idantecedente);
+
         res.json({
-            msg: `Antecedente con ID: ${idtipoantecedente} asociado a paciente con ID: ${idpaciente}`,
-            antecedente
+            msg: `Antecedente dado de alta a paciente con ID: ${idpaciente}`,
+            antecedente: antecendeDB
         });
     } catch (error) {
         console.log(error);
