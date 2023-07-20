@@ -3,16 +3,19 @@ import TituloGrado from "../../models/titulogrado";
 const loadTituloGrado = async() => {
     // List of TituloGrado
     const desctitulogrado : string[] = [
-        'Medicina general',
-        'Pediatría',
-        'Ginecología',
-        'Urología',
-        'Cirugía general',
-        'Cirugía ortopédica',
-        'Oftalmología',
-        'Otorrinolaringología',
-        'Dermatología',
-        'Oncología'
+        'Kinesiólogo',
+        'Licenciado en Fonoaudiología',
+        'Licenciado en Nutrición',
+        'Licenciado en Psicología',
+        'Licenciado en Psicopedagogía',
+        'Médico',
+        'Médico Cirujano',
+        'Nutricionista',
+        'Odontólogo',
+        'Psicólogo',
+        'Puericultor',
+        'Terapeuta',
+        'Terapista ocupacional'
     ];
 
     // Create TiposMatricula in database
