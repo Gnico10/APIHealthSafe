@@ -6,9 +6,6 @@ interface iMedicamento extends Model{
     descripcion? : string,
     monodroga? : string,
     presentacion? : string,
-    cantidad? : string,
-    iddiagnostico? : number,
-    idindicacionmedicamento? : number,
 };
 
 export default iMedicamento;

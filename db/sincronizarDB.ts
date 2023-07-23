@@ -33,6 +33,7 @@ import diagnostico from "../models/diagnostico";
 import medicamento from "../models/medicamento";
 
 import load from "./load";
+import tipoindicaciongeneral from "../models/tipoindicaciongeneral";
 
 
 const sincronizarDB = async() =>  {
@@ -61,8 +62,9 @@ const sincronizarDB = async() =>  {
     await turno.sync({force: false});
     await registrohistoriaclinica.sync({force: false});
     await diagnostico.sync({force: false});
-    await indicacionmedicamento.sync({force: false});
     await medicamento.sync({force: false});
+    await indicacionmedicamento.sync({force: false});
+    await tipoindicaciongeneral.sync({force: false});
     await indicaciongeneral.sync({force: false});
     await calificacion.sync({force: false});
     await dia.sync({force: false});
@@ -72,6 +74,7 @@ const sincronizarDB = async() =>  {
     await prescripcion.sync({force: false});
     await mensajeria.sync({force: false});
     await mensaje.sync({force: false});
+
     // load default data for DB
     load();
 }

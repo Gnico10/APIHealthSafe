@@ -28,6 +28,8 @@ import mensajesRoutes from './routes/mensajes';
 import mensajeriaRoutes from './routes/mensajeria';
 import registroshistoriasclinicasRoutes from './routes/registroshistoriasclinicas';
 import consultorioRoutes from './routes/consultorio';
+import medicamentoRoutes from './routes/medicamentos';
+import tiposindicacionesgeneralesRoutes from './routes/tipoindicacionesgenerales';
 
 class Server {
 
@@ -47,6 +49,7 @@ class Server {
         especialidades: '/api/especialidades',
         profesionales_especialidades: '/api/profesionales_especialidades',
         paises: '/api/paises',
+        medicamentos: '/api/medicamentos',
         roles: '/api/roles',
         universidades: '/api/universidades',
         tiposmatriculas: '/api/tiposmatriculas',
@@ -58,6 +61,7 @@ class Server {
         mensajeria:'/api/mensajeria',
         registroshistoriasclinicas: '/api/registroshistoriasclinicas',
         consultorios: '/api/consultorios',
+        tiposindicacionesgenerales:  '/api/tiposindicacionesgenerales',
         // Más rutas
         default: '*'
     }
@@ -163,6 +167,8 @@ class Server {
         this.app.use(this.apiPaths.mensajeria, mensajeriaRoutes);
         this.app.use(this.apiPaths.registroshistoriasclinicas, registroshistoriasclinicasRoutes);
         this.app.use(this.apiPaths.consultorios, consultorioRoutes);
+        this.app.use(this.apiPaths.medicamentos, medicamentoRoutes);
+        this.app.use(this.apiPaths.tiposindicacionesgenerales, tiposindicacionesgeneralesRoutes);
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {

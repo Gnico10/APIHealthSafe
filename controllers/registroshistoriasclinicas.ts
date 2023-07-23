@@ -7,6 +7,8 @@ import Medicamento from '../models/medicamento';
 import IndicacionGeneral from '../models/indicaciongeneral';
 import IndicacionMedicamento from '../models/indicacionmedicamento';
 import Turno from '../models/turno';
+import Profesional from '../models/profesional';
+import tipoindicaciongeneral from '../models/tipoindicaciongeneral';
 
 // Definir tipos de datos
 interface Datos {
@@ -135,7 +137,7 @@ export const getRegistrosHistoriaClinicaPorPaciente = async (req: Request, res: 
 export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
     const { idpaciente,
             idturno,
-            fechahora,
+            idprofesional,
             diagnosticos } = req.body;
   
     try {
@@ -151,6 +153,13 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
       if (!paciente) {
         return res.status(404).json({
           msg: `El paciente con id ${idpaciente} no existe`,
+        });
+      }
+      // Validar que el profesional exista
+      const profesional = await Profesional.findByPk(idprofesional);
+      if (!profesional) {
+        return res.status(404).json({
+          msg: `El profesional con id ${idprofesional} no existe`,
         });
       }
 
@@ -169,7 +178,11 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
       }
 
       // Crear el registro de historia clínica
-      const registroHistoriaClinica = await RegistroHistoriaClinica.create({fechahora, idpaciente, idturno});
+      const registroHistoriaClinica = await RegistroHistoriaClinica.create({
+        idpaciente, 
+        idturno,
+        idprofesional
+      });
       
       // Si hay diagnósticos en el request, crearlos y vincularlos al registro
       for (let diagnostico of diagnosticos){
@@ -181,31 +194,22 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
         });
         
         // Crear Indicaciciones Medicamentos
-        for (let medicamento of diagnostico.medicamentos){
+        for (let indicacionmedicamento of diagnostico.indicacionesmedicamentos){
           const newIndicacionMedicamento = await IndicacionMedicamento.create({
-            dosis: medicamento.dosis,
-            periodicidad: medicamento.periodicidad,
-            duraciontratamiento: medicamento.duraciontratamiento,
-            observaciones: medicamento.observaciones
-          });
-
-          // Crear Medicamento
-          await Medicamento.create({
-            nombre: medicamento.nombre,
-            monodroga: medicamento.monodroga,
-            presentacion: medicamento.presentacion,
-            cantidad: medicamento.cantidad,
-            iddiagnostico: newDiagnostico.iddiagnostico,
-            idindicacionmedicamento: newIndicacionMedicamento.idindicacionmedicamento
+            dosis: indicacionmedicamento.dosis,
+            periodicidad: indicacionmedicamento.periodicidad,
+            duraciontratamiento: indicacionmedicamento.duraciontratamiento,
+            observaciones: indicacionmedicamento.observaciones,
+            idmedicamento: indicacionmedicamento.idmedicamento
           });
         }
 
         // Crear Indicaciones Generales
         for (let indicacionGeneral of diagnostico.indicacionesgenerales){
           await IndicacionGeneral.create({
-            tipo: indicacionGeneral.tipo,
             detalle: indicacionGeneral.detalle,
-            iddiagnostico: newDiagnostico.iddiagnostico
+            iddiagnostico: newDiagnostico.iddiagnostico,
+            tipoindicaciongeneral: indicacionGeneral.idtipoindicaciongeneral,
           });
         }
       }
