@@ -17,7 +17,7 @@ const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicaci
             allowNull: false,
         },
         cantidad: {
-            type: DataTypes.TEXT,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         periodicidad: {

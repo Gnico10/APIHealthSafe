@@ -7,7 +7,7 @@ interface iIndicacionmedicamento extends Model{
     duraciontratamiento? : string,
     observaciones? : string,
     iddiagnostico? : number,
-    idnedicamento? : number,
+    idmedicamento? : number,
     cantidad? : string,
 };
 

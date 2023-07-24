@@ -21,7 +21,7 @@ const load = async() => {
     loadModalidades();
     loadTipoAntecedente();
     loadTituloGrado();
-    loadTipoIndicacionGenerales
+    loadTipoIndicacionGenerales();
     // loadProfesional();
 }
 

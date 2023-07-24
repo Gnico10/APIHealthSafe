@@ -8,7 +8,8 @@ import IndicacionGeneral from '../models/indicaciongeneral';
 import IndicacionMedicamento from '../models/indicacionmedicamento';
 import Turno from '../models/turno';
 import Profesional from '../models/profesional';
-import tipoindicaciongeneral from '../models/tipoindicaciongeneral';
+import Tipoindicaciongeneral from '../models/tipoindicaciongeneral';
+import sequelize from '../db/connection';
 
 // Definir tipos de datos
 interface Datos {
@@ -134,99 +135,142 @@ export const getRegistrosHistoriaClinicaPorPaciente = async (req: Request, res: 
   }
 };
 
+
+
+
+// ... Código anterior ...
+
 export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
-    const { idpaciente,
-            idturno,
-            idprofesional,
-            diagnosticos } = req.body;
-  
-    try {
-      //Validar que haya diagnosticos
-      if (diagnosticos.length == 0){
-        return res.status(404).json({
-          msg: `No hay diagnosticos cargados para dar de alta este Registro de Historia Clinica`,
-        });
-      }
+  const { idpaciente, idturno, idprofesional, diagnosticos } = req.body;
 
-      // Validar que el paciente exista
-      const paciente = await Paciente.findByPk(idpaciente);
-      if (!paciente) {
-        return res.status(404).json({
-          msg: `El paciente con id ${idpaciente} no existe`,
-        });
-      }
-      // Validar que el profesional exista
-      const profesional = await Profesional.findByPk(idprofesional);
-      if (!profesional) {
-        return res.status(404).json({
-          msg: `El profesional con id ${idprofesional} no existe`,
-        });
-      }
-
-      //Validar turno
-      const turno = await Turno.findByPk(idturno);
-      if (!turno) {
-        return res.status(404).json({
-          msg: `El turno con id ${idturno} no existe`,
-        });
-      }
-
-      if (turno.idpaciente != paciente.idpaciente) {
-        return res.status(404).json({
-            msg: `El turno con id ${turno.idturno} no pertenece al paciente con id ${paciente.idpaciente}`
-        });
-      }
-
-      // Crear el registro de historia clínica
-      const registroHistoriaClinica = await RegistroHistoriaClinica.create({
-        idpaciente, 
-        idturno,
-        idprofesional
+  try {
+    //Validar que haya diagnosticos
+    if (diagnosticos.length === 0) {
+      return res.status(404).json({
+        msg: `No hay diagnosticos cargados para dar de alta este Registro de Historia Clinica`,
       });
-      
+    }
+
+    // Validar que el paciente exista
+    const paciente = await Paciente.findByPk(idpaciente);
+    if (!paciente) {
+      return res.status(404).json({
+        msg: `El paciente con id ${idpaciente} no existe`,
+      });
+    }
+    // Validar que el profesional exista
+    const profesional = await Profesional.findByPk(idprofesional);
+    if (!profesional) {
+      return res.status(404).json({
+        msg: `El profesional con id ${idprofesional} no existe`,
+      });
+    }
+
+    //Validar turno
+    const turno = await Turno.findByPk(idturno);
+    if (!turno) {
+      return res.status(404).json({
+        msg: `El turno con id ${idturno} no existe`,
+      });
+    }
+
+    if (turno.idpaciente !== paciente.idpaciente) {
+      return res.status(404).json({
+        msg: `El turno con id ${turno.idturno} no pertenece al paciente con id ${paciente.idpaciente}`,
+      });
+    }
+
+    // Iniciar la transacción para asegurar la creación segura de todos los modelos
+    const t = await sequelize.transaction();
+
+    try {
+      // Crear el registro de historia clínica
+      const registroHistoriaClinica = await RegistroHistoriaClinica.create(
+        {
+          idpaciente,
+          idturno,
+          idprofesional,
+        },
+        { transaction: t }
+      );
+
       // Si hay diagnósticos en el request, crearlos y vincularlos al registro
-      for (let diagnostico of diagnosticos){
-        // Crear diagnostico
-        const newDiagnostico = await Diagnostico.create({
-          nombre: diagnostico.nombre,
-          descripcion: diagnostico.descripcion,
-          idregistrohistoriaclinica: registroHistoriaClinica.idregistrohistoriaclinica
-        });
-        
-        // Crear Indicaciciones Medicamentos
-        for (let indicacionmedicamento of diagnostico.indicacionesmedicamentos){
-          const newIndicacionMedicamento = await IndicacionMedicamento.create({
-            dosis: indicacionmedicamento.dosis,
-            periodicidad: indicacionmedicamento.periodicidad,
-            duraciontratamiento: indicacionmedicamento.duraciontratamiento,
-            observaciones: indicacionmedicamento.observaciones,
-            idmedicamento: indicacionmedicamento.idmedicamento
-          });
+      for (let diagnostico of diagnosticos) {
+        // Crear diagnóstico
+        const newDiagnostico = await Diagnostico.create(
+          {
+            nombre: diagnostico.nombre,
+            descripcion: diagnostico.descripcion,
+            idregistrohistoriaclinica: registroHistoriaClinica.idregistrohistoriaclinica,
+          },
+          { transaction: t }
+        );
+
+        // Crear indicaciones medicamentos
+        for (let indicacionmedicamento of diagnostico.indicacionesmedicamentos) {
+          const newIndicacionMedicamento = await IndicacionMedicamento.create(
+            {
+              dosis: indicacionmedicamento.dosis,
+              periodicidad: indicacionmedicamento.periodicidad,
+              cantidad:indicacionmedicamento.cantidad,
+              duraciontratamiento: indicacionmedicamento.duraciontratamiento,
+              observaciones: indicacionmedicamento.observaciones,
+              idmedicamento: indicacionmedicamento.idmedicamento,
+              iddiagnostico: newDiagnostico.iddiagnostico,
+            },
+            { transaction: t }
+          );
         }
 
-        // Crear Indicaciones Generales
-        for (let indicacionGeneral of diagnostico.indicacionesgenerales){
-          await IndicacionGeneral.create({
-            detalle: indicacionGeneral.detalle,
-            iddiagnostico: newDiagnostico.iddiagnostico,
-            tipoindicaciongeneral: indicacionGeneral.idtipoindicaciongeneral,
-          });
+        // Crear indicaciones generales
+        for (let indicaciongeneral of diagnostico.indicacionesgenerales) {
+          const tipoIndicacionGeneral = await Tipoindicaciongeneral.findByPk(indicaciongeneral.idtipoindicaciongeneral);
+          if (!tipoIndicacionGeneral) {
+            // Si no se encuentra el tipo de indicación general, se puede manejar el error según sea necesario
+            // En este caso, se hará un rollback de la transacción y se enviará una respuesta de error
+            await t.rollback();
+            return res.status(404).json({
+              msg: `El tipo de indicación general con id ${indicaciongeneral.idtipoindicaciongeneral} no existe`,
+            });
+          }
+
+          await IndicacionGeneral.create(
+            {
+              detalle: indicaciongeneral.detalle,
+              iddiagnostico: newDiagnostico.iddiagnostico,
+              tipoindicaciongeneral: indicaciongeneral.idtipoindicaciongeneral,
+            },
+            { transaction: t }
+          );
         }
       }
-      
+
+      // Commit de la transacción, es decir, confirmar los cambios en la base de datos
+      await t.commit();
+
+      // Obtener los datos completos después de la transacción exitosa
       const datos = await registroHistoriaClinicaData(registroHistoriaClinica.idregistrohistoriaclinica);
       res.json({
         msg: 'Registro de historia clínica creado correctamente',
-        datos 
+        datos,
       });
     } catch (error) {
+      // Si ocurre algún error, hacemos rollback de la transacción para deshacer los cambios
+      await t.rollback();
       console.log(error);
       res.status(500).json({
         msg: 'Error interno. No se pudo crear el registro de historia clínica',
       });
     }
-  };
-  
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: 'Error interno. No se pudo crear el registro de historia clínica',
+    });
+  }
+};
+
+
      
    
   

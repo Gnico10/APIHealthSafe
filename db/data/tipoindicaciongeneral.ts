@@ -11,7 +11,7 @@ const loadTipoIndicacionGenerales = async() => {
         'Pedido Práctica Médica',
     ];
 
-    // Create TiposMatricula in database
+    // Create tipoinficaciongenerales in database
     desctipoindicaciongeneral.map(async (desc) => {
         await tipoindicaciongeneral.findOrCreate({
             where: {
