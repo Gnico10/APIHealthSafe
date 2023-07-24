@@ -9,6 +9,7 @@ import loadModalidades from "./data/modalidad";
 import loadTipoAntecedente from "./data/tipoantecedente";
 import loadTituloGrado from "./data/titulogrado";
 import loadTipoIndicacionGenerales from "./data/tipoindicaciongeneral";
+import loadMedicamentos from "./data/medicamento";
 
 const load = async() => {
     loadEspecialidades();
@@ -22,6 +23,8 @@ const load = async() => {
     loadTipoAntecedente();
     loadTituloGrado();
     loadTipoIndicacionGenerales();
+    loadMedicamentos();
+   
     // loadProfesional();
 }
 
