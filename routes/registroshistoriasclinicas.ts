@@ -12,7 +12,6 @@ router.get('/',getRegistrosHistoriaClinica);
 router.get('/paciente/:idpaciente', getRegistrosHistoriaClinicaPorPaciente);
 router.post('/', [
     check('idpaciente', 'El idpaciente es requerido.').not().isEmpty(),
-    check('fechahora', 'La fechahora es requerido.'). not().isEmpty(),
     check('diagnosticos', 'El diagnosticos es requerido.').not().isEmpty(),
     validarCampos
 ],postRegistroHistoriaClinica);

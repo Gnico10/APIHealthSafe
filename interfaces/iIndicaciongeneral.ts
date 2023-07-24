@@ -2,8 +2,8 @@ import { Model } from "sequelize/types";
 
 interface iIndicaciongeneral extends Model{
     idindicaciongeneral? : number,
-    tipo? : string,
     detalle? : string,
     iddiagnostico? : number,
+    idtipoindicaciongeneral? : number
 };
 export default iIndicaciongeneral;

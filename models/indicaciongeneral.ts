@@ -3,6 +3,7 @@ import sequelize from "../db/connection";
 
 import iIndicaciongeneral from "../interfaces/iIndicaciongeneral";
 import Diagnostico from "./diagnostico";
+import TipoIndicacionGeneral from "./tipoindicaciongeneral";
 
 const indicaciongeneral = sequelize.define<iIndicaciongeneral>('indicaciongeneral',
     {
@@ -11,15 +12,15 @@ const indicaciongeneral = sequelize.define<iIndicaciongeneral>('indicaciongenera
             primaryKey: true,
             autoIncrement: true
         },
-        tipo: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
         detalle: {
             type: DataTypes.TEXT,
             allowNull: false,
         },
         iddiagnostico: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        idtipoindicaciongeneral: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
@@ -36,4 +37,10 @@ indicaciongeneral.belongsTo(Diagnostico, {
     onDelete: 'RESTRICT'
 });
 
+indicaciongeneral.belongsTo(TipoIndicacionGeneral, {
+    foreignKey: 'idtipoindicaciongeneral',
+    as: 'tipoindicaciongeneral',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT'
+});
 export default  indicaciongeneral;

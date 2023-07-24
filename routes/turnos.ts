@@ -25,7 +25,7 @@ router.post('/', [
     check('idpaciente', 'El idpaciente es requerido').not().isEmpty(), 
     check('idmodalidad', 'El idmodalidad es requerido').not().isEmpty(), 
     validarCampos,
-    validarJWT
+  //  validarJWT
 ], postTurno);
 
 router.delete('/:id', [
