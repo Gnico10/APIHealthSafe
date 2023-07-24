@@ -11,7 +11,7 @@ const titulogrado = sequelize.define<ITituloGrado>('TituloGrado',
             autoIncrement: true
         },
         descripcion: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(50),
             allowNull: false,
         }
     },
