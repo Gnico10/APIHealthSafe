@@ -4,7 +4,7 @@ import tipoindicaciongeneral from "../../models/tipoindicaciongeneral";
 const loadTipoIndicacionGenerales = async() => {
     // List of TipoIndicacionGenerales
     const desctipoindicaciongeneral : string[] = [
-        'Certifcado',
+        'Certificado',
         'Indicación General',
         'Laboratorio',
         'Pedido Estudio Médico',

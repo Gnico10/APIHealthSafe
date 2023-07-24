@@ -4,6 +4,6 @@ interface iIndicaciongeneral extends Model{
     idindicaciongeneral? : number,
     detalle? : string,
     iddiagnostico? : number,
-    idtipoindicaciongeneral? : number,
+    idtipoindicaciongeneral? : number
 };
 export default iIndicaciongeneral;

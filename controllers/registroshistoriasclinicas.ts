@@ -16,7 +16,7 @@ interface Datos {
   registroHistoriaClinica: any;
   diagnosticos: {
     diagnostico: any;
-    medicamentos: any[];
+    indicacionMedicamento: any[];
     indicacionesGenerales: any[];
   }[];
 }
@@ -26,7 +26,8 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
     idregistrohistoriaclinica,{
       include: [{
           model: Turno,
-          as: 'turno'
+          as: 'turno',
+          attributes: { exclude: ['createdAt', 'updatedAt'] }
       }],
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     }
@@ -50,13 +51,13 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
   };
 
   for (let diagnostico of diagnosticos) {
-    // Buscar los medicamentos relacionados con el diagnóstico
-    const medicamentos = await Medicamento.findAll({
+    // Buscar las indicaciones relacionados con el diagnóstico
+    const indicacionmedicamento = await IndicacionMedicamento.findAll({
       where: { iddiagnostico: diagnostico.iddiagnostico },
       include: [
         {
-          model: IndicacionMedicamento,
-          as: 'indicacionmedicamento',
+          model: Medicamento,
+          as: 'medicamento',
           attributes: { exclude: ['createdAt', 'updatedAt'] }
         }
       ],
@@ -66,13 +67,20 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
     // Buscar las indicaciones generales relacionadas con el diagnóstico
     const indicacionesGenerales = await IndicacionGeneral.findAll({
       where: { iddiagnostico: diagnostico.iddiagnostico },
+      include: [
+        {
+          model: Tipoindicaciongeneral,
+          as: 'tipoindicaciongeneral',
+          attributes: { exclude: ['createdAt', 'updatedAt'] }
+        }
+      ],
       attributes: { exclude: ['createdAt', 'updatedAt'] }
     });
 
     // Agregar los datos del diagnóstico y sus relaciones al objeto JSON
     const datosDiagnostico = {
       diagnostico: diagnostico,
-      medicamentos: medicamentos,
+      indicacionMedicamento: indicacionmedicamento,
       indicacionesGenerales: indicacionesGenerales
     };
 
@@ -211,8 +219,8 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
           const newIndicacionMedicamento = await IndicacionMedicamento.create(
             {
               dosis: indicacionmedicamento.dosis,
-              periodicidad: indicacionmedicamento.periodicidad,
               cantidad:indicacionmedicamento.cantidad,
+              periodicidad: indicacionmedicamento.periodicidad,
               duraciontratamiento: indicacionmedicamento.duraciontratamiento,
               observaciones: indicacionmedicamento.observaciones,
               idmedicamento: indicacionmedicamento.idmedicamento,
@@ -237,8 +245,8 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
           await IndicacionGeneral.create(
             {
               detalle: indicaciongeneral.detalle,
+              idtipoindicaciongeneral: indicaciongeneral.idtipoindicaciongeneral,
               iddiagnostico: newDiagnostico.iddiagnostico,
-              tipoindicaciongeneral: indicaciongeneral.idtipoindicaciongeneral,
             },
             { transaction: t }
           );
