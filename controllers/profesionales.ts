@@ -18,15 +18,9 @@ import TipoMatricula from '../models/tipomatricula';
 import Pais from '../models/pais';
 import Universidad from '../models/universidad';
 import TituloGrado from '../models/titulogrado';
-
-// Definir tipos de datos
-interface Datos {
-    profesional: any;
-    matriculas_profesional: any[];
-}
   
 async function profesionalData(idprofesional: any){
-    const profesionalDB = await Profesional.findByPk(
+    const profesional = await Profesional.findByPk(
         idprofesional, {
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [
@@ -47,14 +41,14 @@ async function profesionalData(idprofesional: any){
         }
     );
 
-    if (!profesionalDB) {
+    if (!profesional) {
         console.log('Profesional no encontrado');
         return;
     }
 
     // Buscar las matriculas del profesional
     const matriculaprofesional = await MatriculaProfesional.findAll({
-        where: { idprofesional: profesionalDB.idprofesional },
+        where: { idprofesional: profesional.idprofesional },
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [
         {
@@ -82,13 +76,10 @@ async function profesionalData(idprofesional: any){
         ]
     });
 
-    // Construir el objeto JSON con todos los datos
-    const datos: Datos = {
-        profesional: profesionalDB,
+    return {
+        ...profesional.toJSON(),
         matriculas_profesional: matriculaprofesional
     };
-
-    return datos;
 }
 
 

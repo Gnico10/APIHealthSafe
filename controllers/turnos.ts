@@ -71,10 +71,19 @@ const include_turno = [
 
 //get: all turnos
 export const getTurnos = async (req: Request, res: Response) => {
-    const turnos = await Turno.findAll({
-        include: include_turno
-    });
-    res.json({turnos});
+
+    try {
+        const turnos = await Turno.findAll({
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: include_turno
+        });
+        res.json({turnos});   
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar los turnos'
+        });
+    }   
 }
 
 export const getTurnos_Paciente = async (req: Request, res: Response) => {
@@ -90,6 +99,7 @@ export const getTurnos_Paciente = async (req: Request, res: Response) => {
 
         const turnos = await Turno.findAll({
             where: whereCondition,
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: include_turno
         });
         
@@ -107,7 +117,10 @@ export const getTurnos_Paciente = async (req: Request, res: Response) => {
 export const getTurno = async (req: Request, res: Response) => {
     const { idturno } = req.params;
     // Busca el turno según el id
+
+
     const turno = await Turno.findByPk(idturno, {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: include_turno
     });
 
@@ -244,6 +257,7 @@ export const postTurno = async (req: Request, res: Response) => {
         await turno.save();
 
         const turnoDB = await Turno.findByPk(turno.idturno, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: include_turno
         });
 

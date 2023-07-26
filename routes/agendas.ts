@@ -14,8 +14,8 @@ import { getAgendas,
 const router = Router();
 
 router.get('/', getAgendas);
-router.get('/:id', getAgenda);
-router.get('/profesional/:id', getAgendas_Profesional);
+router.get('/:idagenda', getAgenda);
+router.get('/profesional/:idprofesional', getAgendas_Profesional);
 
 router.post('/', [
     check('fechadesde', 'La fecha desde es requerida').not().isEmpty(),

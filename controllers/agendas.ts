@@ -41,6 +41,7 @@ const includeAgenda = [
 export const getAgendas = async (req: Request, res: Response) => {
     try {
         const agendas = await Agenda.findAll({
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: includeAgenda
         });
         res.json({agendas});
@@ -53,14 +54,15 @@ export const getAgendas = async (req: Request, res: Response) => {
 }
 
 export const getAgendas_Profesional = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { idprofesional } = req.params;
     const { fecha } = req.query;
 
     try {
         const agendas = await Agenda.findAll({
             where: {
-                idprofesional: id 
+                idprofesional
             },
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: includeAgenda
         });
 
@@ -94,15 +96,16 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
 
 //get: una sola agenda por id
 export const getAgenda = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { idagenda } = req.params;
 
     try {
-        const agenda = await Agenda.findByPk(id, {
+        const agenda = await Agenda.findByPk(idagenda, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: includeAgenda
         });   
         if (!agenda) {
             res.status(404).json({
-                msg: `No existe una agenda con id = ${id}`
+                msg: `No existe una agenda con id = ${idagenda}`
             });
         }
 
@@ -231,6 +234,7 @@ export const postAgenda = async (req: Request, res: Response) => {
         });
 
         const agendaDB = await Agenda.findByPk( agenda.idagenda, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: includeAgenda
         });
 

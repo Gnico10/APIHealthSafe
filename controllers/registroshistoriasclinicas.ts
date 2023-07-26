@@ -11,44 +11,29 @@ import Profesional from '../models/profesional';
 import Tipoindicaciongeneral from '../models/tipoindicaciongeneral';
 import sequelize from '../db/connection';
 
-// Definir tipos de datos
-interface Datos {
-  registroHistoriaClinica: any;
-  diagnosticos: {
-    diagnostico: any;
-    indicacionMedicamento: any[];
-    indicacionesGenerales: any[];
-  }[];
-}
-
 async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
-  const registroHistoriaClinicaDB = await RegistroHistoriaClinica.findByPk(
+  const registrohistoriaclinica = await RegistroHistoriaClinica.findByPk(
     idregistrohistoriaclinica,{
       include: [{
           model: Turno,
           as: 'turno',
           attributes: { exclude: ['createdAt', 'updatedAt'] }
-      }],
-      attributes: { exclude: ['createdAt', 'updatedAt'] }
+      }]
     }
   );
 
-  if (!registroHistoriaClinicaDB) {
+  if (!registrohistoriaclinica) {
     console.log('Registro de historia clínica no encontrado');
     return;
   }
 
+  const diagnosticosData = [];
+
   // Buscar los diagnósticos relacionados con el registro de historia clínica
   const diagnosticos = await Diagnostico.findAll({
-    where: { idregistrohistoriaclinica: registroHistoriaClinicaDB.idregistrohistoriaclinica },
+    where: { idregistrohistoriaclinica: registrohistoriaclinica.idregistrohistoriaclinica },
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   });
-  
-  // Construir el objeto JSON con todos los datos
-  const datos: Datos = {
-    registroHistoriaClinica: registroHistoriaClinicaDB,
-    diagnosticos: [],
-  };
 
   for (let diagnostico of diagnosticos) {
     // Buscar las indicaciones relacionados con el diagnóstico
@@ -65,7 +50,7 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
     });
 
     // Buscar las indicaciones generales relacionadas con el diagnóstico
-    const indicacionesGenerales = await IndicacionGeneral.findAll({
+    const indicacionesgenerales = await IndicacionGeneral.findAll({
       where: { iddiagnostico: diagnostico.iddiagnostico },
       include: [
         {
@@ -79,15 +64,18 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
 
     // Agregar los datos del diagnóstico y sus relaciones al objeto JSON
     const datosDiagnostico = {
-      diagnostico: diagnostico,
-      indicacionMedicamento: indicacionmedicamento,
-      indicacionesGenerales: indicacionesGenerales
+      ...diagnostico.toJSON(),
+      indicacionmedicamento,
+      indicacionesgenerales
     };
 
-    datos.diagnosticos.push(datosDiagnostico);
+    diagnosticosData.push(datosDiagnostico);
   }
 
-  return datos
+  return {
+    ...registrohistoriaclinica.toJSON(),
+    diagnosticos: diagnosticosData
+  }
 }
 
 export const getRegistrosHistoriaClinica = async (req: Request, res: Response) => {
@@ -112,7 +100,7 @@ export const getRegistrosHistoriaClinica = async (req: Request, res: Response) =
 };
 
 
-export const getRegistrosHistoriaClinicaPorPaciente = async (req: Request, res: Response) => {
+export const getRegistrosHistoriaClinica_Paciente = async (req: Request, res: Response) => {
   const { idpaciente } = req.params;
 
   try {
@@ -120,12 +108,6 @@ export const getRegistrosHistoriaClinicaPorPaciente = async (req: Request, res: 
     const registrosHistoriaClinicaDB = await RegistroHistoriaClinica.findAll({
       where: { idpaciente: idpaciente }
     });
-
-    if (registrosHistoriaClinicaDB.length == 0) {
-      return res.status(400).json({
-        msg: `No hay registros de historia clínica para el paciente con id ${idpaciente}`,
-      });
-    }
 
     for (let registro of registrosHistoriaClinicaDB){
       const datosRegistro = await registroHistoriaClinicaData(registro.idregistrohistoriaclinica);

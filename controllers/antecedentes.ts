@@ -41,13 +41,6 @@ export const getAntecedentes_Paciente = async (req: Request, res: Response) => {
 
     try {
         const antecedentes_paciente = await Antecedente.findAll({where: {idpaciente}}); 
-
-        if (antecedentes_paciente.length == 0) {
-            return res.status(400).json({
-                msg: `El paciente con ID: ${idpaciente} no tiene antecedentes cargados`
-            });
-        }
-
         const antecedentes = [];
         for (let antecedente of antecedentes_paciente){
             const antecedenteDB = await antecedenteData(antecedente.idantecedente);
@@ -55,7 +48,7 @@ export const getAntecedentes_Paciente = async (req: Request, res: Response) => {
         }
 
         res.json({
-            antecedentes_paciente: antecedentes
+            antecedentes
         });
     } catch (error) {
         console.log(error)
