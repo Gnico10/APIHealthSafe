@@ -9,28 +9,47 @@ import Turno from '../models/turno';
 import Direccion from '../models/direccion';
 import Localidad from '../models/localidad';
 
+const includeAgenda = [
+    {
+        model: Profesional,
+        as: 'profesional',
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
+    },
+    {
+        model: Modalidad,
+        as: 'modalidad',
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
+    },
+    {
+        model: Consultorio,
+        as: 'consultorio',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [{
+            model: Direccion,
+            as: 'direccion',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [{
+                model: Localidad,
+                as: 'localidad',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+            }]
+        }]
+    }
+]
+
 //get: all agendas
 export const getAgendas = async (req: Request, res: Response) => {
-    const agendas = await Agenda.findAll({
-        include: [
-            {
-                model: Profesional,
-                as: 'profesional',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            },
-            {
-                model: Modalidad,
-                as: 'modalidad',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            },
-            {
-                model: Consultorio,
-                as: 'consultorio',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            }
-        ]
-    });
-    res.json({agendas});
+    try {
+        const agendas = await Agenda.findAll({
+            include: includeAgenda
+        });
+        res.json({agendas});
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar las agendas'
+        });
+    }
 }
 
 export const getAgendas_Profesional = async (req: Request, res: Response) => {
@@ -42,39 +61,8 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
             where: {
                 idprofesional: id 
             },
-            include: [
-                {
-                    model: Profesional,
-                    as: 'profesional',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Modalidad,
-                    as: 'modalidad',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
-                },
-                {
-                    model: Consultorio,
-                    as: 'consultorio',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
-                    required: false,
-                    include: [{
-                        model: Direccion,
-                        as: 'direccion',
-                        include: [{
-                            model: Localidad,
-                            as: 'localidad'
-                        }]
-                    }]
-                }
-            ]
+            include: includeAgenda
         });
-
-        if (agendas.length == 0) {
-            return res.status(400).json({
-                msg: `El profesional con ID: ${id} no tiene agendas cargadas`
-            });
-        }
 
         const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
         const agendasWithTurnos = await Promise.all(
@@ -102,37 +90,26 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
             msg: 'Error Interno. No se pudo consultar las agendas del profesional'
         });
     }
-    
 }
 
 //get: una sola agenda por id
 export const getAgenda = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const agenda = await Agenda.findByPk(id, {
-        include: [
-            {
-                model: Profesional,
-                as: 'profesional',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            },
-            {
-                model: Modalidad,
-                as: 'modalidad',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            },
-            {
-                model: Consultorio,
-                as: 'consultorio',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            }
-        ]
-    });
 
-    if (agenda){
+    try {
+        const agenda = await Agenda.findByPk(id, {
+            include: includeAgenda
+        });   
+        if (!agenda) {
+            res.status(404).json({
+                msg: `No existe una agenda con id = ${id}`
+            });
+        }
+
         res.json(agenda);
-    } else {
-        res.status(404).json({
-            msg: `No existe una agenda con id = ${id}`
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error Interno. No se pudo consultar la agenda'
         });
     }
 }
@@ -241,7 +218,7 @@ export const postAgenda = async (req: Request, res: Response) => {
         }
               
         // Creación de instancia en la base de datos.
-        const agenda = Agenda.build({
+        const agenda = await Agenda.create({
             fechadesde,
             fechahasta,
             horainicio,
@@ -253,11 +230,13 @@ export const postAgenda = async (req: Request, res: Response) => {
             idconsultorio
         });
 
-        await agenda.save();
+        const agendaDB = await Agenda.findByPk( agenda.idagenda, {
+            include: includeAgenda
+        });
 
         res.json({
             msg:'agenda dada de alta',
-            agenda
+            agenda: agendaDB
         });
     } catch (error) {
         console.log(error);
