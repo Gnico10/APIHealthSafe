@@ -99,6 +99,32 @@ export const getRegistrosHistoriaClinica = async (req: Request, res: Response) =
   }
 };
 
+export const getRegistroHistoriaClinica_Turno = async (req: Request, res: Response) => {
+  const {idTurno} = req.params;
+
+  try {
+    let historiasclinicas : any[] = [];
+    const registrosHistoriaClinicaDB = await RegistroHistoriaClinica.findAll({
+      where: { idturno: idTurno }
+    });
+
+    for (let registro of registrosHistoriaClinicaDB){
+      const datosRegistro = await registroHistoriaClinicaData(registro.idregistrohistoriaclinica);
+      historiasclinicas.push(datosRegistro);
+    }
+
+    res.json({
+      historiasclinicas
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: 'Error interno. No se pudo consultar los registros de historia clínica',
+    });
+  }
+}
+
 
 export const getRegistrosHistoriaClinica_Paciente = async (req: Request, res: Response) => {
   const { idpaciente } = req.params;
