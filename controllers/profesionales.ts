@@ -104,8 +104,8 @@ export const getProfesionales = async (req: Request, res: Response) => {
                 where:{idespecialidad}
             });
             if (profesionales_especialidades.length == 0){
-                return res.status(404).json({
-                    msg: `No existen profesionales con la especialidad ${idespecialidad} : ${especialidad?.descripcion}`
+                return res.status(200).json({
+                    profesionales: []
                 });
             }
             
@@ -134,8 +134,8 @@ export const getProfesionales = async (req: Request, res: Response) => {
                 ]
             });
             if (consultorios.length == 0){
-                return res.status(404).json({
-                    msg: `No existen profesionales con consultorios médicos con código postal ${codpostal}`
+                return res.status(200).json({
+                    profesionales: []
                 });
             }
             
@@ -172,8 +172,8 @@ export const getProfesionales = async (req: Request, res: Response) => {
                 }
             });
             if (agendas.length == 0){
-                return res.status(404).json({
-                    msg: `No existen profesionales que atiendan con modalidad ${idmodalidad} : ${modalidad?.descripcion}`
+                return res.status(200).json({
+                    profesionales: []
                 });
             }
             
