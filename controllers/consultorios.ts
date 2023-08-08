@@ -59,6 +59,7 @@ export const getConsultoriosProfesional = async (req: Request, res: Response) =>
 
 export const postConsultorio = async (req: Request, res: Response) => {
     const { descripcion,
+            numeroConsultorio,
             idprofesional,
             direccion } = req.body;
   
@@ -77,6 +78,7 @@ export const postConsultorio = async (req: Request, res: Response) => {
       // Crear Consultorio
       const newConsultorio = await Consultorio.create({
         descripcion,
+        numeroConsultorio,
         idprofesional,
         iddireccion: newDireccion.iddireccion
       });
