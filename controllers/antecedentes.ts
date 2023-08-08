@@ -6,6 +6,8 @@ import Antecedente from '../models/antecedente';
 import Profesional from '../models/profesional';
 import Usuario from '../models/usuario';
 import Rol from '../models/rol';
+import Usuario from '../models/usuario';
+import Rol from '../models/rol';
 
 async function antecedenteData(idantecedente: any){
     const antecedentesDB = await Antecedente.findByPk(
@@ -24,11 +26,9 @@ async function antecedenteData(idantecedente: any){
                 include: [{
                     model: Usuario,
                     as: 'usuario',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
                     include: [{
                         model: Rol,
-                        as: 'rol',
-                        attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        as: 'rol'
                     }]
                 }]
             },
@@ -39,11 +39,9 @@ async function antecedenteData(idantecedente: any){
                 include: [{
                     model: Usuario,
                     as: 'usuario',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
                     include: [{
                         model: Rol,
-                        as: 'rol',
-                        attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        as: 'rol'
                     }]
                 }]
             }
