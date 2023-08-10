@@ -1,7 +1,6 @@
 // Importar los paquetes necesarios
 import { Server } from 'socket.io';
 
-
 class ServerSocket {
     public io: Server;
 
