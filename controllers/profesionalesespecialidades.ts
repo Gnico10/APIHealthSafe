@@ -1,15 +1,16 @@
 import {Request, Response} from 'express';
+
 import Especialidad from '../models/especialidad';
 import ColegioMedico from '../models/colegiomedico';
 import Profesional from '../models/profesional';
-import Profesionales_Especialidades from '../models/profesionales_especialidades';
-import { createImmediatelyInvokedFunctionExpression } from 'typescript';
+import ProfesionalEspecialidad from '../models/especialidadprofesional';
+import Pais from '../models/pais';
 
 export const postProfesionalEspecialidades = async (req: Request, res: Response) => {
-    const { idprofesional,
+    const { aniootorgamiento,
+            idprofesional,
             idespecialidad,
-            idcolegiomedico,
-            aniootorgamiento } = req.body;
+            idcolegiomedico } = req.body;
     
     try {
         // Validations
@@ -38,7 +39,7 @@ export const postProfesionalEspecialidades = async (req: Request, res: Response)
         }
 
         // Validar si el profesional ya tiene la especialidad ingresada.
-        let existeProfesionalEspecialidad = await Profesionales_Especialidades.findAll({
+        let existeProfesionalEspecialidad = await ProfesionalEspecialidad.findAll({
             where: {idprofesional, idespecialidad}
         });
 
@@ -49,15 +50,34 @@ export const postProfesionalEspecialidades = async (req: Request, res: Response)
         }
 
         // Create profesional_especialidad relation
-        const profesional_especialidad = await Profesionales_Especialidades.build({
+        await ProfesionalEspecialidad.create({
+            aniootorgamiento,
             idprofesional,
             idespecialidad,
-            idcolegiomedico,
-            aniootorgamiento
+            idcolegiomedico
         });
 
-        await profesional_especialidad.save();
-        
+        const profesional_especialidad = await ProfesionalEspecialidad.findByPk(idprofesional, {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+                {
+                    model: Especialidad,
+                    as: 'especialidad',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                },
+                {
+                    model: ColegioMedico,
+                    as: 'especialidad',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    include: [{
+                        model: Pais,
+                        as: 'pais',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    }]
+                },
+            ]
+        })
+
         res.json({
             msg: `El profesional con el id ${idprofesional} se ha asociado a la especialidad con el id ${idespecialidad}`,
             profesional_especialidad

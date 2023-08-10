@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { Op } from 'sequelize';
 import  serverSocket  from '../app';
 
 import Mensajeria from '../models/mensajeria';
@@ -11,7 +10,11 @@ import Profesional from '../models/profesional';
 
 export const postMensaje = async (req: any, res: Response) => {
   try {
-    const { mensaje, idmensajeria } = req.body;
+    const { idmensajeria,
+            mensaje,
+            rolemisor,
+            idemisor,
+            tipomensaje } = req.body;
 
     // Validaciones
     const mensajeriaDB = await Mensajeria.findByPk(idmensajeria);
@@ -43,9 +46,11 @@ export const postMensaje = async (req: any, res: Response) => {
     }
 
     const nuevoMensaje = await Mensaje.create({ 
-      mensaje, 
       idmensajeria,
-      idusuarioemisor
+      mensaje,
+      rolemisor,
+      idemisor,
+      tipomensaje
     });
 
     // Enviamos el mensaje a través de WebSocket

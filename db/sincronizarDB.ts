@@ -15,7 +15,7 @@ import tipoantecedente from "../models/tipoantecedente";
 import antecedente from "../models/antecedente";
 import pedidoemergencia from "../models/pedidoemergencia";
 import prescripcion from "../models/prescripcion";
-import profesionales_especialidades from "../models/profesionales_especialidades";
+import profesionalespecialidad from "../models/especialidadprofesional";
 import profesional from "../models/profesional";
 import turno from "../models/turno";
 import usuario from "../models/usuario";
@@ -24,7 +24,7 @@ import pais from "../models/pais";
 import tipomatricula from "../models/tipomatricula";
 import universidad from "../models/universidad";
 import titulogrado from "../models/titulogrado";
-import matriculaprofesional from "../models/matriculaprofesional";
+import matriculaprofesional from "../models/profesionalmatricula";
 import colegiomedico from "../models/colegiomedico";
 import registrohistoriaclinica from "../models/registrohistoriaclinica"
 import indicaciongeneral from "../models/indicaciongeneral";
@@ -33,7 +33,6 @@ import diagnostico from "../models/diagnostico";
 import medicamento from "../models/medicamento";
 import tipoindicaciongeneral from "../models/tipoindicaciongeneral";
 import load from "./load";
-
 
 
 const sincronizarDB = async() =>  {
@@ -49,7 +48,7 @@ const sincronizarDB = async() =>  {
     await pais.sync({force: false});
     await especialidad.sync({force: false});
     await colegiomedico.sync({force: false});
-    await profesionales_especialidades.sync({force: false});
+    await profesionalespecialidad.sync({force: false});
     await tipomatricula.sync({force: false});
     await universidad.sync({force: false});
     await titulogrado.sync({force: false});

@@ -15,7 +15,7 @@ import antecedenteRoutes from './routes/antecedentes';
 import turnoRoutes from  './routes/turnos';
 import agendaRoutes from  './routes/agendas';
 import especialidadRoutes from  './routes/especialidades';
-import profesionales_especialidadesRoutes from './routes/profesionales_especialidades';
+import profesionalesespecialidades from './routes/profesionalesespecialidades';
 import paisesRoutes from './routes/paises';
 import rolesRoutes from './routes/roles';
 import universidadesRoutes from './routes/universidades';
@@ -154,7 +154,7 @@ class Server {
         this.app.use(this.apiPaths.turnos, turnoRoutes);
         this.app.use(this.apiPaths.agendas, agendaRoutes);
         this.app.use(this.apiPaths.especialidades, especialidadRoutes);
-        this.app.use(this.apiPaths.profesionales_especialidades, profesionales_especialidadesRoutes);
+        this.app.use(this.apiPaths.profesionales_especialidades, profesionalesespecialidades);
         this.app.use(this.apiPaths.paises, paisesRoutes);
         this.app.use(this.apiPaths.roles, rolesRoutes);
         this.app.use(this.apiPaths.universidades, universidadesRoutes);

@@ -1,15 +1,15 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
 
-import IProfesionales_Especialidades from '../interfaces/iProfesionales_Especialidades';
+import IProfesionalespecialidad from "../interfaces/iProfesionapespecialidad";
 
 import colegiomedico from "./colegiomedico";
 import profesional from "./profesional";
 import especialidad from "./especialidad";
 
-const profesionales_especialidades = sequelize.define<IProfesionales_Especialidades>('Profesionales_Especialidades',
+const profesionalespecialidad = sequelize.define<IProfesionalespecialidad>('Profesionales_Especialidades',
     {
-        idprofesionalesespecialidades: {
+        idprofesionalespecialidad: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -21,10 +21,6 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
                 len: [4, 4] // number of 4 digits
             }
         },
-        idcolegiomedico: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
         idprofesional: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -32,34 +28,36 @@ const profesionales_especialidades = sequelize.define<IProfesionales_Especialida
         idespecialidad: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        idcolegiomedico: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     },
     {
-        tableName: 'profesionales_especialidades'
+        tableName: 'profesionalesespecialidades'
     }
-);
+    );
+    
+profesionalespecialidad.belongsTo(profesional, {
+    foreignKey: 'idprofesional',
+    as: 'profesional',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+})
 
-profesionales_especialidades.belongsTo(colegiomedico, {
+profesionalespecialidad.belongsTo(especialidad, {
+    foreignKey: 'idespecialidad',
+    as: 'especialidad',
+    onUpdate: 'CASCADE',
+    onDelete: 'RESTRICT',
+})
+
+profesionalespecialidad.belongsTo(colegiomedico, {
     foreignKey: 'idcolegiomedico',
     as: 'colegiomedico',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 })
 
-profesional.belongsToMany(especialidad, {
-    through: profesionales_especialidades,
-    as: 'PE_especialidades',
-    foreignKey: 'idprofesional',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
-
-especialidad.belongsToMany(profesional, {
-    through: profesionales_especialidades,
-    as: 'PE_profesionales',
-    foreignKey: 'idespecialidad',
-    onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
-});
-
-export default profesionales_especialidades;
+export default profesionalespecialidad;

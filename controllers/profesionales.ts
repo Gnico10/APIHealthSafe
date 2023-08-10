@@ -7,8 +7,6 @@ import Especialidad from '../models/especialidad';
 
 import Rol from '../models/rol';
 import Usuario from '../models/usuario';
-import MatriculaProfesional from '../models/matriculaprofesional';
-import Profesionales_Especialidades from '../models/profesionales_especialidades';
 import ColegioMedico from '../models/colegiomedico';
 import Consultorio from '../models/consultorio';
 import Direccion from '../models/direccion';
@@ -18,26 +16,23 @@ import TipoMatricula from '../models/tipomatricula';
 import Pais from '../models/pais';
 import Universidad from '../models/universidad';
 import TituloGrado from '../models/titulogrado';
+import ProfesionalMatricula from '../models/profesionalmatricula';
+import ProfesionalEspecialidad from '../models/especialidadprofesional';
   
 async function profesionalData(idprofesional: any){
     const profesional = await Profesional.findByPk(
         idprofesional, {
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        include: [
-            {
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [{
                 model: Usuario,
                 as: 'usuario',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            },
-            {
-                model: Especialidad,
-                as: 'PE_especialidades',
-                through: {
-                    attributes: ['aniootorgamiento']
-                },
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
-            }
-        ],
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [{
+                    model: Rol,
+                    as: 'rol',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                }]
+            }],
         }
     );
 
@@ -47,41 +42,62 @@ async function profesionalData(idprofesional: any){
     }
 
     // Buscar las matriculas del profesional
-    const matriculaprofesional = await MatriculaProfesional.findAll({
+    const profesionalmatricula = await ProfesionalMatricula.findAll({
         where: { idprofesional: profesional.idprofesional },
         attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [
-        {
-            model: TipoMatricula,
-            as: 'tipomatricula',
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-        },
-        {
-            model: Universidad,
-            as: 'universidad',
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-            include: [
             {
-                model: Pais,
-                as: 'pais',
+                model: TipoMatricula,
+                as: 'tipomatricula',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+            },
+            {
+                model: Universidad,
+                as: 'universidad',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [{
+                    model: Pais,
+                    as: 'pais',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                }]
+            },
+            {
+                model: TituloGrado,
+                as: 'titulogrado',
                 attributes: { exclude: ['createdAt', 'updatedAt'] },
             }
-            ]
-        },
-        {
-            model: TituloGrado,
-            as: 'titulogrado',
-            attributes: { exclude: ['createdAt', 'updatedAt'] },
-        }
         ]
     });
 
+    // Buscar especialidades del profesional
+    const profesionalespecialidad = await ProfesionalEspecialidad.findAll({
+        where: { idprofesional: profesional.idprofesional },
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+            {
+                model: Especialidad,
+                as: 'especialidad',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+            },
+            {
+                model: ColegioMedico,
+                as: 'colegiomedico',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [{
+                    model: Pais,
+                    as: 'pais',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                }]
+            },
+        ]
+    })
+
     return {
         ...profesional.toJSON(),
-        matriculas_profesional: matriculaprofesional
+        profesional_matriculas: profesionalmatricula,
+        profesional_especialidades: profesionalespecialidad
     };
 }
-
 
 export const getProfesionales = async (req: Request, res: Response) => {
     const { idespecialidad, codpostal, idmodalidad } = req.query;
@@ -100,25 +116,25 @@ export const getProfesionales = async (req: Request, res: Response) => {
             }
             
             // Buscamos los profesionales con esa especialidad y agregamos a la lista.
-            let profesionales_especialidades = await Profesionales_Especialidades.findAll({
+            let profesionalespecialidad = await ProfesionalEspecialidad.findAll({
                 where:{idespecialidad}
             });
-            if (profesionales_especialidades.length == 0){
+            if (profesionalespecialidad.length == 0){
                 return res.status(200).json({
                     profesionales: []
                 });
             }
             
-            let idProfesionalesEspecialidadesList: number[] = [];
-            for (let especialidad_item of profesionales_especialidades){
-                idProfesionalesEspecialidadesList.push(Number(especialidad_item.idprofesional));
+            let idEspecialidadesProfesionalesList: number[] = [];
+            for (let especialidad_item of profesionalespecialidad){
+                idEspecialidadesProfesionalesList.push(Number(especialidad_item.idprofesional));
             }
 
             if (idProfesionalesList.length == 0) {
-                idProfesionalesList = idProfesionalesEspecialidadesList;
+                idProfesionalesList = idEspecialidadesProfesionalesList;
             } else {
                 idProfesionalesList = idProfesionalesList
-                    .filter(item => idProfesionalesEspecialidadesList.includes(item));
+                    .filter(item => idEspecialidadesProfesionalesList.includes(item));
             }
         }
 
@@ -191,6 +207,13 @@ export const getProfesionales = async (req: Request, res: Response) => {
             }
         }
 
+        if ( idespecialidad == null && codpostal == null && idmodalidad == null) {
+            const profesionales = await Profesional.findAll();
+            for (let profesional of profesionales){
+                idProfesionalesList.push(Number(profesional.idprofesional));
+            }
+        }
+
         const profesionales = [];
         for (let idprofesional of idProfesionalesList){
             const profesional = await profesionalData(idprofesional);
@@ -227,9 +250,6 @@ export const getProfesional = async (req: Request, res: Response) => {
         });
     }
   };
-  
-  
-
 
 export const postProfesional = async (req: Request, res: Response) => {
     const {
@@ -290,22 +310,22 @@ export const postProfesional = async (req: Request, res: Response) => {
         let profesionalDB = await Profesional.create({idusuario, descripcion});
 
         for (const matriculas of profesional_matriculas){
-            await MatriculaProfesional.create({
+            await ProfesionalMatricula.create({
                 numero : matriculas.numero,
+                aniootorgamiento : matriculas.aniootorgamiento,
+                idprofesional : profesionalDB.idprofesional,
                 idtipomatricula : matriculas.idtipomatricula,
                 iduniversidad : matriculas.iduniversidad,
-                idtitulogrado : matriculas.idtitulogrado,
-                aniootorgamiento : matriculas.aniootorgamiento,
-                idprofesional : profesionalDB.idprofesional
+                idtitulogrado : matriculas.idtitulogrado
             });
         }
 
         for (const especialidad of profesional_especialidades){
-            await Profesionales_Especialidades.create({
-                idcolegiomedico : especialidad.idcolegiomedico,
-                idespecialidad : especialidad.idespecialidad,
+            await ProfesionalEspecialidad.create({
                 aniootorgamiento : especialidad.aniootorgamiento,
-                idprofesional : profesionalDB.idprofesional
+                idprofesional : profesionalDB.idprofesional,
+                idespecialidad : especialidad.idespecialidad,
+                idcolegiomedico : especialidad.idcolegiomedico
             });
         }
         

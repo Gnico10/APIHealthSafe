@@ -4,6 +4,8 @@ import TipoAntecedente from '../models/tipoantecedente';
 import Paciente from '../models/paciente';
 import Antecedente from '../models/antecedente';
 import Profesional from '../models/profesional';
+import Usuario from '../models/usuario';
+import Rol from '../models/rol';
 
 async function antecedenteData(idantecedente: any){
     const antecedentesDB = await Antecedente.findByPk(
@@ -18,12 +20,32 @@ async function antecedenteData(idantecedente: any){
             {
                 model: Paciente,
                 as: 'paciente',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [{
+                    model: Usuario,
+                    as: 'usuario',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    include: [{
+                        model: Rol,
+                        as: 'rol',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    }]
+                }]
             },
             {
                 model: Profesional,
                 as: 'profesional',
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [{
+                    model: Usuario,
+                    as: 'usuario',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    include: [{
+                        model: Rol,
+                        as: 'rol',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    }]
+                }]
             }
         ]}
     ); 

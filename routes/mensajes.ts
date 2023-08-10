@@ -11,8 +11,11 @@ const router = Router();
 
 router.get('/:idmensajeria', getMensajes);
 router.post('/',[
+    check('idmensajeria', 'El idmensajeria es requerido.').not().isEmpty(),
     check('mensaje', 'El mensaje es requerido.').not().isEmpty(),
-    check('idmensajeria', 'EL idmensajeria es requerido.').not().isEmpty(),
+    check('rolemisor', 'El rolemisor es requerido.').not().isEmpty(),
+    check('idemisor', 'El idemisor es requerido.').not().isEmpty(),
+    check('tipomensaje', 'El tipomensaje es requerido.').not().isEmpty(),
     validarCampos,
     validarJWT
 ],

@@ -8,7 +8,7 @@ import loadLocalidades from "./data/localidad";
 import loadModalidades from "./data/modalidad";
 import loadTipoAntecedente from "./data/tipoantecedente";
 import loadTituloGrado from "./data/titulogrado";
-//import loadProfesional from "./data/profesional";
+import loadProfesional from "./data/profesional";
 import loadTipoIndicacionGenerales from "./data/tipoindicaciongeneral";
 import loadMedicamentos from "./data/medicamento";
 
@@ -25,8 +25,7 @@ const load = async() => {
     loadTituloGrado();
     loadTipoIndicacionGenerales();
     loadMedicamentos();
-   
-    // loadProfesional();
+    loadProfesional();
 }
 
 export default load;

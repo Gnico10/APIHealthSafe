@@ -1,7 +1,7 @@
 import { Model } from 'sequelize/types';
 
-interface IMatriculaprofesional extends Model{
-    idmatriculaprofesional? : number,
+interface IProfesionalmatricula extends Model{
+    idprofesionalmatricula? : number,
     numero? : number,
     aniootorgamiento? : number,
     idprofesional? : number,
@@ -10,4 +10,4 @@ interface IMatriculaprofesional extends Model{
     idtitulogrado? : number,
 };
 
-export default IMatriculaprofesional;
+export default IProfesionalmatricula;

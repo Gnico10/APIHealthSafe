@@ -1,16 +1,17 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
 
-import IMatriculaprofesional from '../interfaces/iMatriculaprofesional';
+
+import IProfesionalmatricula from '../interfaces/iProfesionalmatricula';
 
 import TipoMatricula from './tipomatricula';
 import Universidad from './universidad';
 import TituloGrado from './titulogrado';
 import Profesional from './profesional';
 
-const matriculaprofesional = sequelize.define<IMatriculaprofesional>('MatriculaProfesional',
+const profesionalmatricula = sequelize.define<IProfesionalmatricula>('MatriculaProfesional',
     { 
-        idmatriculaprofesional: {
+        idprofesionalmatricula: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -44,36 +45,36 @@ const matriculaprofesional = sequelize.define<IMatriculaprofesional>('MatriculaP
         }
     },
     {
-        tableName: 'matriculasprofesionales'
+        tableName: 'profesionalesmatriculas'
     }
 );
 
-matriculaprofesional.belongsTo(Profesional, {
+profesionalmatricula.belongsTo(Profesional, {
     foreignKey: 'idprofesional',
     as: 'profesional',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
-matriculaprofesional.belongsTo(TipoMatricula, {
+profesionalmatricula.belongsTo(TipoMatricula, {
     foreignKey: 'idtipomatricula',
     as: 'tipomatricula',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
-matriculaprofesional.belongsTo(Universidad, {
+profesionalmatricula.belongsTo(Universidad, {
     foreignKey: 'iduniversidad',
     as: 'universidad',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
 });
 
-matriculaprofesional.belongsTo(TituloGrado, {
+profesionalmatricula.belongsTo(TituloGrado, {
     foreignKey: 'idtitulogrado',
     as: 'titulogrado',
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT'
 });
 
-export default matriculaprofesional;
+export default profesionalmatricula;

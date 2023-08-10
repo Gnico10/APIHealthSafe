@@ -1,11 +1,10 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
 
+import { postProfesionalEspecialidades } from '../controllers/profesionalesespecialidades';
+
 import validarCampos from '../middlewares/validarCampos';
 import validarJWT from '../middlewares/validarJWT';
-
-import { postProfesionalEspecialidades } from '../controllers/prefesionales_especialidades';
-
 
 const router = Router();
 
