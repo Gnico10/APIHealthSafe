@@ -27,12 +27,22 @@ async function profesionalData(idprofesional: any){
                 model: Usuario,
                 as: 'usuario',
                 attributes: { exclude: ['createdAt', 'updatedAt'] },
-                include: [{
-                    model: Rol,
-                    as: 'rol',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] },
-                }]
-            }],
+                include: [
+                    {
+                        model: Rol,
+                        as: 'rol',
+                    }
+                ]
+            },
+            {
+                model: Especialidad,
+                as: 'PE_especialidades',
+                through: {
+                    attributes: ['aniootorgamiento']
+                },
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+            }
+        ],
         }
     );
 

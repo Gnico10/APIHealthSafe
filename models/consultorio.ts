@@ -17,6 +17,10 @@ const consultorio = sequelize.define<IConsultorio>('Consultorio',
             type: DataTypes.STRING(100),
             allowNull: false,
         },
+        numeroConsultorio: {
+            type: DataTypes.STRING(100),
+            allowNull: true
+        },
         iddireccion: {
             type: DataTypes.INTEGER,
             allowNull: false,

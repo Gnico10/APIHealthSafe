@@ -8,12 +8,25 @@ import Profesional from '../models/profesional';
 import Turno from '../models/turno';
 import Direccion from '../models/direccion';
 import Localidad from '../models/localidad';
+import Usuario from '../models/usuario';
+import Rol from '../models/rol';
+import Especialidad from '../models/especialidad';
+import Paciente from '../models/paciente';
 
 const includeAgenda = [
     {
         model: Profesional,
         as: 'profesional',
-        attributes: { exclude: ['createdAt', 'updatedAt'] }
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [{
+            model: Usuario,
+            as: 'usuario',
+            include: [{
+                model: Rol,
+                as: 'rol'
+            }]
+
+        }]
     },
     {
         model: Modalidad,
@@ -74,7 +87,22 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
                         idagenda: agenda.idagenda,
                         fecha: { [Op.gte]: fechaturno }
                     },
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    include: [{
+                        model: Especialidad,
+                        as: 'especialidad'
+                    }, {
+                        model: Paciente,
+                        as: 'paciente',
+                        include: [{
+                            model: Usuario,
+                            as: 'usuario',
+                            include: [{
+                                model: Rol,
+                                as: 'rol'
+                            }]
+                        }]
+                    }]
                 });
 
                 // agrega los turnos como un atributo de cada agenda
