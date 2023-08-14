@@ -6,8 +6,6 @@ import Antecedente from '../models/antecedente';
 import Profesional from '../models/profesional';
 import Usuario from '../models/usuario';
 import Rol from '../models/rol';
-import Usuario from '../models/usuario';
-import Rol from '../models/rol';
 
 async function antecedenteData(idantecedente: any){
     const antecedentesDB = await Antecedente.findByPk(
