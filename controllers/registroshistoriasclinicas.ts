@@ -100,12 +100,12 @@ export const getRegistrosHistoriaClinica = async (req: Request, res: Response) =
 };
 
 export const getRegistroHistoriaClinica_Turno = async (req: Request, res: Response) => {
-  const {idTurno} = req.params;
+  const {idturno} = req.params;
 
   try {
     let historiasclinicas : any[] = [];
     const registrosHistoriaClinicaDB = await RegistroHistoriaClinica.findAll({
-      where: { idturno: idTurno }
+      where: { idturno }
     });
 
     for (let registro of registrosHistoriaClinicaDB){
