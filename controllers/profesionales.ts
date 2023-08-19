@@ -33,14 +33,6 @@ async function profesionalData(idprofesional: any){
                         as: 'rol',
                     }
                 ]
-            },
-            {
-                model: Especialidad,
-                as: 'PE_especialidades',
-                through: {
-                    attributes: ['aniootorgamiento']
-                },
-                attributes: { exclude: ['createdAt', 'updatedAt'] }
             }
         ],
         }

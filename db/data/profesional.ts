@@ -45,8 +45,8 @@ const loadProfesional = async() => {
     })
 
     await Agenda.create({
-        fechadesde: "2023-08-02",
-        fechahasta: "2023-08-03",
+        fechadesde: "2023-08-28",
+        fechahasta: "2023-08-28",
         horainicio: "10:00",
         horafin: "13:00",
         duracion: 15,
@@ -70,8 +70,8 @@ const loadProfesional = async() => {
     })
 
     await Agenda.create({
-        fechadesde: "2023-08-08",
-        fechahasta: "2023-08-08",
+        fechadesde: "2023-08-30",
+        fechahasta: "2023-08-30",
         horainicio: "10:00",
         horafin: "11:00",
         duracion: 15,
