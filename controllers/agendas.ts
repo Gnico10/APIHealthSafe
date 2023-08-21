@@ -85,24 +85,31 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
                 const turnos = await Turno.findAll({
                     where: { 
                         idagenda: agenda.idagenda,
-                        fecha: { [Op.gte]: fechaturno }
+                        //fecha: { [Op.gte]: fechaturno }
                     },
                     attributes: { exclude: ['createdAt', 'updatedAt'] },
-                    include: [{
-                        model: Especialidad,
-                        as: 'especialidad'
-                    }, {
-                        model: Paciente,
-                        as: 'paciente',
-                        include: [{
-                            model: Usuario,
-                            as: 'usuario',
+                    include: [
+                        {
+                            model: Especialidad,
+                            as: 'especialidad',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
+                        }, 
+                        {
+                            model: Paciente,
+                            as: 'paciente',
+                            attributes: { exclude: ['createdAt', 'updatedAt'] },
                             include: [{
-                                model: Rol,
-                                as: 'rol'
+                                model: Usuario,
+                                as: 'usuario',
+                                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                                include: [{
+                                    model: Rol,
+                                    as: 'rol',
+                                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                                }]
                             }]
-                        }]
-                    }]
+                        }
+                    ]
                 });
 
                 // agrega los turnos como un atributo de cada agenda

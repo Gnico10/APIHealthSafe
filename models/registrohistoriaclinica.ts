@@ -13,11 +13,11 @@ const registrohistoriaclinica = sequelize.define<iRegistrohistoriaclinica>('regi
             primaryKey: true,
             autoIncrement: true,
         },
-        idpaciente: {
+        idturno: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        idturno: {
+        idpaciente: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },

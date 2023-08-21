@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { profesionalData } from './profesionales';
+import { include_turno } from './turnos';
 
 import RegistroHistoriaClinica from '../models/registrohistoriaclinica';
 import Diagnostico from '../models/diagnostico';
@@ -21,7 +22,8 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
                 {
                     model: Turno,
                     as: 'turno',
-                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
+                    include: include_turno
                 },
                 {
                     model: Paciente,
@@ -92,8 +94,8 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
 
     return {
         ...registrohistoriaclinica.toJSON(),
+        profesional,
         diagnosticos: diagnosticosData,
-        profesional
     }
 }
 
