@@ -25,7 +25,7 @@ const load = async() => {
     loadTituloGrado();
     loadTipoIndicacionGenerales();
     loadMedicamentos();
-    loadProfesional();
+    // loadProfesional();
 }
 
 export default load;

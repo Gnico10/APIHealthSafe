@@ -10,6 +10,13 @@ import Turno from '../models/turno';
 import Profesional from '../models/profesional';
 import Tipoindicaciongeneral from '../models/tipoindicaciongeneral';
 import sequelize from '../db/connection';
+import Agenda from '../models/agenda';
+import Usuario from '../models/usuario';
+import Rol from '../models/rol';
+import Modalidad from '../models/modalidad';
+import Consultorio from '../models/consultorio';
+import Localidad from '../models/localidad';
+import Direccion from '../models/direccion';
 
 async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
   const registrohistoriaclinica = await RegistroHistoriaClinica.findByPk(
@@ -17,7 +24,40 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
       include: [{
           model: Turno,
           as: 'turno',
-          attributes: { exclude: ['createdAt', 'updatedAt'] }
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [{
+            model: Agenda,
+            as: 'agenda',
+            include: [{
+              model: Profesional,
+              as: 'profesional',
+              include: [{
+                model: Usuario,
+                as: 'usuario',
+                include: [{
+                  model: Rol,
+                  as: 'rol'
+                }]
+              }]
+            }, {
+              model: Modalidad,
+              as: 'modalidad'
+          }, 
+          {
+              model: Consultorio,
+              as: 'consultorio',
+              required: false,
+              include: [{
+                  model: Direccion,
+                  as: 'direccion',
+                  include: [{
+                      model: Localidad,
+                      as: 'localidad'
+                  }]
+              }]
+          }]
+
+          }]
       }]
     }
   );
