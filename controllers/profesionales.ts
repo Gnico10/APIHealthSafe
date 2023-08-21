@@ -4,7 +4,6 @@ import { generarJWT } from '../helpers/generarJWT'
 
 import Profesional from '../models/profesional';
 import Especialidad from '../models/especialidad';
-
 import Rol from '../models/rol';
 import Usuario from '../models/usuario';
 import ColegioMedico from '../models/colegiomedico';
@@ -19,7 +18,7 @@ import TituloGrado from '../models/titulogrado';
 import ProfesionalMatricula from '../models/profesionalmatricula';
 import ProfesionalEspecialidad from '../models/especialidadprofesional';
   
-async function profesionalData(idprofesional: any){
+export async function profesionalData(idprofesional: any){
     const profesional = await Profesional.findByPk(
         idprofesional, {
             attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -31,12 +30,11 @@ async function profesionalData(idprofesional: any){
                     {
                         model: Rol,
                         as: 'rol',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] },
                     }
                 ]
-            }
-        ],
-        }
-    );
+            }],
+        });
 
     if (!profesional) {
         console.log('Profesional no encontrado');

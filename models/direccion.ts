@@ -35,7 +35,7 @@ direccion.belongsTo(localidad, {
     foreignKey: 'codpostal',
     as: 'localidad',
     onUpdate: 'CASCADE',
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
 });
 
 export default direccion;

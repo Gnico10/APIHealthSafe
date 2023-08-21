@@ -58,44 +58,48 @@ export const getConsultoriosProfesional = async (req: Request, res: Response) =>
 };
 
 export const postConsultorio = async (req: Request, res: Response) => {
-    const { descripcion,
-            numeroConsultorio,
-            idprofesional,
-            direccion } = req.body;
-  
-    try {
-      // Validar que el profesional exista
-      const profesional = await Profesional.findByPk(idprofesional);
-      if (!profesional) {
-        return res.status(404).json({
-          msg: `El profesional con id ${idprofesional} no existe`,
-        });
-      }
+  const { descripcion,
+          numeroConsultorio,
+          idprofesional,
+          direccion } = req.body;
 
-      // Crear la dirección
-      const newDireccion = await Direccion.create(direccion);
-
-      // Crear Consultorio
-      const newConsultorio = await Consultorio.create({
-        descripcion,
-        numeroConsultorio,
-        idprofesional,
-        iddireccion: newDireccion.iddireccion
-      });
-
-      const consultorioDB = await Consultorio.findByPk(newConsultorio.idconsultorio, {
-        include: include_consultorio,
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-      });
-      
-      res.json({
-        msg: 'Consultorio creado correctamente.',
-        consultorio: consultorioDB 
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        msg: 'Error interno. No se pudo crear el consultorio.',
+  try {
+    // Validar que el profesional exista
+    const profesional = await Profesional.findByPk(idprofesional);
+    if (!profesional) {
+      return res.status(404).json({
+        msg: `El profesional con id ${idprofesional} no existe`,
       });
     }
-  };
+
+    // Crear la dirección
+    const newDireccion = await Direccion.create(direccion);
+
+    // Crear Consultorio
+    const newConsultorio = await Consultorio.create({
+      descripcion,
+      numeroConsultorio,
+      idprofesional,
+      iddireccion: newDireccion.iddireccion
+    });
+
+    const consultorioDB = await Consultorio.findByPk(newConsultorio.idconsultorio, {
+      include: include_consultorio,
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
+    
+    res.json({
+      msg: 'Consultorio creado correctamente.',
+      consultorio: consultorioDB 
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: 'Error interno. No se pudo crear el consultorio.',
+    });
+  }
+};
+
+export const deleteConsultorio = async (req: Request, res: Response) => {
+
+}
