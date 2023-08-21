@@ -6,6 +6,7 @@ import validarJWT from '../middlewares/validarJWT';
 
 import { getAntecedentes_Paciente, postAntecedente } from '../controllers/antecedentes';
 
+
 const router = Router();
 
 router.get('/paciente/:idpaciente', getAntecedentes_Paciente);
@@ -18,5 +19,7 @@ router.post('/', [
     validarCampos,
     validarJWT
 ], postAntecedente);
+
+
 
 export default router;
