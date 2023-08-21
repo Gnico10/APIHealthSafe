@@ -14,7 +14,7 @@ router.get('/:idprofesional', getProfesional);
 router.post('/', [
     check('idusuario', 'El usuario es requerido.').not().isEmpty(),
     check('profesional_matriculas', 'Las matriculas del profesional son requeridos'). not().isEmpty(),
-    check('profesional_especialidades', 'Las especialidades del profesional son requeridos').not().isEmpty(),
+    // check('profesional_especialidades', 'Las especialidades del profesional son requeridos').not().isEmpty(),
     validarCampos
 ], postProfesional);
 
