@@ -94,8 +94,8 @@ async function registroHistoriaClinicaData(idregistrohistoriaclinica: any){
 
     return {
         ...registrohistoriaclinica.toJSON(),
+        profesional,
         diagnosticos: diagnosticosData,
-        profesional
     }
 }
 
