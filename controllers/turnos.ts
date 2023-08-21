@@ -13,7 +13,7 @@ import Consultorio from '../models/consultorio';
 import Direccion from '../models/direccion';
 import Localidad from '../models/localidad';
 
-const include_turno = [
+export const include_turno = [
     {
         model: Agenda,
         as: 'agenda',
@@ -22,29 +22,36 @@ const include_turno = [
             {
                 model: Profesional,
                 as: 'profesional',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
                 include: [{
                     model: Usuario,
                     as: 'usuario',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
                     include: [{
                         model: Rol,
-                        as: 'rol'
+                        as: 'rol',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] }
                     }]
                 }]
             }, 
             {
                 model: Modalidad,
-                as: 'modalidad'
+                as: 'modalidad',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
             }, 
             {
                 model: Consultorio,
                 as: 'consultorio',
                 required: false,
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
                 include: [{
                     model: Direccion,
                     as: 'direccion',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
                     include: [{
                         model: Localidad,
-                        as: 'localidad'
+                        as: 'localidad',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] }
                     }]
                 }]
             }
@@ -52,7 +59,8 @@ const include_turno = [
     },
     {
       model: Especialidad,
-      as: 'especialidad'  
+      as: 'especialidad',
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
     },
     {
         model: Paciente,
@@ -61,9 +69,11 @@ const include_turno = [
         include: [{
             model: Usuario,
             as: 'usuario',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [{
                 model: Rol,
-                as: 'rol'
+                as: 'rol',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
             }]
         }]
     }
