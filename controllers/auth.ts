@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcryptjs from 'bcryptjs';
 import { generarJWT } from '../helpers/generarJWT';
+import { profesionalData } from "./profesionales";
 
 import Usuario from '../models/usuario';
 import Rol from '../models/rol';
@@ -14,9 +15,11 @@ export const login = async (req : Request, res : Response) => {
         // Verificar si el correo existe.
         const usuario : any = await Usuario.findOne({
             where: {correo},
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [{
                 model: Rol,
-                as: 'rol'
+                as: 'rol',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
             }]
         });
         
@@ -33,12 +36,15 @@ export const login = async (req : Request, res : Response) => {
         if (usuario.rol.descripcion == 'Paciente'){
             pacienteDB = await Paciente.findOne({
                 where: {idusuario: usuario.idusuario},
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
                 include: [{
                     model: Usuario,
                     as: 'usuario',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
                     include: [{
                         model: Rol,
-                        as: 'rol'
+                        as: 'rol',
+                        attributes: { exclude: ['createdAt', 'updatedAt'] },
                     }]
                 }]
             })
@@ -53,15 +59,7 @@ export const login = async (req : Request, res : Response) => {
         // Validar que el usuario tenga un profesional asignado
         if (usuario.rol.descripcion == 'Profesional'){
             profesionalDB = await Profesional.findOne({
-                where: {idusuario: usuario.idusuario},
-                include: [{
-                    model: Usuario,
-                    as: 'usuario',
-                    include: [{
-                        model: Rol,
-                        as: 'rol'
-                    }]
-                }]
+                where: {idusuario: usuario.idusuario}
             })
 
             if (!profesionalDB) {
@@ -83,19 +81,22 @@ export const login = async (req : Request, res : Response) => {
         const token = await generarJWT(usuario.idusuario);
 
         // Fallaría el servicio si es un rol diferente a Profesional o Paciente
-        if (usuario.rol.descripcion == 'Profesional') {
-            return res.json({
-                profesional: profesionalDB,
-                token
-            });
-        } 
-
         if (usuario.rol.descripcion == "Paciente") {
             return res.json({
                 paciente: pacienteDB,
                 token
             });
         }
+
+        if (usuario.rol.descripcion == 'Profesional') {
+            const profesional = await profesionalData(profesionalDB?.idprofesional)
+
+            return res.json({
+                profesional,
+                token
+            });
+        } 
+
     } catch (error) {
         console.log(error);
         return res.status(500).json({
@@ -111,9 +112,11 @@ export const renovarToken = async (req : Request, res : Response) => {
          // Verificar si el correo existe.
          const usuario : any = await Usuario.findOne({
             where: {correo},
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [{
                 model: Rol,
-                as: 'rol'
+                as: 'rol',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
             }]
         });
         

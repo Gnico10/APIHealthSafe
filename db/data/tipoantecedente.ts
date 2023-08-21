@@ -3,7 +3,7 @@ import TipoAntecedente from "../../models/tipoantecedente";
 const loadTipoAntecedente = async() => {
     // List of TipoAntecedente
     const desctipoantecedente : string[] = [
-        'Antecedetes Personales',
+        'Antecedentes Personales',
         'Antecedentes Familiares',
         'Antecedetes Inmunitarios',
         'Antecedentes Quirúrgicos y Traumatológicos',
