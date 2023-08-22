@@ -18,10 +18,6 @@ const medicamento = sequelize.define<iMedicamento>('medicamento',
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        presentacion: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
     },
     {
         tableName: 'medicamentos'

@@ -6,8 +6,7 @@ import Medicamento from '../models/medicamento';
 export const postMedicamento = async (req: Request, res: Response) => {
     const {
         nombre,
-        monodroga,
-        presentacion,
+        monodroga,      
     } = req.body;
 
     try {
@@ -16,7 +15,6 @@ export const postMedicamento = async (req: Request, res: Response) => {
        const medicamento = await Medicamento.create({
             nombre,
             monodroga,
-            presentacion,
         });
         res.json({
             msg:'Se creó el medicamento correctamente',

@@ -173,7 +173,7 @@ export const getRegistrosHistoriaClinica_Paciente = async (req: Request, res: Re
 };
 
 export const postRegistroHistoriaClinica = async (req: Request, res: Response) => {
-    const { idpaciente, idturno, idprofesional, diagnosticos } = req.body;
+    const { idpaciente, idturno, idprofesional, diagnosticos} = req.body;
 
     try {
         //Validar que haya diagnosticos
@@ -247,6 +247,7 @@ export const postRegistroHistoriaClinica = async (req: Request, res: Response) =
                         cantidad:indicacionmedicamento.cantidad,
                         periodicidad: indicacionmedicamento.periodicidad,
                         duraciontratamiento: indicacionmedicamento.duraciontratamiento,
+                        presentacion: indicacionmedicamento.presentacion,
                         observaciones: indicacionmedicamento.observaciones,
                         idmedicamento: indicacionmedicamento.idmedicamento,
                         iddiagnostico: newDiagnostico.iddiagnostico,
