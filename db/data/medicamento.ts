@@ -6,27 +6,22 @@ const loadMedicamentos = async() => {
         {
             nombre: "Paracetamol",
             monodroga: "Paracetamol",
-            presentacion: "Tabletas de 500 mg"
         },
         {
             nombre: "Ibuprofeno",
             monodroga: "Ibuprofeno",
-            presentacion: "Tabletas de 400 mg"
         },
         {
             nombre: "Amoxicilina",
             monodroga: "Amoxicilina",
-            presentacion: "Cápsulas de 500 mg"
         },
         {
             nombre: "Omeprazol",
             monodroga: "Omeprazol",
-            presentacion: "Cápsulas de 20 mg"
         },
         {
             nombre: "Loratadina",
             monodroga: "Loratadina",
-            presentacion: "Tabletas de 10 mg"
         }
     ];
     // Create  in database
@@ -34,8 +29,7 @@ const loadMedicamentos = async() => {
         await Medicamento.findOrCreate({
             where: {
                 nombre: medic.nombre,
-                monodroga: medic.monodroga,
-                presentacion: medic.presentacion
+                monodroga: medic.monodroga
             },
         });
     });

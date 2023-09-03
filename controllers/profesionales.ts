@@ -182,8 +182,8 @@ export const getProfesionales = async (req: Request, res: Response) => {
             let agendas = await Agenda.findAll({
                 where: {
                     idmodalidad: idmodalidad,
-                    fechadesde: {
-                        [Op.gt]: fechaActual
+                    fechahasta: {
+                        [Op.lte]: fechaActual
                     }
                 }
             });

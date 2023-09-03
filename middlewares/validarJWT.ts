@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
 import Usuario from '../models/usuario';
-import IUsuario from '../interfaces/iUsuario';
 
 const validarJWT = async (req : any, res : Response, next : any) => {
     const token = req.header('Authorization');

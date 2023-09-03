@@ -110,7 +110,7 @@ export const deleteConsultorio = async (req: any, res: Response) => {
       const consultorio = await Consultorio.findByPk(id);
       if (!consultorio) {
           return res.status(404).json({
-              msg: `No existe un consultorio con el id = ${id}`
+              msg: `No se pudo eliminar el consultorio con id = ${id} ya que se encuentra asociado a una agenda existente`
           });
       }
 

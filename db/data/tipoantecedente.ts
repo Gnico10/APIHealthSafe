@@ -5,7 +5,7 @@ const loadTipoAntecedente = async() => {
     const desctipoantecedente : string[] = [
         'Antecedentes Personales',
         'Antecedentes Familiares',
-        'Antecedetes Inmunitarios',
+        'Antecedentes Inmunitarios',
         'Antecedentes Quirúrgicos y Traumatológicos',
         'Antecedentes Farmacológicos',
         'Antecedentes Epidemiológicos'
