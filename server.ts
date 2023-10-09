@@ -58,7 +58,7 @@ class Server {
         modalidades: '/api/modalidades',
         titulosgrados: '/api/titulosgrados',
         mensajes:'/api/mensajes',
-        mensajeria:'/api/mensajeria',
+        mensajeria:'/api/mensajerias',
         registroshistoriasclinicas: '/api/registroshistoriasclinicas',
         consultorios: '/api/consultorios',
         tiposindicacionesgenerales:  '/api/tiposindicacionesgenerales',

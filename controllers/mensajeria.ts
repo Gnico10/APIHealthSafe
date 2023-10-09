@@ -7,6 +7,8 @@ import Paciente from '../models/paciente';
 import Usuario from '../models/usuario';
 import Rol from '../models/rol';
 
+import { profesionalData } from './profesionales';
+
 async function getMensajeFromMensajeria(idmensajeria: any){
   const mensajes = await Mensaje.findAll({
     where: {
@@ -80,70 +82,48 @@ export const postMensajeria = async (req: Request, res: Response) => {
 
 // Configurar las rutas de la aplicación
 export const getMensajerias = async (req: Request, res: Response) => {
+    const { idpaciente, idprofesional } = req.query;
     try {
-      // Obtener todas las mensajerías de la base de datos
-      const mensajerias = await Mensajeria.findAll();
-      
-      // Enviar las mensajerías como respuesta
-      res.json(mensajerias); 
+      const mensajeriaData: any = []
+      let whereList: any = {}
+
+      if (idpaciente){whereList.idpaciente = idpaciente}
+      if (idprofesional){whereList.idprofesional = idprofesional}
+
+      const mensajerias = await Mensajeria.findAll({
+          where: whereList,
+          attributes: { exclude: ['updatedAt'] },
+          include: [
+            {
+              model: Paciente,
+              as: 'paciente',
+              attributes: { exclude: ['createdAt', 'updatedAt'] },
+              include: [{
+                model: Usuario,
+                as: 'usuario',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [{
+                  model: Rol,
+                  as: 'rol',
+                  attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }]
+              }]
+            }
+          ]
+      });
+
+      for (let mensajeria of mensajerias) {
+        mensajeriaData.push({
+          ...mensajeria.toJSON(),
+          profesional : await profesionalData(mensajeria.idprofesional),
+          mensajes: await getMensajeFromMensajeria(mensajeria.idmensajeria)
+        });
+      }
+
+      return res.json({mensajeriaData});
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: 'Ocurrió un error al obtener las mensajerías.' });
     }
   };
-
-  export const getMensajeriasPorPaciente = async (req: Request, res: Response) => {
-    const { idpaciente } = req.params;
-
-    try {
-        const mensajeriaData: any = []
-        const mensajerias = await Mensajeria.findAll({
-            where: { idpaciente },
-            include: [{
-              model: Profesional,
-              as: 'profesional',
-              include: [{
-                model: Usuario,
-                as: 'usuario',
-                include: [{
-                  model: Rol,
-                  as: 'rol'
-                }]
-              }]
-            }]
-        });
-
-        for (let mensajeria of mensajerias) {
-          mensajeriaData.push({
-            mensajeria,
-            mensajes: await getMensajeFromMensajeria(mensajeria.idmensajeria)
-          });
-        }
-
-        return res.status(200).json({mensajeriaData});
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Ocurrió un error al obtener las mensajerías.' });
-    }
-};
-
-export const getMensajeriasPorProfesional = async (req: Request, res: Response) => {
-  const { idprofesional } = req.params;
-    try {      
-          const mensajeriaData: any = []
-          const mensajerias = await Mensajeria.findAll({
-              where: { idprofesional }
-          });
-          for (let mensajeria of mensajerias) {
-            mensajeriaData.push({
-              mensajeria,
-              mensajes: await getMensajeFromMensajeria(mensajeria.idmensajeria)
-            });
-          }
-        return res.status(200).json(mensajeriaData);
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({ msg: 'Ocurrió un error al obtener las mensajerías.' });
-    }
-};
   

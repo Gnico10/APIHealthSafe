@@ -79,7 +79,7 @@ export const getAgendas_Profesional = async (req: Request, res: Response) => {
             include: includeAgenda
         });
 
-        const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
+        // const fechaturno = fecha? new Date(`${fecha}T00:00:00`) : new Date();
         const agendasWithTurnos = await Promise.all(
             agendas.map(async (agenda) => {
                 const turnos = await Turno.findAll({
