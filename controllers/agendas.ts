@@ -199,7 +199,7 @@ export const postAgenda = async (req: Request, res: Response) => {
             });
         }
 
-        if (idconsultorio != null){
+        if (!idconsultorio){
             const consultorio = await Consultorio.findByPk(idconsultorio);
             if (consultorio?.idprofesional != idprofesional){
                 return res.status(400).json({
@@ -254,9 +254,12 @@ export const postAgenda = async (req: Request, res: Response) => {
                 msg: 'Ya existe una agenda para este rango de fechas y horarios dados'
             }); 
         }
-              
+
         // Creación de instancia en la base de datos.
-        const agenda = await Agenda.create({
+        let agenda = null;
+
+        if (!idconsultorio) {
+            agenda = await Agenda.create({
             fechadesde,
             fechahasta,
             horainicio,
@@ -267,6 +270,18 @@ export const postAgenda = async (req: Request, res: Response) => {
             idmodalidad,
             idconsultorio
         });
+        } else {
+            agenda = await Agenda.create({
+                fechadesde,
+                fechahasta,
+                horainicio,
+                horafin,
+                duracion,
+                precio,
+                idprofesional,
+                idmodalidad,
+            });
+        }
 
         const agendaDB = await Agenda.findByPk( agenda.idagenda, {
             attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -278,7 +293,6 @@ export const postAgenda = async (req: Request, res: Response) => {
             agenda: agendaDB
         });
     } catch (error) {
-        console.log(error);
         res.status(500).json({
             msg: 'Error Interno. No se pudo crear la agenda'
         });
