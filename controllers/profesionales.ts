@@ -183,7 +183,7 @@ export const getProfesionales = async (req: Request, res: Response) => {
                 where: {
                     idmodalidad: idmodalidad,
                     fechahasta: {
-                        [Op.lte]: fechaActual
+                        [Op.gte]: fechaActual
                     }
                 }
             });
