@@ -10,7 +10,7 @@ import Rol from '../models/rol';
 async function antecedenteData(idantecedente: any){
     const antecedentesDB = await Antecedente.findByPk(
         idantecedente, {
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        attributes: { exclude: ['updatedAt'] },
         include: [
             {
                 model: TipoAntecedente,
