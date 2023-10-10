@@ -199,7 +199,7 @@ export const postAgenda = async (req: Request, res: Response) => {
             });
         }
 
-        if (!idconsultorio){
+        if (idconsultorio){
             const consultorio = await Consultorio.findByPk(idconsultorio);
             if (consultorio?.idprofesional != idprofesional){
                 return res.status(400).json({
@@ -256,10 +256,7 @@ export const postAgenda = async (req: Request, res: Response) => {
         }
 
         // Creación de instancia en la base de datos.
-        let agenda = null;
-
-        if (!idconsultorio) {
-            agenda = await Agenda.create({
+        let agenda = Agenda.build({
             fechadesde,
             fechahasta,
             horainicio,
@@ -267,21 +264,14 @@ export const postAgenda = async (req: Request, res: Response) => {
             duracion,
             precio,
             idprofesional,
-            idmodalidad,
-            idconsultorio
+            idmodalidad
         });
-        } else {
-            agenda = await Agenda.create({
-                fechadesde,
-                fechahasta,
-                horainicio,
-                horafin,
-                duracion,
-                precio,
-                idprofesional,
-                idmodalidad,
-            });
+
+        if (idconsultorio) {
+            agenda.idconsultorio = idconsultorio;
         }
+
+        await agenda.save();
 
         const agendaDB = await Agenda.findByPk( agenda.idagenda, {
             attributes: { exclude: ['createdAt', 'updatedAt'] },
