@@ -243,7 +243,7 @@ export const getProfesional = async (req: Request, res: Response) => {
             });
         }
 
-        res.json({profesional});
+        res.json(profesional);
     } catch (error) {
         res.status(500).json({
             msg: 'Ocurrió un error en el servidor'
