@@ -199,7 +199,7 @@ export const postAgenda = async (req: Request, res: Response) => {
             });
         }
 
-        if (idconsultorio){
+        if (idconsultorio && idconsultorio != 'null'){
             const consultorio = await Consultorio.findByPk(idconsultorio);
             if (consultorio?.idprofesional != idprofesional){
                 return res.status(400).json({
@@ -267,7 +267,7 @@ export const postAgenda = async (req: Request, res: Response) => {
             idmodalidad
         });
 
-        if (idconsultorio) {
+        if (idconsultorio && idconsultorio != 'null') {
             agenda.idconsultorio = idconsultorio;
         }
 
