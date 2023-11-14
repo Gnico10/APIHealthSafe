@@ -3,7 +3,7 @@ import sequelize from '../db/connection';
 
 import ITipoAntecedente from '../interfaces/iTipoAntecedente';
 
-const tipoantecedente = sequelize.define<ITipoAntecedente>('TipAntecedente',
+const tipoantecedente = sequelize.define<ITipoAntecedente>('TipoAntecedente',
     { 
         idtipoantecedente: {
             type: DataTypes.INTEGER,
