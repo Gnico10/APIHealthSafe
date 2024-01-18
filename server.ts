@@ -31,6 +31,7 @@ import consultorioRoutes from './routes/consultorio';
 import medicamentoRoutes from './routes/medicamentos';
 import tiposindicacionesgeneralesRoutes from './routes/tipoindicacionesgenerales';
 import profesionalesmatriculas from './routes/profesionalesmatriculas';
+import cuentamercadoPago from './routes/cuentamercadopago';
 class Server {
 
     private app : Application;
@@ -63,6 +64,7 @@ class Server {
         consultorios: '/api/consultorios',
         tiposindicacionesgenerales:  '/api/tiposindicacionesgenerales',
         profesionales_matriculas: '/api/profesionales_matriculas',
+        cuenta_mercado_pago: '/api/cuentamercadopago',
         // Más rutas
         default: '*'
     }
@@ -171,6 +173,7 @@ class Server {
         this.app.use(this.apiPaths.medicamentos, medicamentoRoutes);
         this.app.use(this.apiPaths.tiposindicacionesgenerales, tiposindicacionesgeneralesRoutes);
         this.app.use(this.apiPaths.profesionales_matriculas, profesionalesmatriculas)
+        this.app.use(this.apiPaths.cuenta_mercado_pago, cuentamercadoPago)
 
         // Ruta por defecto.
         this.app.get('*', (_req, res) => {

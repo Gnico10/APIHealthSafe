@@ -32,6 +32,7 @@ import indicacionmedicamento from "../models/indicacionmedicamento";
 import diagnostico from "../models/diagnostico";
 import medicamento from "../models/medicamento";
 import tipoindicaciongeneral from "../models/tipoindicaciongeneral";
+import cuentamercadopago from "../models/cuentamercadopago";
 import load from "./load";
 
 
@@ -73,6 +74,7 @@ const sincronizarDB = async() =>  {
     await prescripcion.sync({force: false});
     await mensajeria.sync({force: false});
     await mensaje.sync({force: false});
+    await cuentamercadopago.sync({force: false});
 
     // load default data for DB
     load();
