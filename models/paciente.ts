@@ -5,18 +5,18 @@ import IPaciente from '../interfaces/iPaciente';
 
 import usuario from "./usuario";
 
-const paciente = sequelize.define<IPaciente>('paciente',
+const paciente = sequelize.define<IPaciente>('Paciente',
     {
         idpaciente: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
+        ocupacion: {type: DataTypes.STRING(50)},
         idusuario: {
             type: DataTypes.INTEGER,
             allowNull: false
-        },
-        ocupacion: {type: DataTypes.STRING(50)}
+        }
     },
     {
         tableName: 'pacientes'

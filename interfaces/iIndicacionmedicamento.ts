@@ -7,9 +7,9 @@ interface iIndicacionmedicamento extends Model{
     periodicidad? : string,
     duraciontratamiento? : string,
     observaciones? : string,
+    presentacion? : string,
     iddiagnostico? : number,
     idmedicamento? : number, 
-    presentacion? : string,
 };
 
 export default iIndicacionmedicamento;

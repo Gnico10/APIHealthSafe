@@ -32,7 +32,10 @@ const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicaci
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        
+        presentacion: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
         iddiagnostico: {
             type: DataTypes.INTEGER,
             allowNull: false,
@@ -40,11 +43,7 @@ const indicacionmedicamento = sequelize.define<iIndicacionmedicamento>('indicaci
         idmedicamento: {
             type: DataTypes.INTEGER,
             allowNull: false,
-        },
-        presentacion: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
+        }
     },
     {
         tableName: 'indicacionesmedicamentos'

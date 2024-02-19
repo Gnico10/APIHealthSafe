@@ -9,6 +9,7 @@ services:
       - 5432:5432
     restart: always
     environment:
+      - TZ=America/Argentina/Buenos_Aires
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     healthcheck:

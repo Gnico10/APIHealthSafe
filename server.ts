@@ -32,8 +32,8 @@ import medicamentoRoutes from './routes/medicamentos';
 import tiposindicacionesgeneralesRoutes from './routes/tipoindicacionesgenerales';
 import profesionalesmatriculas from './routes/profesionalesmatriculas';
 import cuentamercadoPago from './routes/cuentamercadopago';
-class Server {
 
+class Server {
     private app : Application;
     private port : string;
     public server: any;

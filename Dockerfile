@@ -1,5 +1,7 @@
 FROM node:14
 
+ENV TZ=America/Argentina/Buenos_Aires
+
 # Crear directorio de app.
 RUN mkdir -p /src
 WORKDIR /src
