@@ -3,7 +3,6 @@ import Consultorio from "../../models/consultorio";
 import Direccion from "../../models/direccion";
 import ProfesionalMatricula from "../../models/profesionalmatricula";
 import Profesional from "../../models/profesional";
-import Titulogrado from "../../models/titulogrado";
 import Usuario from "../../models/usuario";
 import ProfesionalEspecialidad from "../../models/especialidadprofesional";
  
